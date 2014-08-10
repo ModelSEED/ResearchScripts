@@ -13,7 +13,7 @@ for (my $i=0; $i < @{$models}; $i++) {
 	my $value = $i-$procindex;
 	if (($value % $numprocs) == 0) {
 		my $fba = get_fba_client();
-		my $output = $fba->adjust_biomass_reaction{
+		my $output = $fba->adjust_biomass_reaction({
 			compounds => ["cpd11715","cpd11746","cpd09680"],
 			model => $models->[$i]->[1],
 			workspace => "chenry:BiomassAnalysisMMGF",

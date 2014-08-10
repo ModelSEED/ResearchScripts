@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 use strict;
 use warnings;
@@ -13,7 +13,16 @@ for (my $i=0; $i < @{$models}; $i++) {
 	my $value = $i-$procindex;
 	if (($value % $numprocs) == 0) {
 		my $fba = get_fba_client();
-		$fba->gapfill_model({
+		my $output = $fba->adjust_biomass_reaction{
+			compounds => ["cpd11715","cpd11746","cpd09680"],
+			model => $models->[$i]->[1],
+			workspace => "chenry:BiomassAnalysisMMGF",
+			coefficients => [0,0,0],
+    		compartments => ["c","c","c"],
+    		compartmentIndecies => [0,0,0],
+    	});
+    	printObjectInfo($output);
+		$output = $fba->gapfill_model({
 			model => $models->[$i]->[1],
 			model_workspace => $workspace,
 			workspace => "chenry:BiomassAnalysisMMGF",
@@ -28,7 +37,8 @@ for (my $i=0; $i < @{$models}; $i++) {
 				}
 			}
 		});
-		$fba->gapfill_model({
+		printObjectInfo($output);
+		$output = $fba->gapfill_model({
 			model => $models->[$i]->[1],
 			model_workspace => $workspace,
 			workspace => "chenry:BiomassAnalysisCMGF",
@@ -37,5 +47,6 @@ for (my $i=0; $i < @{$models}; $i++) {
 			solver => "CPLEX",
 			fastgapfill => 1,
 		});
+		printObjectInfo($output);
 	}
 }

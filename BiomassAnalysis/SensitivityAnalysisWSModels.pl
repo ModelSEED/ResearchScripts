@@ -23,7 +23,7 @@ for (my $i=0; $i < @{$models}; $i++) {
 			media_ws => "KBaseMedia",
 			delete_essential_reactions => 1,
 			objective_sensitivity_only => 1,
-
+			solver => "cplex"
 		});
 		printObjectInfo($output);
 	}

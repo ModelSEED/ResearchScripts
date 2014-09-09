@@ -15,15 +15,15 @@ for (my $i=0; $i < @{$genomes}; $i++) {
 	my $value = $i-$procindex;
 	if (($value % $numprocs) == 0) {
 		my $output = $fba->genome_to_fbamodel({
-			genome => $genomes->[$i],
+			genome => $genomes->[$i]->[1],
 			workspace => "KBasePublicModelsV4",
-			model => $genomes->[$i].".model"
+			model => $genomes->[$i]->[1].".model"
 	   	});
 		printObjectInfo($output);
 		$output = $fba->gapfill_model({
-			model => $genomes->[$i].".model",
+			model => $genomes->[$i]->[1].".model",
 			workspace => "KBasePublicModelsV4",
-			out_model => $genomes->[$i].".model.gf",
+			out_model => $genomes->[$i]->[1].".model.gf",
 			solver => "cplex",
 			fastgapfill => 1,
 			integrate_solution => 1

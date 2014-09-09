@@ -15,6 +15,7 @@ for (my $i=0; $i < @{$genomes}; $i++) {
 	my $value = $i-$procindex;
 	if (($value % $numprocs) == 0) {
 		my $output = $fba->genome_to_fbamodel({
+			genome_workspace => "KBasePublicGenomesV4",
 			genome => $genomes->[$i]->[1],
 			workspace => "KBasePublicModelsV4",
 			model => $genomes->[$i]->[1].".model"

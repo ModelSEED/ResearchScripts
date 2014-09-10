@@ -14,6 +14,7 @@ my $models = get_ws_objects_list($workspace,"KBaseFBA.FBAModel");
 for (my $i=0; $i < @{$models}; $i++) {
 	my $value = $i-$procindex;
 	if (($value % $numprocs) == 0) {
+		print $models->[$i]->[1]."\n";
 		my $output = $fba->reaction_sensitivity_analysis({
 			model => $models->[$i]->[1],
 			workspace => $workspace,

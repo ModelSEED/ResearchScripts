@@ -7,7 +7,6 @@ use Bio::KBase::workspace::ScriptHelpers qw(printObjectInfo get_ws_client worksp
 use Bio::KBase::fbaModelServices::ScriptHelpers qw(print_file load_file get_workspace_object get_ws_objects_list fbaws get_fba_client runFBACommand universalFBAScriptCode );
 use Bio::KBase::CDMI::CDMIClient;
 use Bio::KBase::GenomeAnnotation::Client;
-use Bio::KBase::ObjectAPI::utilities;
 
 my $fba = get_fba_client();
 my $cdmi = Bio::KBase::CDMI::CDMIClient->new_for_script();

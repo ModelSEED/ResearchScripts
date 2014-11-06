@@ -86,10 +86,12 @@ for (my $i=0; $i < @{$data}; $i++) {
   				$index = 0;
   				$UniqueRoleCombinations->{$combo} = {
   					Count => 1,
+  					KBRep => $genes->[$j],
+					SEEDRep => $seedid,
   					KBGenes => [$genes->[$j]],
 					SEEDGenes => [$seedid],
 					Sources => ["kb"],
-					Shared => [],
+					Shared => {},
 					Reactions => [],
 					Roles => $fnarray,
 					SS => []
@@ -130,7 +132,7 @@ for (my $i=0; $i < @{$data}; $i++) {
   									foreach my $cpd (keys(%{$rxnneighbors->{$rxnone}->{$rxntwo}})) {
  										$Neighbors++;
  										my $cpdarr = [split(/_/,$cpd)];
-  										push(@{$UniqueRoleCombinations->{$combo}->{Shared}},$cpdnames->{$cpdarr->[0]});	
+  										$UniqueRoleCombinations->{$combo}->{Shared}->{$cpdnames->{$cpdarr->[0]}} = 1;	
   									}
   								}
   							}
@@ -175,10 +177,12 @@ for (my $i=0; $i < @{$data}; $i++) {
 		  				$index = 0;
 		  				$UniqueRoleCombinations->{$combo} = {
 		  					Count => 1,
+		  					KBRep => $genes->[$j],
+							SEEDRep => $seedid,
 		  					KBGenes => [$genes->[$j]],
 							SEEDGenes => [$seedid],
 							Sources => ["seed"],
-							Shared => [],
+							Shared => {},
 							Reactions => [],
 							Roles => $fnarray,
 							SS => []
@@ -204,7 +208,7 @@ for (my $i=0; $i < @{$data}; $i++) {
 		  									foreach my $cpd (keys(%{$rxnneighbors->{$rxns->[$m]}->{$rxns->[$n]}})) {
 		 										$Neighbors++;
 		 										my $cpdarr = [split(/_/,$cpd)];
-		  										push(@{$UniqueRoleCombinations->{$combo}->{Shared}},$cpdnames->{$cpdarr->[0]});	
+		  										$UniqueRoleCombinations->{$combo}->{Shared}->{$cpdnames->{$cpdarr->[0]}} = 1;	
 		  									}
 		  								}
 		  							}
@@ -247,10 +251,10 @@ for (my $i=0; $i < @{$data}; $i++) {
 }
 
 open ( my $nmmfile, ">", $directory."/NeighboringMM.txt");
-print $nmmfile "KBase Genes\tSEED Genes\tSources\tRole count\tCount\tShared Reactants\t\"Roles\nSubsystems\nReactions\"\n";
+print $nmmfile "KBase Genes\tSEED Genes\tRole count\tCount\tShared Reactants\t\"Roles\nSubsystems\nReactions\"\n";
 for (my $i=0; $i < @{$NMM}; $i++) {
 	my $item = $NMM->[$i];
-	print $nmmfile join(";",@{$item->{KBGenes}})."\t".join(";",@{$item->{SEEDGenes}})."\t\"".join(";",@{$item->{Sources}})."\"\t".$item->{RoleCount}."\t".$item->{Count}."\t\"".join("\n",@{$item->{Shared}});
+	print $nmmfile $item->{KBRep}."\t".$item->{SEEDRep}."\t".$item->{RoleCount}."\t".$item->{Count}."\t\"".join("\n",keys(%{$item->{Shared}}));
 	for (my $j=0; $j < @{$item->{Roles}}; $j++) {
 		print $nmmfile "\"\t\"".$item->{Roles}->[$j];
 		for (my $k=0;$k < @{$item->{Reactions}->[$j]}; $k++) {
@@ -265,10 +269,10 @@ for (my $i=0; $i < @{$NMM}; $i++) {
 close($nmmfile);
 
 open ( my $nnmmfile, ">", $directory."/NonneighboringMM.txt");
-print $nnmmfile "KBase Genes\tSEED Genes\tSources\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
+print $nnmmfile "KBase Representative\tSEED Representative\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
 for (my $i=0; $i < @{$NNMM}; $i++) {
 	my $item = $NNMM->[$i];
-	print $nnmmfile join(";",@{$item->{KBGenes}})."\t".join(";",@{$item->{SEEDGenes}})."\t\"".join(";",@{$item->{Sources}})."\"\t".$item->{RoleCount}."\t\"".$item->{Count};
+	print $nnmmfile $item->{KBRep}."\t".$item->{SEEDRep}."\t".$item->{RoleCount}."\t\"".$item->{Count};
 	for (my $j=0; $j < @{$item->{Roles}}; $j++) {
 		print $nnmmfile "\"\t\"".$item->{Roles}->[$j];
 		for (my $k=0;$k < @{$item->{SS}->[$j]}; $k++) {
@@ -283,10 +287,10 @@ for (my $i=0; $i < @{$NNMM}; $i++) {
 close($nnmmfile);
 
 open ( my $smssfile, ">", $directory."/SingleMetabolicSubsystem.txt");
-print $smssfile "KBase Genes\tSEED Genes\tSources\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
+print $smssfile "KBase Representative\tSEED Representative\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
 for (my $i=0; $i < @{$SMSS}; $i++) {
 	my $item = $SMSS->[$i];
-	print $smssfile join(";",@{$item->{KBGenes}})."\t".join(";",@{$item->{SEEDGenes}})."\t\"".join(";",@{$item->{Sources}})."\"\t".$item->{RoleCount}."\t\"".$item->{Count};
+	print $smssfile $item->{KBRep}."\t".$item->{SEEDRep}."\t".$item->{RoleCount}."\t\"".$item->{Count};
 	for (my $j=0; $j < @{$item->{Roles}}; $j++) {
 		print $smssfile "\"\t\"".$item->{Roles}->[$j];
 		for (my $k=0;$k < @{$item->{SS}->[$j]}; $k++) {
@@ -301,10 +305,10 @@ for (my $i=0; $i < @{$SMSS}; $i++) {
 close($smssfile);
 
 open ( my $smnsfile, ">", $directory."/SingleMetabolicNoSS.txt");
-print $smnsfile "KBase Genes\tSEED Genes\tSources\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
+print $smnsfile "KBase Representative\tSEED Representative\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
 for (my $i=0; $i < @{$SMNS}; $i++) {
 	my $item = $SMNS->[$i];
-	print $smnsfile join(";",@{$item->{KBGenes}})."\t".join(";",@{$item->{SEEDGenes}})."\t\"".join(";",@{$item->{Sources}})."\"\t".$item->{RoleCount}."\t\"".$item->{Count};
+	print $smnsfile $item->{KBRep}."\t".$item->{SEEDRep}."\t".$item->{RoleCount}."\t\"".$item->{Count};
 	for (my $j=0; $j < @{$item->{Roles}}; $j++) {
 		print $smnsfile "\"\t\"".$item->{Roles}->[$j];
 		for (my $k=0;$k < @{$item->{SS}->[$j]}; $k++) {
@@ -319,10 +323,10 @@ for (my $i=0; $i < @{$SMNS}; $i++) {
 close($smnsfile);
 
 open ( my $nmtsfile, ">", $directory."/NonmetabolicTwoSubsystem.txt");
-print $nmtsfile "KBase Genes\tSEED Genes\tSources\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
+print $nmtsfile "KBase Representative\tSEED Representative\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
 for (my $i=0; $i < @{$NMTS}; $i++) {
 	my $item = $NMTS->[$i];
-	print $nmtsfile join(";",@{$item->{KBGenes}})."\t".join(";",@{$item->{SEEDGenes}})."\t\"".join(";",@{$item->{Sources}})."\"\t".$item->{RoleCount}."\t\"".$item->{Count};
+	print $nmtsfile $item->{KBRep}."\t".$item->{SEEDRep}."\t".$item->{RoleCount}."\t\"".$item->{Count};
 	for (my $j=0; $j < @{$item->{Roles}}; $j++) {
 		print $nmtsfile "\"\t\"".$item->{Roles}->[$j];
 		for (my $k=0;$k < @{$item->{SS}->[$j]}; $k++) {
@@ -337,10 +341,10 @@ for (my $i=0; $i < @{$NMTS}; $i++) {
 close($nmtsfile);
 
 open ( my $nmssfile, ">", $directory."/NonmetabolicSingleSubsystem.txt");
-print $nmssfile "KBase Genes\tSEED Genes\tSources\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
+print $nmssfile "KBase Representative\tSEED Representative\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
 for (my $i=0; $i < @{$NMSS}; $i++) {
 	my $item = $NMSS->[$i];
-	print $nmssfile join(";",@{$item->{KBGenes}})."\t".join(";",@{$item->{SEEDGenes}})."\t\"".join(";",@{$item->{Sources}})."\"\t".$item->{RoleCount}."\t\"".$item->{Count};
+	print $nmssfile $item->{KBRep}."\t".$item->{SEEDRep}."\t".$item->{RoleCount}."\t\"".$item->{Count};
 	for (my $j=0; $j < @{$item->{Roles}}; $j++) {
 		print $nmssfile "\"\t\"".$item->{Roles}->[$j];
 		for (my $k=0;$k < @{$item->{SS}->[$j]}; $k++) {
@@ -355,10 +359,10 @@ for (my $i=0; $i < @{$NMSS}; $i++) {
 close($nmssfile);
 
 open ( my $nmnsfile, ">", $directory."/NonmetabolicNoSubsystem.txt");
-print $nmnsfile "KBase Genes\tSEED Genes\tSources\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
+print $nmnsfile "KBase Representative\tSEED Representative\tRole count\tCount\t\"Roles\nSubsystems\nReactions\"\n";
 for (my $i=0; $i < @{$NMNS}; $i++) {
 	my $item = $NMNS->[$i];
-	print $nmnsfile join(";",@{$item->{KBGenes}})."\t".join(";",@{$item->{SEEDGenes}})."\t\"".join(";",@{$item->{Sources}})."\"\t".$item->{RoleCount}."\t\"".$item->{Count};
+	print $nmnsfile $item->{KBRep}."\t".$item->{SEEDRep}."\t".$item->{RoleCount}."\t\"".$item->{Count};
 	for (my $j=0; $j < @{$item->{Roles}}; $j++) {
 		print $nmnsfile "\"\t\"".$item->{Roles}->[$j];
 		for (my $k=0;$k < @{$item->{SS}->[$j]}; $k++) {

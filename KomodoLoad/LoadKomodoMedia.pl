@@ -248,16 +248,16 @@ for (my $i=0; $i < @{$data}; $i++) {
 		}
 		if ($media->{mediacompounds}->[$j]->{compound_ref} =~ m/(cpd\d+)/) {
 			my $id = $1;
-			if (defined($cpdhash->{$id}) && $cpdhash->{$id} =~ m/C[A-Z\d]/) {
+			if (defined($cpdhash->{$id}) && ($cpdhash->{$id} =~ m/C[A-Z\d]/ || $cpdhash->{$id} =~ m/C$/)) {
 				$elements->{C} = 1;
 			}
-			if (defined($cpdhash->{$id}) && $cpdhash->{$id} =~ m/N[A-Z\d]/) {
+			if (defined($cpdhash->{$id}) && ($cpdhash->{$id} =~ m/N[A-Z\d]/ || $cpdhash->{$id} =~ m/N$/)) {
 				$elements->{N} = 1;
 			}
-			if (defined($cpdhash->{$id}) && $cpdhash->{$id} =~ m/S[A-Z\d]/) {
+			if (defined($cpdhash->{$id}) && ($cpdhash->{$id} =~ m/S[A-Z\d]/ || $cpdhash->{$id} =~ m/S$/)) {
 				$elements->{S} = 1;
 			}
-			if (defined($cpdhash->{$id}) && $cpdhash->{$id} =~ m/P[A-Z\d]/) {
+			if (defined($cpdhash->{$id}) && ($cpdhash->{$id} =~ m/P[A-Z\d]/ || $cpdhash->{$id} =~ m/P$/)) {
 				$elements->{P} = 1;
 			}
 		}
@@ -270,6 +270,6 @@ for (my $i=0; $i < @{$data}; $i++) {
 			minFlux => -100
 		});
 	}
-	print $i."\t".$id."\t".$elements->{C}."\t".$elements->{N}."\t".$elements->{S}."\t".$elements->{P}."\n";
+	print $i."\t".$media->{id}."\t".$media->{name}."\t".$elements->{C}."\t".$elements->{N}."\t".$elements->{S}."\t".$elements->{P}."\n";
 	#save_workspace_object("KomodoMedia/".$id,$media,"KBaseBiochem.Media");
 }		

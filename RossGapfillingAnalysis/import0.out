@@ -1,0 +1,700 @@
+Object Name: 59310.6
+Object ID: 2
+Type: KBaseGenomes.Genome-7.0
+Version: 2
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:09:43+0000
+Saved by: chenry
+Checksum: 233b18bffb2ed60c22c9391086938603
+Size(bytes): 1620571
+User Meta Data:  none.
+Object Name: 59310.6.model
+Object ID: 3
+Type: KBaseFBA.FBAModel-4.1
+Version: 2
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:09:57+0000
+Saved by: chenry
+Checksum: cc7699c2b9ebfb11db0f60438fb23a58
+Size(bytes): 927268
+User Meta Data:  none.
+Object Name: 205921.4
+Object ID: 11
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:11:02+0000
+Saved by: chenry
+Checksum: 2df3d5c1242d5c5c12cc2a39da29f77f
+Size(bytes): 1621907
+User Meta Data:  none.
+Object Name: 205921.4.model
+Object ID: 16
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:11:35+0000
+Saved by: chenry
+Checksum: d530006b2af6cfd1c67a54659b57e51e
+Size(bytes): 969664
+User Meta Data:  none.
+Object Name: 373153.25
+Object ID: 20
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:12:50+0000
+Saved by: chenry
+Checksum: e2ecfe822a704915ff4c0dc24dbd7d39
+Size(bytes): 1606645
+User Meta Data:  none.
+Object Name: 373153.25.model
+Object ID: 23
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:13:16+0000
+Saved by: chenry
+Checksum: 4e9f52a808a0592dbfd815e33c671658
+Size(bytes): 906420
+User Meta Data:  none.
+Object Name: 467705.8
+Object ID: 29
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:14:02+0000
+Saved by: chenry
+Checksum: 7c0aec1afbd331d1359817b169357f5d
+Size(bytes): 1608761
+User Meta Data:  none.
+Object Name: 467705.8.model
+Object ID: 32
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:14:29+0000
+Saved by: chenry
+Checksum: af1407a536db9f933c7ad8ec358fc40c
+Size(bytes): 995828
+User Meta Data:  none.
+Object Name: 487214.5
+Object ID: 38
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:15:16+0000
+Saved by: chenry
+Checksum: 9965ff7664a64f78068d645d362e46a2
+Size(bytes): 1761319
+User Meta Data:  none.
+Object Name: 487214.5.model
+Object ID: 39
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:15:28+0000
+Saved by: chenry
+Checksum: c063943f67009d772599e73f016f247d
+Size(bytes): 893124
+User Meta Data:  none.
+Object Name: 568813.3
+Object ID: 44
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:15:59+0000
+Saved by: chenry
+Checksum: f5352254bf33cc32ff2f58befed036c2
+Size(bytes): 1540183
+User Meta Data:  none.
+Object Name: 568813.3.model
+Object ID: 45
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:16:11+0000
+Saved by: chenry
+Checksum: 47cdab2457c677615d7f9207f69291bd
+Size(bytes): 909162
+User Meta Data:  none.
+Object Name: 760760.3
+Object ID: 49
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:16:48+0000
+Saved by: chenry
+Checksum: ae340a7d98ec80d0b11e1ae327d1d6c7
+Size(bytes): 1648627
+User Meta Data:  none.
+Object Name: 760760.3.model
+Object ID: 51
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:17:02+0000
+Saved by: chenry
+Checksum: f47c0f03de1262fba785c42a0fdbfe3c
+Size(bytes): 899006
+User Meta Data:  none.
+Object Name: 760802.3
+Object ID: 55
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:17:29+0000
+Saved by: chenry
+Checksum: fc98d154d95563e21e8a3abcacd4b0a9
+Size(bytes): 1674087
+User Meta Data:  none.
+Object Name: 760802.3.model
+Object ID: 57
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:17:57+0000
+Saved by: chenry
+Checksum: 20c4ca4e6a10fba733437ddeda96b2e8
+Size(bytes): 920353
+User Meta Data:  none.
+Object Name: 760815.3
+Object ID: 61
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:18:20+0000
+Saved by: chenry
+Checksum: d03d5d080316cafea1fe8a01dd437e0e
+Size(bytes): 1622378
+User Meta Data:  none.
+Object Name: 760815.3.model
+Object ID: 63
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:18:33+0000
+Saved by: chenry
+Checksum: a357b3471b262ee3b2840b7710e32b29
+Size(bytes): 884919
+User Meta Data:  none.
+Object Name: 760856.3
+Object ID: 67
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:18:57+0000
+Saved by: chenry
+Checksum: fd72dea2490ca558e8faffe4dae11aed
+Size(bytes): 1639342
+User Meta Data:  none.
+Object Name: 760856.3.model
+Object ID: 69
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:19:09+0000
+Saved by: chenry
+Checksum: 93390803be238e557a5c6f603ae9c0dd
+Size(bytes): 896527
+User Meta Data:  none.
+Object Name: 760881.3
+Object ID: 73
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:19:27+0000
+Saved by: chenry
+Checksum: c716571021dbf8bdb223508fa8ef40a2
+Size(bytes): 1625264
+User Meta Data:  none.
+Object Name: 760881.3.model
+Object ID: 75
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:19:39+0000
+Saved by: chenry
+Checksum: 27856fa8c67bbad8d881515b911b9e5a
+Size(bytes): 890543
+User Meta Data:  none.
+Object Name: 764299.3
+Object ID: 80
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:20:16+0000
+Saved by: chenry
+Checksum: 6ae97da95854dd1916fe986486372d0d
+Size(bytes): 1795568
+User Meta Data:  none.
+Object Name: 764299.3.model
+Object ID: 81
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:20:29+0000
+Saved by: chenry
+Checksum: 25106b3aba50309b5617c03b6aa28b1c
+Size(bytes): 949966
+User Meta Data:  none.
+Object Name: 869304.3
+Object ID: 85
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:20:53+0000
+Saved by: chenry
+Checksum: abe098880a16eb14306ca12f1d3ec46c
+Size(bytes): 1659923
+User Meta Data:  none.
+Object Name: 869304.3.model
+Object ID: 87
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:21:14+0000
+Saved by: chenry
+Checksum: af976c798c2e20ec592eab61d7416e89
+Size(bytes): 898205
+User Meta Data:  none.
+Object Name: 876138.3
+Object ID: 92
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:22:03+0000
+Saved by: chenry
+Checksum: 7afdbc1732121e36cb84ec1bbba80066
+Size(bytes): 1845441
+User Meta Data:  none.
+Object Name: 876138.3.model
+Object ID: 93
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:22:16+0000
+Saved by: chenry
+Checksum: 66340a7f31c136fcad5c73825c933e4a
+Size(bytes): 972436
+User Meta Data:  none.
+Object Name: 888816.3
+Object ID: 98
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:22:50+0000
+Saved by: chenry
+Checksum: a7fe6a3fa6a4ef83a04a640bc481b138
+Size(bytes): 1743290
+User Meta Data:  none.
+Object Name: 888816.3.model
+Object ID: 99
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:23:13+0000
+Saved by: chenry
+Checksum: 54c0ce2d633a241728fffabbb1383bae
+Size(bytes): 1056075
+User Meta Data:  none.
+Object Name: 904293.3
+Object ID: 104
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:23:45+0000
+Saved by: chenry
+Checksum: ecc189920528110a4c316a4458b6efc3
+Size(bytes): 1632353
+User Meta Data:  none.
+Object Name: 904293.3.model
+Object ID: 105
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:24:01+0000
+Saved by: chenry
+Checksum: 61630565d6daf7981939ee9026ecf1d5
+Size(bytes): 954978
+User Meta Data:  none.
+Object Name: 914139.3
+Object ID: 109
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:24:25+0000
+Saved by: chenry
+Checksum: 7e58a57db728a2e1c7e534334de555f7
+Size(bytes): 1599608
+User Meta Data:  none.
+Object Name: 914139.3.model
+Object ID: 111
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:24:38+0000
+Saved by: chenry
+Checksum: 5ade5436d5d6c4a2c68faaf63b07f52f
+Size(bytes): 902066
+User Meta Data:  none.
+Object Name: 1005041.3
+Object ID: 115
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:24:53+0000
+Saved by: chenry
+Checksum: a07572a34edff4ecd14347b695177716
+Size(bytes): 1559404
+User Meta Data:  none.
+Object Name: 1005041.3.model
+Object ID: 117
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:25:06+0000
+Saved by: chenry
+Checksum: d05841c016e9941812c2d1ff010c0f67
+Size(bytes): 908366
+User Meta Data:  none.
+Object Name: 1035184.3
+Object ID: 121
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:25:50+0000
+Saved by: chenry
+Checksum: 52b8d4a6f219ab85df1265eb7d2254e8
+Size(bytes): 1704607
+User Meta Data:  none.
+Object Name: 1035184.3.model
+Object ID: 123
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:26:02+0000
+Saved by: chenry
+Checksum: 2d507f39015d43516e496f482f946f93
+Size(bytes): 864672
+User Meta Data:  none.
+Object Name: 1069623.3
+Object ID: 125
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:26:23+0000
+Saved by: chenry
+Checksum: 054e1f5ab4f68f10eca8f0b6a89e3db9
+Size(bytes): 1645727
+User Meta Data:  none.
+Object Name: 1069623.3.model
+Object ID: 128
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:26:36+0000
+Saved by: chenry
+Checksum: 2010dab58df755056eb7a318ea158e58
+Size(bytes): 907144
+User Meta Data:  none.
+Object Name: 1105238.3
+Object ID: 131
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:27:04+0000
+Saved by: chenry
+Checksum: 7c4b4641f84c59c0c4fae166744deb0e
+Size(bytes): 1616202
+User Meta Data:  none.
+Object Name: 1105238.3.model
+Object ID: 132
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:27:27+0000
+Saved by: chenry
+Checksum: 1b3c6909e8fa725c3ead7a258f2f8f2b
+Size(bytes): 961217
+User Meta Data:  none.
+Object Name: 1114965.3
+Object ID: 139
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:28:03+0000
+Saved by: chenry
+Checksum: be89c0ec170408a5111b257dcaf96ed4
+Size(bytes): 1572640
+User Meta Data:  none.
+Object Name: 1114965.3.model
+Object ID: 141
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:28:24+0000
+Saved by: chenry
+Checksum: 311e5c9f75661aa089c0752cd6d3112f
+Size(bytes): 906183
+User Meta Data:  none.
+Object Name: 1123304.3
+Object ID: 145
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:28:38+0000
+Saved by: chenry
+Checksum: 1efcf5f3cd0a33c41d2c0cbdc66f91ac
+Size(bytes): 1768540
+User Meta Data:  none.
+Object Name: 1123304.3.model
+Object ID: 147
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:28:51+0000
+Saved by: chenry
+Checksum: 6877738064720bf51ed7f0929a55d842
+Size(bytes): 964587
+User Meta Data:  none.
+Object Name: 1123312.3
+Object ID: 151
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:29:05+0000
+Saved by: chenry
+Checksum: 0e10738a211e733cff29e968629e9b32
+Size(bytes): 1795586
+User Meta Data:  none.
+Object Name: 1123312.3.model
+Object ID: 153
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:29:18+0000
+Saved by: chenry
+Checksum: a50da92fb6b127719bd5de6beae66be5
+Size(bytes): 913110
+User Meta Data:  none.
+Object Name: 1154800.3
+Object ID: 157
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:29:52+0000
+Saved by: chenry
+Checksum: e44eaf5825cb9f21b2a22b4fd743a073
+Size(bytes): 1621423
+User Meta Data:  none.
+Object Name: 1154800.3.model
+Object ID: 159
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:30:07+0000
+Saved by: chenry
+Checksum: aae7e0064cbdbe80b40dfd6c0a6c457a
+Size(bytes): 963122
+User Meta Data:  none.
+Object Name: 1154811.3
+Object ID: 163
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:30:26+0000
+Saved by: chenry
+Checksum: b78fdd50af768002bef117ca56b8d729
+Size(bytes): 1671917
+User Meta Data:  none.
+Object Name: 1154811.3.model
+Object ID: 165
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:30:49+0000
+Saved by: chenry
+Checksum: 5692263b8fabf1383ed81537e1c5ba65
+Size(bytes): 963442
+User Meta Data:  none.
+Object Name: 1154832.3
+Object ID: 167
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:31:06+0000
+Saved by: chenry
+Checksum: 21d346f6d1bc55ea9ea066f27dc181e7
+Size(bytes): 1597350
+User Meta Data:  none.
+Object Name: 1154832.3.model
+Object ID: 170
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:31:20+0000
+Saved by: chenry
+Checksum: 2f224cdc98d6669203d58822b5ddbf2a
+Size(bytes): 959897
+User Meta Data:  none.
+Object Name: 1154842.3
+Object ID: 173
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:31:33+0000
+Saved by: chenry
+Checksum: b7d8347b93abfbb93b2a4d8d0d0c72ff
+Size(bytes): 1621533
+User Meta Data:  none.
+Object Name: 1154842.3.model
+Object ID: 174
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:32:46+0000
+Saved by: chenry
+Checksum: c9e01d0107dd7a954ff8ac7bd298864e
+Size(bytes): 962237
+User Meta Data:  none.
+Object Name: 1154912.3
+Object ID: 176
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:33:03+0000
+Saved by: chenry
+Checksum: 690c44f0119d38599775d770f799ae25
+Size(bytes): 1525156
+User Meta Data:  none.
+Object Name: 1154912.3.model
+Object ID: 177
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:33:16+0000
+Saved by: chenry
+Checksum: 4c9171e1f2ca0d5b0ea208406d8d2f76
+Size(bytes): 970628
+User Meta Data:  none.
+Object Name: 1159085.3
+Object ID: 179
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:33:35+0000
+Saved by: chenry
+Checksum: 20f3981f90826d5748251e6bdb37ce89
+Size(bytes): 1636439
+User Meta Data:  none.
+Object Name: 1159085.3.model
+Object ID: 180
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:34:16+0000
+Saved by: chenry
+Checksum: a430f3a0122e036dcf98f7fb689d7305
+Size(bytes): 911821
+User Meta Data:  none.
+Object Name: 1203670.3
+Object ID: 182
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:34:29+0000
+Saved by: chenry
+Checksum: 9b95a774aa6e8b246f7135780894acfe
+Size(bytes): 1555440
+User Meta Data:  none.
+Object Name: 1203670.3.model
+Object ID: 183
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:34:43+0000
+Saved by: chenry
+Checksum: 693ac0d7a76916e54dcee0c7bcc3aa44
+Size(bytes): 970837
+User Meta Data:  none.
+Object Name: 1297534.3
+Object ID: 185
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:34:57+0000
+Saved by: chenry
+Checksum: 60c9b0c44a7715370ff2ce1bab56b8a7
+Size(bytes): 1475423
+User Meta Data:  none.
+Object Name: 1297534.3.model
+Object ID: 186
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:35:09+0000
+Saved by: chenry
+Checksum: 364665f2650572755392371dc0e301b4
+Size(bytes): 903850
+User Meta Data:  none.
+Object Name: 1215915.3
+Object ID: 188
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:35:45+0000
+Saved by: chenry
+Checksum: a52326ab51daeaf71a9e565cc9ce94b7
+Size(bytes): 1762020
+User Meta Data:  none.
+Object Name: 1215915.3.model
+Object ID: 189
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:36:00+0000
+Saved by: chenry
+Checksum: 0d68c9f446637f5cd07340303bed8108
+Size(bytes): 994627
+User Meta Data:  none.
+Object Name: 638301.3
+Object ID: 191
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:36:32+0000
+Saved by: chenry
+Checksum: 9ad4490d6318eff690108b975551ef74
+Size(bytes): 1389238
+User Meta Data:  none.
+Object Name: 638301.3.model
+Object ID: 192
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:36:43+0000
+Saved by: chenry
+Checksum: 33488025c16a84240798101a1c87cc85
+Size(bytes): 744742
+User Meta Data:  none.
+Object Name: 314315.12
+Object ID: 194
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:37:10+0000
+Saved by: chenry
+Checksum: b204883a3c91cd2d95e52403d10930a2
+Size(bytes): 1408553
+User Meta Data:  none.
+Object Name: 314315.12.model
+Object ID: 195
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:37:23+0000
+Saved by: chenry
+Checksum: af45d4e3230f72ee021fd64b3c088e28
+Size(bytes): 934368
+User Meta Data:  none.

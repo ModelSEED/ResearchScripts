@@ -1,0 +1,734 @@
+Object Name: 148942.4
+Object ID: 5
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:10:14+0000
+Saved by: chenry
+Checksum: 4fb936525e3eb006ff37abbd427817c2
+Size(bytes): 1587061
+User Meta Data:  none.
+Object Name: 148942.4.model
+Object ID: 8
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:10:42+0000
+Saved by: chenry
+Checksum: 7a34d5233b941271b83e44c44c65000a
+Size(bytes): 848809
+User Meta Data:  none.
+Object Name: 208435.3
+Object ID: 13
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:11:22+0000
+Saved by: chenry
+Checksum: 3e5b63b29531fc2a761cadef2c8e94ba
+Size(bytes): 1659161
+User Meta Data:  none.
+Object Name: 208435.3.model
+Object ID: 18
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:12:17+0000
+Saved by: chenry
+Checksum: baf84b676ef71e48e03c1e0af2b14d1d
+Size(bytes): 964544
+User Meta Data:  none.
+Object Name: 386894.6
+Object ID: 25
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:13:21+0000
+Saved by: chenry
+Checksum: b1082656bc7bee4da4eb38a38fe6e304
+Size(bytes): 1561409
+User Meta Data:  none.
+Object Name: 386894.6.model
+Object ID: 27
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:13:44+0000
+Saved by: chenry
+Checksum: 1aac45022da5e944b592857e37aad5a8
+Size(bytes): 947409
+User Meta Data:  none.
+Object Name: 482234.3
+Object ID: 34
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:14:46+0000
+Saved by: chenry
+Checksum: dd947801d6ead9f3ef58e6c3691bf1c3
+Size(bytes): 1701681
+User Meta Data:  none.
+Object Name: 482234.3.model
+Object ID: 36
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:15:15+0000
+Saved by: chenry
+Checksum: d46dcb57daa48bf07f60498b4956ffaf
+Size(bytes): 877848
+User Meta Data:  none.
+Object Name: 497738.3
+Object ID: 41
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:15:42+0000
+Saved by: chenry
+Checksum: 34aedd2333003f0d66f64b77c45c36d4
+Size(bytes): 1677084
+User Meta Data:  none.
+Object Name: 497738.3.model
+Object ID: 42
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:15:55+0000
+Saved by: chenry
+Checksum: 7b0cdf33da7ad459a459afd2ad95961d
+Size(bytes): 912426
+User Meta Data:  none.
+Object Name: 699248.3
+Object ID: 47
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:16:43+0000
+Saved by: chenry
+Checksum: 4419e0604ea4e60bd97ce843ed31555c
+Size(bytes): 1552607
+User Meta Data:  none.
+Object Name: 699248.3.model
+Object ID: 50
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:16:56+0000
+Saved by: chenry
+Checksum: d265e1c9bf279336389c3d7b3968f736
+Size(bytes): 993577
+User Meta Data:  none.
+Object Name: 760780.3
+Object ID: 53
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:17:21+0000
+Saved by: chenry
+Checksum: f86a9aa31b6727c57147b39f2a79692f
+Size(bytes): 1614985
+User Meta Data:  none.
+Object Name: 760780.3.model
+Object ID: 56
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:17:56+0000
+Saved by: chenry
+Checksum: 7ab7141554d5a5b35a079dae824c9cae
+Size(bytes): 909633
+User Meta Data:  none.
+Object Name: 760806.3
+Object ID: 60
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:18:20+0000
+Saved by: chenry
+Checksum: 6f8e3992bfdec4b1474d7b95b9962764
+Size(bytes): 1636108
+User Meta Data:  none.
+Object Name: 760806.3.model
+Object ID: 62
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:18:32+0000
+Saved by: chenry
+Checksum: 48339c52616d5e470e2e9e737052e8b5
+Size(bytes): 874802
+User Meta Data:  none.
+Object Name: 760820.3
+Object ID: 65
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:18:50+0000
+Saved by: chenry
+Checksum: f7399bb0b76152d613be10aea9a59eec
+Size(bytes): 1639395
+User Meta Data:  none.
+Object Name: 760820.3.model
+Object ID: 68
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:19:03+0000
+Saved by: chenry
+Checksum: 112d6eda07b372c6cfcc7389f0f41996
+Size(bytes): 898087
+User Meta Data:  none.
+Object Name: 760860.3
+Object ID: 71
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:19:23+0000
+Saved by: chenry
+Checksum: 092a3254f29e8b1e49cba77f604f5cc8
+Size(bytes): 1538658
+User Meta Data:  none.
+Object Name: 760860.3.model
+Object ID: 74
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:19:36+0000
+Saved by: chenry
+Checksum: 6449478ee78beee1dabed496e058fbe4
+Size(bytes): 891818
+User Meta Data:  none.
+Object Name: 760887.3
+Object ID: 77
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:19:58+0000
+Saved by: chenry
+Checksum: c5c65d689f353b6ba1d719a32805cc13
+Size(bytes): 1660423
+User Meta Data:  none.
+Object Name: 760887.3.model
+Object ID: 78
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:20:11+0000
+Saved by: chenry
+Checksum: fb3d932e0c977a05aa4788c196efcc7b
+Size(bytes): 896153
+User Meta Data:  none.
+Object Name: 767463.3
+Object ID: 83
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:20:43+0000
+Saved by: chenry
+Checksum: 24a43e7f6aa9d7396b434de93b80ea15
+Size(bytes): 1481283
+User Meta Data:  none.
+Object Name: 767463.3.model
+Object ID: 86
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:21:07+0000
+Saved by: chenry
+Checksum: 9c28448e3034c0337993a5e724a73a32
+Size(bytes): 915479
+User Meta Data:  none.
+Object Name: 873448.3
+Object ID: 89
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:21:38+0000
+Saved by: chenry
+Checksum: 55ee38838b6109f8d66bff888c4d04b8
+Size(bytes): 1523642
+User Meta Data:  none.
+Object Name: 873448.3.model
+Object ID: 90
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:21:50+0000
+Saved by: chenry
+Checksum: ffedc919eaaa56d4ec861503d0486b3a
+Size(bytes): 910779
+User Meta Data:  none.
+Object Name: 883168.3
+Object ID: 95
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:22:24+0000
+Saved by: chenry
+Checksum: e709b318a04210caa2d44f24ef2ab1ec
+Size(bytes): 1665033
+User Meta Data:  none.
+Object Name: 883168.3.model
+Object ID: 96
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:22:37+0000
+Saved by: chenry
+Checksum: 940dfcdd9d6f59a2d87be5637d57b511
+Size(bytes): 961095
+User Meta Data:  none.
+Object Name: 888821.3
+Object ID: 101
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:23:21+0000
+Saved by: chenry
+Checksum: 973c1aecf2aadb1d80c047bf5c47002f
+Size(bytes): 1756070
+User Meta Data:  none.
+Object Name: 888821.3.model
+Object ID: 102
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:23:36+0000
+Saved by: chenry
+Checksum: 4ee5c6128144a2183a76d5ad5d86f6a6
+Size(bytes): 1071154
+User Meta Data:  none.
+Object Name: 904294.3
+Object ID: 107
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:24:15+0000
+Saved by: chenry
+Checksum: e8c28a67877d032179b7378e30cdf246
+Size(bytes): 1494698
+User Meta Data:  none.
+Object Name: 904294.3.mJSONRPC error:
+JSONRPC error:
+Couldn't close Shock output stream: The doRead() threw exception. Use getCause() for details.
+JSONRPC error code: -32500
+JSONRPC error data:java.lang.RuntimeException: Couldn't close Shock output stream: The doRead() threw exception. Use getCause() for details.
+	at us.kbase.workspace.database.mongo.ShockBackend.saveBlob(ShockBackend.java:186)
+	at us.kbase.workspace.database.mongo.MongoWorkspaceDB.saveData(MongoWorkspaceDB.java:2043)
+	at us.kbase.workspace.database.mongo.MongoWorkspaceDB.saveObjects(MongoWorkspaceDB.java:1751)
+	at us.kbase.workspace.lib.Workspace.saveObjects(Workspace.java:673)
+	at us.kbase.workspace.kbase.WorkspaceServerMethods.saveObjects(WorkspaceServerMethods.java:185)
+	at us.kbase.workspace.WorkspaceServer.saveObjects(WorkspaceServer.java:694)
+	at sun.reflect.GeneratedMethodAccessor866.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at us.kbase.common.service.JsonServerServlet.doPost(JsonServerServlet.java:378)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:688)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:770)
+	at org.apache.catalina.core.StandardWrapper.service(StandardWrapper.java:1550)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:281)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:175)
+	at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:655)
+	at org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:595)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:161)
+	at org.apache.catalina.connector.CoyoteAdapter.doService(CoyoteAdapter.java:331)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:231)
+	at com.sun.enterprise.v3.services.impl.ContainerMapper$AdapterCallable.call(ContainerMapper.java:317)
+	at com.sun.enterprise.v3.services.impl.ContainerMapper.service(ContainerMapper.java:195)
+	at com.sun.grizzly.http.ProcessorTask.invokeAdapter(ProcessorTask.java:860)
+	at com.sun.grizzly.http.ProcessorTask.doProcess(ProcessorTask.java:757)
+	at com.sun.grizzly.http.ProcessorTask.process(ProcessorTask.java:1056)
+	at com.sun.grizzly.http.DefaultProtocolFilter.execute(DefaultProtocolFilter.java:229)
+	at com.sun.grizzly.DefaultProtocolChain.executeProtocolFilter(DefaultProtocolChain.java:137)
+	at com.sun.grizzly.DefaultProtocolChain.execute(DefaultProtocolChain.java:104)
+	at com.sun.grizzly.DefaultProtocolChain.execute(DefaultProtocolChain.java:90)
+	at com.sun.grizzly.http.HttpProtocolChain.execute(HttpProtocolChain.java:79)
+	at com.sun.grizzly.ProtocolChainContextTask.doCall(ProtocolChainContextTask.java:54)
+	at com.sun.grizzly.SelectionKeyContextTask.call(SelectionKeyContextTask.java:59)
+	at com.sun.grizzly.ContextTask.run(ContextTask.java:71)
+	at com.sun.grizzly.util.AbstractThreadPool$Worker.doWork(AbstractThreadPool.java:532)
+	at com.sun.grizzly.util.AbstractThreadPool$Worker.run(AbstractThreadPool.java:513)
+	at java.lang.Thread.run(Thread.java:744)
+Caused by: java.io.IOException: The doRead() threw exception. Use getCause() for details.
+	at com.gc.iotools.stream.os.OutputStreamToInputStream.internalClose(OutputStreamToInputStream.java:542)
+	at com.gc.iotools.stream.os.OutputStreamToInputStream.close(OutputStreamToInputStream.java:409)
+	at us.kbase.workspace.database.mongo.ShockBackend.saveBlob(ShockBackend.java:178)
+	... 35 more
+Caused by: java.lang.RuntimeException: com.fasterxml.jackson.core.JsonParseException: Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: java.io.StringReader@701a2e5f; line: 1, column: 2]
+	at us.kbase.shock.client.BasicShockClient.getShockData(BasicShockClient.java:211)
+	at us.kbase.shock.client.BasicShockClient.processRequest(BasicShockClient.java:198)
+	at us.kbase.shock.client.BasicShockClient._addNode(BasicShockClient.java:413)
+	at us.kbase.shock.client.BasicShockClient._addNodeStreaming(BasicShockClient.java:426)
+	at us.kbase.shock.client.BasicShockClient.addNode(BasicShockClient.java:357)
+	at us.kbase.workspace.database.mongo.ShockBackend$1.doRead(ShockBackend.java:140)
+	at us.kbase.workspace.database.mongo.ShockBackend$1.doRead(ShockBackend.java:134)
+	at com.gc.iotools.stream.os.OutputStreamToInputStream$DataConsumer.call(OutputStreamToInputStream.java:116)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	... 1 more
+Caused by: com.fasterxml.jackson.core.JsonParseException: Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: java.io.StringReader@701a2e5f; line: 1, column: 2]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1369)
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:532)
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportUnexpectedChar(ParserMinimalBase.java:453)
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleUnexpectedValue(ReaderBasedJsonParser.java:1386)
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:669)
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:2926)
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:2873)
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:2034)
+	at us.kbase.shock.client.BasicShockClient.getShockData(BasicShockClient.java:209)
+	... 11 more
+
+
+
+Trace begun at /kbase/deployments/20140109-prod/lib/Bio/KBase/workspace/Client.pm line 1644
+Bio::KBase::workspace::Client::save_objects('Bio::KBase::workspace::Client=HASH(0xd04b4c8)', 'HASH(0x15a505f0)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/ObjectAPI/KBaseStore.pm line 281
+Bio::KBase::ObjectAPI::KBaseStore::save_objects('Bio::KBase::ObjectAPI::KBaseStore=HASH(0x15169528)', 'HASH(0x365303e8)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/ObjectAPI/KBaseStore.pm line 234
+Bio::KBase::ObjectAPI::KBaseStore::save_object('Bio::KBase::ObjectAPI::KBaseStore=HASH(0x15169528)', 'Bio::KBase::ObjectAPI::KBaseGenomes::ContigSet=HASH(0x140a15f0)', 'chenry:QualitativeGapfillingStudy/kb|contigset.2474', undef) called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 510
+Bio::KBase::fbaModelServices::Impl::_save_msobject('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 'Bio::KBase::ObjectAPI::KBaseGenomes::ContigSet=HASH(0x140a15f0)', 'ContigSet', 'chenry:QualitativeGapfillingStudy', 'kb|contigset.2474') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 5979
+Bio::KBase::fbaModelServices::Impl::genome_to_workspace('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 'HASH(0x1b2077c8)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Server.pm line 462
+eval {...} at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Server.pm line 460
+Bio::KBase::fbaModelServices::Server::call_method('Bio::KBase::fbaModelServices::Server=HASH(0x8710ed8)', 'HASH(0x2cb9e4f8)', 'HASH(0x1bd7a8f0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/RPC/Any/Server.pm line 33
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/RPC/Any/Server.pm line 26
+RPC::Any::Server::handle_input('Bio::KBase::fbaModelServices::Server=HASH(0x8710ed8)', 'HASH(0x1b3ad750)') called at /kbase/deployments/20140109-prod/lib/fbaModelServices.psgi line 20
+Plack::Sandbox::_2fkbase_2fdeployments_2f20140109_2dprod_2flib_2ffbaModelServices_2epsgi::__ANON__('HASH(0x1b3ad750)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Middleware/CrossOrigin.pm line 115
+Plack::Middleware::CrossOrigin::call('Plack::Middleware::CrossOrigin=HASH(0x8f182e8)', 'HASH(0x1b3ad750)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Component.pm line 50
+Plack::Component::__ANON__('HASH(0x1b3ad750)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Util.pm line 142
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Util.pm line 142
+Plack::Util::run_app('CODE(0x8d16360)', 'HASH(0x1b3ad750)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 273
+Starman::Server::process_request('Starman::Server=HASH(0x11ba020)', 'Net::Server::Proto::TCP=GLOB(0xfb751a0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server.pm line 75
+Net::Server::run_client_connection('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 229
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 229
+Net::Server::PreFork::run_child('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 187
+Net::Server::PreFork::run_n_children('Starman::Server=HASH(0x11ba020)', 1) called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 375
+Net::Server::PreFork::coordinate_children('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 331
+Net::Server::PreFork::run_parent('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 153
+Starman::Server::run_parent('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 113
+Net::Server::PreFork::loop('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server.pm line 61
+Net::Server::run('Starman::Server=HASH(0x11ba020)', 'port', 'ARRAY(0x16624f0)', 'host', '*', 'proto', 'tcp', 'serialize', 'none', 'min_servers', 5, 'min_spare_servers', 4, 'max_spare_servers', 4, 'max_servers', 5, 'max_requests', 1000, 'user', 200, 'group', '1003 1003', 'listen', 1024, 'check_for_waiting', 1, 'no_client_stdout', 1, 'pid_file', '/kbase/deployments/20140109-prod/services/fbaModelServices/service.pid', 'setsid', 1, 'background', 1, 'log_file', '/kbase/deployments/20140109-prod/services/fbaModelServices/error.log') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 84
+Starman::Server::run('Starman::Server=HASH(0x11ba020)', 'CODE(0x11b9f00)', 'HASH(0x11b4cd0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Handler/Starman.pm line 18
+Plack::Handler::Starman::run('Plack::Handler::Starman=HASH(0x11b9fc0)', 'CODE(0x11b9f00)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Loader/Delayed.pm line 20
+Plack::Loader::Delayed::run('Plack::Loader::Delayed=HASH(0x11cb8e8)', 'Plack::Handler::Starman=HASH(0x11b9fc0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Runner.pm line 277
+Plack::Runner::run('Plack::Runner=HASH(0x1214298)') called at /kbase/runtimes/20140109-prod/bin/starman line 38
+
+JSONRPC error code: -32603
+JSONRPC error data:JSONRPC error:
+Couldn't close Shock output stream: The doRead() threw exception. Use getCause() for details.
+JSONRPC error code: -32500
+JSONRPC error data:java.lang.RuntimeException: Couldn't close Shock output stream: The doRead() threw exception. Use getCause() for details.
+	at us.kbase.workspace.database.mongo.ShockBackend.saveBlob(ShockBackend.java:186)
+	at us.kbase.workspace.database.mongo.MongoWorkspaceDB.saveData(MongoWorkspaceDB.java:2043)
+	at us.kbase.workspace.database.mongo.MongoWorkspaceDB.saveObjects(MongoWorkspaceDB.java:1751)
+	at us.kbase.workspace.lib.Workspace.saveObjects(Workspace.java:673)
+	at us.kbase.workspace.kbase.WorkspaceServerMethods.saveObjects(WorkspaceServerMethods.java:185)
+	at us.kbase.workspace.WorkspaceServer.saveObjects(WorkspaceServer.java:694)
+	at sun.reflect.GeneratedMethodAccessor866.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at us.kbase.common.service.JsonServerServlet.doPost(JsonServerServlet.java:378)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:688)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:770)
+	at org.apache.catalina.core.StandardWrapper.service(StandardWrapper.java:1550)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:281)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:175)
+	at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:655)
+	at org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:595)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:161)
+	at org.apache.catalina.connector.CoyoteAdapter.doService(CoyoteAdapter.java:331)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:231)
+	at com.sun.enterprise.v3.services.impl.ContainerMapper$AdapterCallable.call(ContainerMapper.java:317)
+	at com.sun.enterprise.v3.services.impl.ContainerMapper.service(ContainerMapper.java:195)
+	at com.sun.grizzly.http.ProcessorTask.invokeAdapter(ProcessorTask.java:860)
+	at com.sun.grizzly.http.ProcessorTask.doProcess(ProcessorTask.java:757)
+	at com.sun.grizzly.http.ProcessorTask.process(ProcessorTask.java:1056)
+	at com.sun.grizzly.http.DefaultProtocolFilter.execute(DefaultProtocolFilter.java:229)
+	at com.sun.grizzly.DefaultProtocolChain.executeProtocolFilter(DefaultProtocolChain.java:137)
+	at com.sun.grizzly.DefaultProtocolChain.execute(DefaultProtocolChain.java:104)
+	at com.sun.grizzly.DefaultProtocolChain.execute(DefaultProtocolChain.java:90)
+	at com.sun.grizzly.http.HttpProtocolChain.execute(HttpProtocolChain.java:79)
+	at com.sun.grizzly.ProtocolChainContextTask.doCall(ProtocolChainContextTask.java:54)
+	at com.sun.grizzly.SelectionKeyContextTask.call(SelectionKeyContextTask.java:59)
+	at com.sun.grizzly.ContextTask.run(ContextTask.java:71)
+	at com.sun.grizzly.util.AbstractThreadPool$Worker.doWork(AbstractThreadPool.java:532)
+	at com.sun.grizzly.util.AbstractThreadPool$Worker.run(AbstractThreadPool.java:513)
+	at java.lang.Thread.run(Thread.java:744)
+Caused by: java.io.IOException: The doRead() threw exception. Use getCause() for details.
+	at com.gc.iotools.stream.os.OutputStreamToInputStream.internalClose(OutputStreamToInputStream.java:542)
+	at com.gc.iotools.stream.os.OutputStreamToInputStream.close(OutputStreamToInputStream.java:409)
+	at us.kbase.workspace.database.mongo.ShockBackend.saveBlob(ShockBackend.java:178)
+	... 35 more
+Caused by: java.lang.RuntimeException: com.fasterxml.jackson.core.JsonParseException: Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: java.io.StringReader@701a2e5f; line: 1, column: 2]
+	at us.kbase.shock.client.BasicShockClient.getShockData(BasicShockClient.java:211)
+	at us.kbase.shock.client.BasicShockClient.processRequest(BasicShockClient.java:198)
+	at us.kbase.shock.client.BasicShockClient._addNode(BasicShockClient.java:413)
+	at us.kbase.shock.client.BasicShockClient._addNodeStreaming(BasicShockClient.java:426)
+	at us.kbase.shock.client.BasicShockClient.addNode(BasicShockClient.java:357)
+	at us.kbase.workspace.database.mongo.ShockBackend$1.doRead(ShockBackend.java:140)
+	at us.kbase.workspace.database.mongo.ShockBackend$1.doRead(ShockBackend.java:134)
+	at com.gc.iotools.stream.os.OutputStreamToInputStream$DataConsumer.call(OutputStreamToInputStream.java:116)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	... 1 more
+Caused by: com.fasterxml.jackson.core.JsonParseException: Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: java.io.StringReader@701a2e5f; line: 1, column: 2]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1369)
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:532)
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportUnexpectedChar(ParserMinimalBase.java:453)
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleUnexpectedValue(ReaderBasedJsonParser.java:1386)
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:669)
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:2926)
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:2873)
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:2034)
+	at us.kbase.shock.client.BasicShockClient.getShockData(BasicShockClient.java:209)
+	... 11 more
+
+
+
+Trace begun at /kbase/deployments/20140109-prod/lib/Bio/KBase/workspace/Client.pm line 1644
+Bio::KBase::workspace::Client::save_objects('Bio::KBase::workspace::Client=HASH(0xd04b4c8)', 'HASH(0x15a505f0)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/ObjectAPI/KBaseStore.pm line 281
+Bio::KBase::ObjectAPI::KBaseStore::save_objects('Bio::KBase::ObjectAPI::KBaseStore=HASH(0x15169528)', 'HASH(0x365303e8)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/ObjectAPI/KBaseStore.pm line 234
+Bio::KBase::ObjectAPI::KBaseStore::save_object('Bio::KBase::ObjectAPI::KBaseStore=HASH(0x15169528)', 'Bio::KBase::ObjectAPI::KBaseGenomes::ContigSet=HASH(0x140a15f0)', 'chenry:QualitativeGapfillingStudy/kb|contigset.2474', undef) called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 510
+Bio::KBase::fbaModelServices::Impl::_save_msobject('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 'Bio::KBase::ObjectAPI::KBaseGenomes::ContigSet=HASH(0x140a15f0)', 'ContigSet', 'chenry:QualitativeGapfillingStudy', 'kb|contigset.2474') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 5979
+Bio::KBase::fbaModelServices::Impl::genome_to_workspace('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 'HASH(0x1b2077c8)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Server.pm line 462
+eval {...} at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Server.pm line 460
+Bio::KBase::fbaModelServices::Server::call_method('Bio::KBase::fbaModelServices::Server=HASH(0x8710ed8)', 'HASH(0x2cb9e4f8)', 'HASH(0x1bd7a8f0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/RPC/Any/Server.pm line 33
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/RPC/Any/Server.pm line 26
+RPC::Any::Server::handle_input('Bio::KBase::fbaModelServices::Server=HASH(0x8710ed8)', 'HASH(0x1b3ad750)') called at /kbase/deployments/20140109-prod/lib/fbaModelServices.psgi line 20
+Plack::Sandbox::_2fkbase_2fdeployments_2f20140109_2dprod_2flib_2ffbaModelServices_2epsgi::__ANON__('HASH(0x1b3ad750)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Middleware/CrossOrigin.pm line 115
+Plack::Middleware::CrossOrigin::call('Plack::Middleware::CrossOrigin=HASH(0x8f182e8)', 'HASH(0x1b3ad750)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Component.pm line 50
+Plack::Component::__ANON__('HASH(0x1b3ad750)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Util.pm line 142
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Util.pm line 142
+Plack::Util::run_app('CODE(0x8d16360)', 'HASH(0x1b3ad750)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 273
+Starman::Server::process_request('Starman::Server=HASH(0x11ba020)', 'Net::Server::Proto::TCP=GLOB(0xfb751a0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server.pm line 75
+Net::Server::run_client_connection('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 229
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 229
+Net::Server::PreFork::run_child('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 187
+Net::Server::PreFork::run_n_children('Starman::Server=HASH(0x11ba020)', 1) called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 375
+Net::Server::PreFork::coordinate_children('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 331
+Net::Server::PreFork::run_parent('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 153
+Starman::Server::run_parent('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 113
+Net::Server::PreFork::loop('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server.pm line 61
+Net::Server::run('Starman::Server=HASH(0x11ba020)', 'port', 'ARRAY(0x16624f0)', 'host', '*', 'proto', 'tcp', 'serialize', 'none', 'min_servers', 5, 'min_spare_servers', 4, 'max_spare_servers', 4, 'max_servers', 5, 'max_requests', 1000, 'user', 200, 'group', '1003 1003', 'listen', 1024, 'check_for_waiting', 1, 'no_client_stdout', 1, 'pid_file', '/kbase/deployments/20140109-prod/services/fbaModelServices/service.pid', 'setsid', 1, 'background', 1, 'log_file', '/kbase/deployments/20140109-prod/services/fbaModelServices/error.log') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 84
+Starman::Server::run('Starman::Server=HASH(0x11ba020)', 'CODE(0x11b9f00)', 'HASH(0x11b4cd0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Handler/Starman.pm line 18
+Plack::Handler::Starman::run('Plack::Handler::Starman=HASH(0x11b9fc0)', 'CODE(0x11b9f00)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Loader/Delayed.pm line 20
+Plack::Loader::Delayed::run('Plack::Loader::Delayed=HASH(0x11cb8e8)', 'Plack::Handler::Starman=HASH(0x11b9fc0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Runner.pm line 277
+Plack::Runner::run('Plack::Runner=HASH(0x1214298)') called at /kbase/runtimes/20140109-prod/bin/starman line 38
+
+
+
+Trace begun at /Users/chenry/code/KBaseClient/lib/Bio/KBase/fbaModelServices/Client.pm line 2338
+Bio::KBase::fbaModelServices::Client::genome_to_workspace('Bio::KBase::fbaModelServices::Client=HASH(0x7ff47f0b5190)', 'HASH(0x7ff47e206848)') called at ImportGenomesBuildModels.pl line 157
+odel
+Object ID: 110
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:24:27+0000
+Saved by: chenry
+Checksum: 8fe4b4cde21649f0f4ee148036f39f12
+Size(bytes): 871302
+User Meta Data:  none.
+Object Name: 914144.3
+Object ID: 113
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:24:47+0000
+Saved by: chenry
+Checksum: 142d4f433c38f790cbd990cdcefa0a8b
+Size(bytes): 1614586
+User Meta Data:  none.
+Object Name: 914144.3.model
+Object ID: 116
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:24:59+0000
+Saved by: chenry
+Checksum: f97330fb54d2bd7f3a3a4ff626b98b90
+Size(bytes): 908256
+User Meta Data:  none.
+Object Name: 1005705.3
+Object ID: 119
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:25:33+0000
+Saved by: chenry
+Checksum: 0127d17cea759f1b3cfd88a3cc2cf6e4
+Size(bytes): 1334860
+User Meta Data:  none.
+Object Name: 1005705.3.model
+Object ID: 122
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:25:54+0000
+Saved by: chenry
+Checksum: ec058614bbe3daa40a5aa1ca4e9c7336
+Size(bytes): 859635
+User Meta Data:  none.
+Object Name: 1046629.4
+Object ID: 127
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:26:24+0000
+Saved by: chenry
+Checksum: 0edcd88c43d87bc1745206328ba3fe97
+Size(bytes): 1516756
+User Meta Data:  none.
+Object Name: 1046629.4.model
+Object ID: 129
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:26:37+0000
+Saved by: chenry
+Checksum: ed012b7837fb32eb9665fd480ece9c3d
+Size(bytes): 916522
+User Meta Data:  none.
+Object Name: 1074106.3
+Object ID: 134
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:27:28+0000
+Saved by: chenry
+Checksum: 1d84a5ddb124034051905b132a2314f7
+Size(bytes): 1434549
+User Meta Data:  none.
+Object Name: 1074106.3.model
+Object ID: 135
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:27:41+0000
+Saved by: chenry
+Checksum: 44e06b1adf667bccd6bbe089821ad158
+Size(bytes): 945815
+User Meta Data:  none.
+Object Name: 1105257.3
+Object ID: 137
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:27:59+0000
+Saved by: chenry
+Checksum: a9588a7c215abd85d8141ba7742868be
+Size(bytes): 1560754
+User Meta Data:  none.
+Object Name: 1105257.3.model
+Object ID: 140
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:28:17+0000
+Saved by: chenry
+Checksum: 99f4cc7b0983cf52773d58a7accc74e1
+Size(bytes): 962379
+User Meta Data:  none.
+Object Name: 1123301.3
+Object ID: 143
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:28:35+0000
+Saved by: chenry
+Checksum: 2de0ad746d46feae5f101fe775664875
+Size(bytes): 1408649
+User Meta Data:  none.
+Object Name: 1123301.3.model
+Object ID: 146
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:28:51+0000
+Saved by: chenry
+Checksum: 609049c44ed65679e85580f19bdec56a
+Size(bytes): 909223
+User Meta Data:  none.
+Object Name: 1123306.3
+Object ID: 149
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:29:01+0000
+Saved by: chenry
+Checksum: a7d49d9fab065b1c1f44862601b75a69
+Size(bytes): 1109985
+User Meta Data:  none.
+Object Name: 1123306.3.model
+Object ID: 152
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:29:12+0000
+Saved by: chenry
+Checksum: a213e4e49e59d8c784a1e633ab26aa82
+Size(bytes): 776180
+User Meta Data:  none.
+Object Name: 1130804.3
+Object ID: 155
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:29:33+0000
+Saved by: chenry
+Checksum: c8d595ef80a132e4812301a4c61b13ee
+Size(bytes): 1640248
+User Meta Data:  none.
+Object Name: 1130804.3.model
+Object ID: 158
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:29:56+0000
+Saved by: chenry
+Checksum: ea08987a38aaf2917ad377e6efabf326
+Size(bytes): 916664
+User Meta Data:  none.
+Object Name: 1154805.3
+Object ID: 161
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:30:22+0000
+Saved by: chenry
+Checksum: 380b831147eb634941ddfcf731f5b29b
+Size(bytes): 1568627
+User Meta Data:  none.
+Object Name: 1154805.3.model
+Object ID: 164
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:30:39+0000
+Saved by: chenry
+Checksum: 66500316aadfa3c41fdd67475715e46c
+Size(bytes): 962473
+User Meta Data:  none.
+Object Name: 1154815.3
+Object ID: 169
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:31:09+0000
+Saved by: chenry
+Checksum: 56c6e8563341f4b5dd0dad10c40cd6c9
+Size(bytes): 1598805
+User Meta Data:  none.
+Object Name: 1154815.3.model
+Object ID: 171
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:31:23+0000
+Saved by: chenry
+Checksum: f4379442b8a3d8b8f9985c304bfed2ad
+Size(bytes): 969164
+User Meta Data:  none.

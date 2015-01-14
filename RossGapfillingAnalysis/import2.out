@@ -1,0 +1,158 @@
+JSONRPC error:
+JSONRPC error:
+can't get db response, not connected
+JSONRPC error code: -32603
+JSONRPC error data:can't get db response, not connected at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/x86_64-linux/MongoDB/Cursor.pm line 160.
+
+
+
+Trace begun at /kbase/deployments/20140109-prod/lib/Bio/KBase/IDServer/Client.pm line 312
+Bio::KBase::IDServer::Client::register_ids('Bio::KBase::IDServer::Client=HASH(0x24826de8)', 'kb|g', 'SEED', 'ARRAY(0x34c485b0)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 2494
+Bio::KBase::fbaModelServices::Impl::_register_kb_id('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 'kb|g', 525379.3, 'SEED') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 775
+Bio::KBase::fbaModelServices::Impl::_get_genomeObj_from_SEED('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 525379.3) called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 5971
+Bio::KBase::fbaModelServices::Impl::genome_to_workspace('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 'HASH(0x1bd75e40)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Server.pm line 462
+eval {...} at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Server.pm line 460
+Bio::KBase::fbaModelServices::Server::call_method('Bio::KBase::fbaModelServices::Server=HASH(0x8710ed8)', 'HASH(0x1bbaf4b8)', 'HASH(0x1f2e53c8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/RPC/Any/Server.pm line 33
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/RPC/Any/Server.pm line 26
+RPC::Any::Server::handle_input('Bio::KBase::fbaModelServices::Server=HASH(0x8710ed8)', 'HASH(0x28d296f8)') called at /kbase/deployments/20140109-prod/lib/fbaModelServices.psgi line 20
+Plack::Sandbox::_2fkbase_2fdeployments_2f20140109_2dprod_2flib_2ffbaModelServices_2epsgi::__ANON__('HASH(0x28d296f8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Middleware/CrossOrigin.pm line 115
+Plack::Middleware::CrossOrigin::call('Plack::Middleware::CrossOrigin=HASH(0x8f182e8)', 'HASH(0x28d296f8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Component.pm line 50
+Plack::Component::__ANON__('HASH(0x28d296f8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Util.pm line 142
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Util.pm line 142
+Plack::Util::run_app('CODE(0x8d16360)', 'HASH(0x28d296f8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 273
+Starman::Server::process_request('Starman::Server=HASH(0x11ba020)', 'Net::Server::Proto::TCP=GLOB(0x31ae8cb8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server.pm line 75
+Net::Server::run_client_connection('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 229
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 229
+Net::Server::PreFork::run_child('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 187
+Net::Server::PreFork::run_n_children('Starman::Server=HASH(0x11ba020)', 1) called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 375
+Net::Server::PreFork::coordinate_children('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 331
+Net::Server::PreFork::run_parent('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 153
+Starman::Server::run_parent('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 113
+Net::Server::PreFork::loop('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server.pm line 61
+Net::Server::run('Starman::Server=HASH(0x11ba020)', 'port', 'ARRAY(0x16624f0)', 'host', '*', 'proto', 'tcp', 'serialize', 'none', 'min_servers', 5, 'min_spare_servers', 4, 'max_spare_servers', 4, 'max_servers', 5, 'max_requests', 1000, 'user', 200, 'group', '1003 1003', 'listen', 1024, 'check_for_waiting', 1, 'no_client_stdout', 1, 'pid_file', '/kbase/deployments/20140109-prod/services/fbaModelServices/service.pid', 'setsid', 1, 'background', 1, 'log_file', '/kbase/deployments/20140109-prod/services/fbaModelServices/error.log') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 84
+Starman::Server::run('Starman::Server=HASH(0x11ba020)', 'CODE(0x11b9f00)', 'HASH(0x11b4cd0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Handler/Starman.pm line 18
+Plack::Handler::Starman::run('Plack::Handler::Starman=HASH(0x11b9fc0)', 'CODE(0x11b9f00)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Loader/Delayed.pm line 20
+Plack::Loader::Delayed::run('Plack::Loader::Delayed=HASH(0x11cb8e8)', 'Plack::Handler::Starman=HASH(0x11b9fc0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Runner.pm line 277
+Plack::Runner::run('Plack::Runner=HASH(0x1214298)') called at /kbase/runtimes/20140109-prod/bin/starman line 38
+
+JSONRPC error code: -32603
+JSONRPC error data:JSONRPC error:
+can't get db response, not connected
+JSONRPC error code: -32603
+JSONRPC error data:can't get db response, not connected at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/x86_64-linux/MongoDB/Cursor.pm line 160.
+
+
+
+Trace begun at /kbase/deployments/20140109-prod/lib/Bio/KBase/IDServer/Client.pm line 312
+Bio::KBase::IDServer::Client::register_ids('Bio::KBase::IDServer::Client=HASH(0x24826de8)', 'kb|g', 'SEED', 'ARRAY(0x34c485b0)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 2494
+Bio::KBase::fbaModelServices::Impl::_register_kb_id('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 'kb|g', 525379.3, 'SEED') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 775
+Bio::KBase::fbaModelServices::Impl::_get_genomeObj_from_SEED('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 525379.3) called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Impl.pm line 5971
+Bio::KBase::fbaModelServices::Impl::genome_to_workspace('Bio::KBase::fbaModelServices::Impl=HASH(0x8cefdd8)', 'HASH(0x1bd75e40)') called at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Server.pm line 462
+eval {...} at /kbase/deployments/20140109-prod/lib/Bio/KBase/fbaModelServices/Server.pm line 460
+Bio::KBase::fbaModelServices::Server::call_method('Bio::KBase::fbaModelServices::Server=HASH(0x8710ed8)', 'HASH(0x1bbaf4b8)', 'HASH(0x1f2e53c8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/RPC/Any/Server.pm line 33
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/RPC/Any/Server.pm line 26
+RPC::Any::Server::handle_input('Bio::KBase::fbaModelServices::Server=HASH(0x8710ed8)', 'HASH(0x28d296f8)') called at /kbase/deployments/20140109-prod/lib/fbaModelServices.psgi line 20
+Plack::Sandbox::_2fkbase_2fdeployments_2f20140109_2dprod_2flib_2ffbaModelServices_2epsgi::__ANON__('HASH(0x28d296f8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Middleware/CrossOrigin.pm line 115
+Plack::Middleware::CrossOrigin::call('Plack::Middleware::CrossOrigin=HASH(0x8f182e8)', 'HASH(0x28d296f8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Component.pm line 50
+Plack::Component::__ANON__('HASH(0x28d296f8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Util.pm line 142
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Util.pm line 142
+Plack::Util::run_app('CODE(0x8d16360)', 'HASH(0x28d296f8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 273
+Starman::Server::process_request('Starman::Server=HASH(0x11ba020)', 'Net::Server::Proto::TCP=GLOB(0x31ae8cb8)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server.pm line 75
+Net::Server::run_client_connection('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 229
+eval {...} at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 229
+Net::Server::PreFork::run_child('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 187
+Net::Server::PreFork::run_n_children('Starman::Server=HASH(0x11ba020)', 1) called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 375
+Net::Server::PreFork::coordinate_children('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 331
+Net::Server::PreFork::run_parent('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 153
+Starman::Server::run_parent('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server/PreFork.pm line 113
+Net::Server::PreFork::loop('Starman::Server=HASH(0x11ba020)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Net/Server.pm line 61
+Net::Server::run('Starman::Server=HASH(0x11ba020)', 'port', 'ARRAY(0x16624f0)', 'host', '*', 'proto', 'tcp', 'serialize', 'none', 'min_servers', 5, 'min_spare_servers', 4, 'max_spare_servers', 4, 'max_servers', 5, 'max_requests', 1000, 'user', 200, 'group', '1003 1003', 'listen', 1024, 'check_for_waiting', 1, 'no_client_stdout', 1, 'pid_file', '/kbase/deployments/20140109-prod/services/fbaModelServices/service.pid', 'setsid', 1, 'background', 1, 'log_file', '/kbase/deployments/20140109-prod/services/fbaModelServices/error.log') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Starman/Server.pm line 84
+Starman::Server::run('Starman::Server=HASH(0x11ba020)', 'CODE(0x11b9f00)', 'HASH(0x11b4cd0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Handler/Starman.pm line 18
+Plack::Handler::Starman::run('Plack::Handler::Starman=HASH(0x11b9fc0)', 'CODE(0x11b9f00)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Loader/Delayed.pm line 20
+Plack::Loader::Delayed::run('Plack::Loader::Delayed=HASH(0x11cb8e8)', 'Plack::Handler::Starman=HASH(0x11b9fc0)') called at /kbase/runtimes/20140109-prod/lib/perl5/site_perl/5.16.2/Plack/Runner.pm line 277
+Plack::Runner::run('Plack::Runner=HASH(0x1214298)') called at /kbase/runtimes/20140109-prod/bin/starman line 38
+
+
+
+Trace begun at /Users/chenry/code/KBaseClient/lib/Bio/KBase/fbaModelServices/Client.pm line 2338
+Bio::KBase::fbaModelServices::Client::genome_to_workspace('Bio::KBase::fbaModelServices::Client=HASH(0x7fa93da2a190)', 'HASH(0x7fa93bb9fce8)') called at ImportGenomesBuildModels.pl line 157
+Object Name: 186103.3
+Object ID: 7
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:10:30+0000
+Saved by: chenry
+Checksum: 13b342b1f1c4eff4c4e118e2f627dad1
+Size(bytes): 1490815
+User Meta Data:  none.
+Object Name: 186103.3.model
+Object ID: 9
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:10:55+0000
+Saved by: chenry
+Checksum: 703ea1b80ac3efbcc40b73fd78a773d5
+Size(bytes): 857363
+User Meta Data:  none.
+Object Name: 218495.5
+Object ID: 15
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:11:31+0000
+Saved by: chenry
+Checksum: b5471bc58e4e3a73eaa8301376a4505f
+Size(bytes): 1407305
+User Meta Data:  none.
+Object Name: 218495.5.model
+Object ID: 17
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:12:17+0000
+Saved by: chenry
+Checksum: 40797f4a6da64d0115ca2fa9cb9426a7
+Size(bytes): 937629
+User Meta Data:  none.
+Object Name: 406563.6
+Object ID: 22
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:12:53+0000
+Saved by: chenry
+Checksum: 8ee4688bcc80c74ab452c530a6e81e8a
+Size(bytes): 1676433
+User Meta Data:  none.
+Object Name: 406563.6.model
+Object ID: 26
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:13:30+0000
+Saved by: chenry
+Checksum: e7ab75714aaf2eec3b6baa91c5406497
+Size(bytes): 895617
+User Meta Data:  none.
+Object Name: 487213.3
+Object ID: 31
+Type: KBaseGenomes.Genome-7.0
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:14:16+0000
+Saved by: chenry
+Checksum: 7d2fb16f9f8f3baf749cfdabdac0ba8e
+Size(bytes): 1654498
+User Meta Data:  none.
+Object Name: 487213.3.model
+Object ID: 35
+Type: KBaseFBA.FBAModel-4.1
+Version: 1
+Workspace: chenry:QualitativeGapfillingStudy
+Save Date: 2014-08-27T18:14:53+0000
+Saved by: chenry
+Checksum: 2d0d8a36aed4d13019ac1926d1a75a93
+Size(bytes): 896854
+User Meta Data:  none.

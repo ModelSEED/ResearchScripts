@@ -8,6 +8,11 @@ use SOAP::Lite;
 use Data::Dumper;
 
 my $username = $ARGV[0];
+my $password = $ARGV[1];
+
+my $seed = join '', ('.', '/', 0..9, 'A'..'Z', 'a'..'z')[rand 64, rand 64];
+print crypt($password, $seed);
+
 my $dsn = "DBI:mysql:WebAppBackend:bio-app-authdb.mcs.anl.gov:3306";
 my $user = "webappuser";
 my $db = DBI->connect($dsn, $user);

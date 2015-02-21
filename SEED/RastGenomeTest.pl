@@ -7,30 +7,20 @@ use File::Path;
 use SOAP::Lite;
 use Data::Dumper;
 
-my $username = $ARGV[0];
-my $password = $ARGV[1];
-
-my $seed = join '', ('.', '/', 0..9, 'A'..'Z', 'a'..'z')[rand 64, rand 64];
-print crypt($password, $seed);
-
-my $dsn = "DBI:mysql:WebAppBackend:bio-app-authdb.mcs.anl.gov:3306";
-my $user = "webappuser";
+my $genome = $ARGV[0];
+my $dsn = "DBI:mysql:RastProdJobCache:rast.mcs.anl.gov:3306";
+my $user = "rast";
 my $db = DBI->connect($dsn, $user);
 if (!defined($db)) {
 	die("Could not connect to database!");
 }
-my $select = "SELECT * FROM User WHERE User.login = ?";
+my $select = "SELECT * FROM Job WHERE Job.genome_id = ?";
 my $columns = {
-	_id       => 1,
-	login     => 1,
-	password  => 1,
-	firstname => 1,
-	lastname  => 1,
-	email     => 1
+	_id		 => 1,
+	id		  => 1,
+	genome_id   => 1
 };
-my $users = $db->selectall_arrayref($select, { Slice => $columns }, $username);
-if (!defined($users) || scalar @$users == 0) {
-	die("Username not found!");
-}
+my $jobs = $db->selectall_arrayref($select, { Slice => $columns }, $genome);
 $db->disconnect;
-print Data::Dumper->Dump($users);
+print Data::Dumper->Dump($jobs)."\n\n";
+print "/vol/rast-prod/jobs/".$job->{id}."/rp/".$genome."\n";

@@ -22,5 +22,8 @@ my $columns = {
 };
 my $jobs = $db->selectall_arrayref($select, { Slice => $columns }, $genome);
 $db->disconnect;
-print Data::Dumper->Dump($jobs)."\n\n";
-print "/vol/rast-prod/jobs/".$jobs->[0]->{id}."/rp/".$genome."\n";
+if (defined($jobs->[0]->{id})) {
+	print $jobs->[0]->{id};
+} else {
+	print "NONE";
+}

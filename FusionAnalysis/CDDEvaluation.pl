@@ -14,7 +14,7 @@ while (my $line = <$fh>) {
 	push(@{$array},$line);
 }
 close($fh);
-for (my $i=0; $i < @{$array}; $i++) {
+for (my $i=0; $i < 100; $i++) {
 	print "Loading ".$i.":".$array->[$i]."\n";
 	my $fh;
 	open($fh, "<", $inputdir.$array->[$i]);

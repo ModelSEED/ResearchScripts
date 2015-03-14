@@ -24,7 +24,7 @@ for (my $i=0; $i < 100; $i++) {
 	while (my $line = <$fh>) {
 		chomp($line);
 		my $items = [split(/\t/,$line)];
-		my $maxalign = $items->[7]/$items->[1];
+		my $maxalign = 3*$items->[7]/$items->[1];
 		if (!defined($CDDData->{$items->[8]})) {
 			$CDDData->{$items->[8]} = {
 				functions => {},
@@ -162,9 +162,10 @@ foreach my $key (keys(%{$functions})) {
 close(FUNCCDDS);
 
 open(CDDSETS, ">", $directory."CDDSets.txt");
+print CDDSETS "CDD1\tCDD2\t0.70\t0.80\t0.90\tCount\n";
 foreach my $key (keys(%{$cddoverlap})) {
 	foreach my $cdd (keys(%{$cddoverlap->{$key}})) {
-		print $key."\t".$cdd."\t".join("\t",@{$cddoverlap->{$key}->{$cdd}})."\t".$CDDData->{$key}->{genecount}."\n";
+		print CDDSETS $key."\t".$cdd."\t".join("\t",@{$cddoverlap->{$key}->{$cdd}})."\t".$CDDData->{$key}->{genecount}."\n";
 	}
 }
 close(CDDSETS);

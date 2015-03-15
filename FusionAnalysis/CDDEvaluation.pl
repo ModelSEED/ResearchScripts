@@ -7,14 +7,13 @@ my $inputdir = $ARGV[1];
 my $CDDData = {};
 my $cddfunctions = {};
 my $array;
-my $cddoverlap;
 open(my $fh, "<", $inputdir."GenomeList.txt");
 while (my $line = <$fh>) {
 	chomp($line);
 	push(@{$array},$line);
 }
 close($fh);
-for (my $i=0; $i < 100; $i++) {
+for (my $i=0; $i < @{$array}; $i++) {
 	print "Loading ".$i.":".$array->[$i]."\n";
 	my $fh;
 	open($fh, "<", $inputdir.$array->[$i]);
@@ -48,51 +47,6 @@ for (my $i=0; $i < 100; $i++) {
 		}
 		if ($maxalign > $CDDData->{$items->[8]}->{maxalign}) {
 			$CDDData->{$items->[8]}->{maxalign} = $maxalign;
-		}
-	}
-	foreach my $gene (keys(%{$genes})) {
-		my $genedata = $genes->{$gene};
-		my $cddkeys = [keys(%{$genedata})];
-		for (my $j=0; $j < @{$cddkeys}; $j++) {
-			for (my $k=$j+1; $k < @{$cddkeys}; $k++) {
-				my $overstart = $genedata->{$cddkeys->[$j]}->[0];
-				if ($genedata->{$cddkeys->[$k]}->[0] > $overstart) {
-					$overstart = $genedata->{$cddkeys->[$k]}->[0];
-				}
-				my $overend = $genedata->{$cddkeys->[$j]}->[1];
-				if ($genedata->{$cddkeys->[$k]}->[1] < $overend) {
-					$overend = $genedata->{$cddkeys->[$k]}->[1];
-				}
-				my $overlap = $overend - $overstart;
-				if ($overlap > 0) {
-					my $overfrac = $overlap/($genedata->{$cddkeys->[$j]}->[1]-$genedata->{$cddkeys->[$j]}->[0]);
-					if ($overfrac >= 0.7) {
-						if (!defined($cddoverlap->{$cddkeys->[$j]}->{$cddkeys->[$k]})) {
-							$cddoverlap->{$cddkeys->[$j]}->{$cddkeys->[$k]} = [0,0,0];
-						}
-						$cddoverlap->{$cddkeys->[$j]}->{$cddkeys->[$k]}->[0]++;
-						if ($overfrac >= 0.8) {
-							$cddoverlap->{$cddkeys->[$j]}->{$cddkeys->[$k]}->[1]++;
-							if ($overfrac >= 0.9) {
-								$cddoverlap->{$cddkeys->[$j]}->{$cddkeys->[$k]}->[2]++;
-							}
-						}
-					}
-					$overfrac = $overlap/($genedata->{$cddkeys->[$k]}->[1]-$genedata->{$cddkeys->[$k]}->[0]);
-					if ($overfrac >= 0.7) {
-						if (!defined($cddoverlap->{$cddkeys->[$k]}->{$cddkeys->[$j]})) {
-							$cddoverlap->{$cddkeys->[$k]}->{$cddkeys->[$j]} = [0,0,0];
-						}
-						$cddoverlap->{$cddkeys->[$k]}->{$cddkeys->[$j]}->[0]++;
-						if ($overfrac >= 0.8) {
-							$cddoverlap->{$cddkeys->[$k]}->{$cddkeys->[$j]}->[1]++;
-							if ($overfrac >= 0.9) {
-								$cddoverlap->{$cddkeys->[$k]}->{$cddkeys->[$j]}->[2]++;
-							}
-						}
-					}
-				}
-			}
 		}
 	}
 }
@@ -160,14 +114,5 @@ foreach my $key (keys(%{$functions})) {
 	print FUNCCDDS "\n";
 }
 close(FUNCCDDS);
-
-open(CDDSETS, ">", $directory."CDDSets.txt");
-print CDDSETS "CDD1\tCDD2\t0.70\t0.80\t0.90\tCount\n";
-foreach my $key (keys(%{$cddoverlap})) {
-	foreach my $cdd (keys(%{$cddoverlap->{$key}})) {
-		print CDDSETS $key."\t".$cdd."\t".join("\t",@{$cddoverlap->{$key}->{$cdd}})."\t".$CDDData->{$key}->{genecount}."\n";
-	}
-}
-close(CDDSETS);
 
 1;

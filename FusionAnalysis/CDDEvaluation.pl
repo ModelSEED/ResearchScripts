@@ -30,8 +30,12 @@ for (my $i=0; $i < @{$array}; $i++) {
 				maxalign => 0,
 				genecount => 0,
 				singlegenecount => 0,
-				singlegenes => []
+				singlegenes => [],
+				size => 0
 			};
+		}
+		if ($items->[11] > $CDDData->{$items->[8]}->{size}) {
+			$CDDData->{$items->[8]}->{size} = $items->[11];
 		}
 		if (!defined($functions->{$items->[6]}->{$items->[8]})) {
 			$functions->{$items->[6]}->{$items->[8]} = 0;
@@ -57,7 +61,7 @@ open(CDDFUNCS, ">", $directory."CDDFunctions.txt");
 open(CDDLIST, ">", $directory."CDDList.txt");
 print GENELIST "CDD\tSingleGenes\n";
 print CDDFUNCS "CDD\tFunctions\n";
-print CDDLIST "CDD\tMax align\tSingleGenes\tTotalGenes\n";
+print CDDLIST "CDD\tMax align\tSize\tSingleGenes\tTotalGenes\n";
 foreach my $key (keys(%{$CDDData})) {
 	print CDDFUNCS $key."\t";
 	my $first = 0;
@@ -82,7 +86,7 @@ foreach my $key (keys(%{$CDDData})) {
 	}
 	print CDDFUNCS "\n";
 	print GENELIST $key."\t".join(";",@{$CDDData->{$key}->{singlegenes}})."\n";
-	print CDDLIST $key."\t".$CDDData->{$key}->{maxalign}."\t".$CDDData->{$key}->{singlegenecount}."\t".$CDDData->{$key}->{genecount}."\n";
+	print CDDLIST $key."\t".$CDDData->{$key}->{maxalign}."\t".$CDDData->{$key}->{size}."\t".$CDDData->{$key}->{singlegenecount}."\t".$CDDData->{$key}->{genecount}."\n";
 }
 close(CDDLIST);
 close(GENELIST);

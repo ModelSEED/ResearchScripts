@@ -68,11 +68,20 @@ foreach my $cdd (keys(%{$pairhash})) {
 foreach my $triple (keys(%{$triples})) {
 	my $genehash = {};
 	my $cddhash = {};
+	my $count = @{$triples->{$triple}};
 	for (my $i=0; $i < @{$triples->{$triple}}; $i++) {
 		$cddhash->{$triples->{$triple}->[$i]->[0]} = 1;
 		$cddhash->{$triples->{$triple}->[$i]->[1]} = 1;
 		for (my $j=0; $j < @{$pairhash->{$triples->{$triple}->[$i]->[0]}->{$triples->{$triple}->[$i]->[1]}}; $j++) {
-			$genehash->{$pairhash->{$triples->{$triple}->[$i]->[0]}->{$triples->{$triple}->[$i]->[1]}->[$j]} = 1;
+			if (!defined($genehash->{$pairhash->{$triples->{$triple}->[$i]->[0]}->{$triples->{$triple}->[$i]->[1]}->[$j]})) {
+				$genehash->{$pairhash->{$triples->{$triple}->[$i]->[0]}->{$triples->{$triple}->[$i]->[1]}->[$j]} = 0;
+			}
+			$genehash->{$pairhash->{$triples->{$triple}->[$i]->[0]}->{$triples->{$triple}->[$i]->[1]}->[$j]}++;
+		}
+	}
+	foreach my $gene (keys(%{$genehash})) {
+		if ($genehash->{$gene} < $count) {
+			delete $genehash->{$gene};
 		}
 	}
 	print GENELIST join("\t",keys(%{$cddhash}))."\t".keys(%{$genehash})."\t".join(";",keys(%{$genehash}))."\n";

@@ -14,9 +14,6 @@ while (my $line = <$fh>) {
 	$CDDData->{$tmparray->[0]} = $tmparray;
 }
 close($fh);
-if (defined($genome)) {
-	$array = [$genome];
-}
 my $cddpairs = {};
 my $array;
 open(my $gl, "<", $inputdir."GenomeList.txt");
@@ -25,6 +22,9 @@ while (my $line = <$gl>) {
 	push(@{$array},$line);
 }
 close($gl);
+if (defined($genome)) {
+	$array = [$genome];
+}
 for (my $i=0; $i < @{$array}; $i++) {
 	print "Loading ".$i.":".$array->[$i]."\n";
 	my $fh;

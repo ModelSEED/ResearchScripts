@@ -11,6 +11,7 @@ while (my $line = <$fh>) {
 	my $tmparray = [split(/\t/,$line)];
 	$tmparray->[3] = 0;
 	$tmparray->[5] = 0;
+	$tmparray->[4] = 0;
 	$CDDData->{$tmparray->[0]} = $tmparray;
 }
 close($fh);
@@ -33,8 +34,8 @@ for (my $i=0; $i < @{$array}; $i++) {
 	my $genes = {};
 	while (my $line = <$fh>) {
 		chomp($line);
-		$genes->{$items->[13]}->{$items->[8]} = $items;
 		my $items = [split(/\t/,$line)];
+		$genes->{$items->[13]}->{$items->[8]} = $items;
 		my $genefraction = 3*$items->[7]/$items->[1];
 		my $cddfraction = $items->[7]/$CDDData->{$items->[8]}->[2];
 		my $currcdd = $CDDData->{$items->[8]};
@@ -80,7 +81,7 @@ for (my $i=0; $i < @{$array}; $i++) {
 open(CDDLIST, ">", $directory."CDDList.txt");
 print CDDLIST "CDD\tMax align\tSize\tSingleGenes\tTotalGenes\tLongGenes\n";
 foreach my $key (keys(%{$CDDData})) {
-	print CDDLIST $key."\t".$CDDData->{$key}->[1]."\t".$CDDData->{$key}->[2]."\t".$CDDData->{$key}->[3]."\t".$CDDData->{$key}->[4]."\n";
+	print CDDLIST $key."\t".$CDDData->{$key}->[1]."\t".$CDDData->{$key}->[2]."\t".$CDDData->{$key}->[3]."\t".$CDDData->{$key}->[4]."\t".$CDDData->{$key}->[5]."\n";
 }
 close(CDDLIST);
 

@@ -3,7 +3,7 @@
 $|=1;
 my $directory = $ARGV[0];
 my $inputdir = $ARGV[1];
-
+my $genome = $ARGV[2];
 my $CDDData = {};
 my $cddfunctions = {};
 my $array;
@@ -13,6 +13,9 @@ while (my $line = <$fh>) {
 	push(@{$array},$line);
 }
 close($fh);
+if (defined($genome)) {
+	$array = [$genome];
+}
 for (my $i=0; $i < @{$array}; $i++) {
 	print "Loading ".$i.":".$array->[$i]."\n";
 	my $fh;

@@ -55,12 +55,12 @@ print "Counts since conception:\n";
 foreach my $type (@{$types}) {
 	print $type."\t".$db->get_collection('objects')->count({
 		type => $type
-	});
+	})."\n";
 }
 print "Counts since march:\n";
 foreach my $type (@{$types}) {
 	print $type."\t".$db->get_collection('objects')->count({
 		creation_date => { '$gt' => "2015-03" },
 		type => $type
-	});
+	})."\n";
 }

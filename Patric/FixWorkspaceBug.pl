@@ -13,10 +13,17 @@ my $db = $conn->get_database("WorkspaceBuild");
 
 my $cursor = $db->get_collection('workspaces')->find({
 	name => "models",
-	owner => "chenry"
+	owner => "nconrad\@patricbrc.org"
 });
 my $object = $cursor->next;
 
-$db->get_collection('objects')->remove({
+$cursor = $db->get_collection('objects')->find({
 	workspace_uuid => $object->{uuid},
 });
+while ($object = $cursor->next) {
+	print $object->{path}."/".$object->{name}."\n";
+}
+
+#$db->get_collection('objects')->remove({
+#	workspace_uuid => $object->{uuid},
+#});

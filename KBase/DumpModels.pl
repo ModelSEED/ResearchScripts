@@ -7,11 +7,11 @@ $|=1;
 
 my $directory = $ARGV[0];
 
-open ( my $fh, ">", $directory."/ModelData.txt");
-open ( my $fhh, ">", $directory."/ModelTable.txt");
+open ( MAIN, ">", $directory."/ModelData.txt");
+open ( REACTIONS, ">", $directory."/ModelTable.txt");
 
-print $fh "ID\tName\tSource ID\tGenome ID\tGenome source ID\tGenome name\tTaxonomy\tDomain\tSize\tContigs\n";
-print $fhh "ID\tReaction ID\tDirections\tGenes\n";
+print MAIN "ID\tName\tSource ID\tGenome ID\tGenome source ID\tGenome name\tTaxonomy\tDomain\tSize\tContigs\n";
+print REACTIONS "ID\tReaction ID\tDirections\tGenes\n";
 my $list = get_ws_objects_list("KBasePublicModelsV4","KBaseFBA.FBAModel");
 for (my $i=0; $i < @{$list}; $i++) {
 	if ($list->[$i]->[1] =~ m/\.gf$/) {
@@ -20,7 +20,7 @@ for (my $i=0; $i < @{$list}; $i++) {
 		print "Getting genome ".$obj->{genome_ref}."\n";
 		(my $genome,my $meta) = get_workspace_object($obj->{genome_ref});
 		print "Printing data...\n";
-		print $fh $obj->{id}."\t".$obj->{name}."\t".$obj->{source_id}."\t".$genome->{id}."\t".$genome->{source_id}."\t".$genome->{scientific_name}."\t".$genome->{taxonomy}."\t".$genome->{domain}."\t".$genome->{dna_size}."\t".$genome->{num_contigs}."\n";
+		print MAIN $obj->{id}."\t".$obj->{name}."\t".$obj->{source_id}."\t".$genome->{id}."\t".$genome->{source_id}."\t".$genome->{scientific_name}."\t".$genome->{taxonomy}."\t".$genome->{domain}."\t".$genome->{dna_size}."\t".$genome->{num_contigs}."\n";
 		my $rxns = $obj->{modelreactions};
 		for (my $j=0; $j < @{$rxns}; $j++) {
 			my $prots = $rxns->[$j]->{modelReactionProteins};
@@ -28,7 +28,12 @@ for (my $i=0; $i < @{$list}; $i++) {
 				my $subunits = $prots->[$k]->{modelReactionProteinSubunits};
 				for (my $m=0; $m < @{$subunits}; $m++) {
 					my $features = $subunits->[$m]->{feature_refs};
-					$subunits->[$m] = join(" or" ,@{$features});
+					for (my $n=0; $n < @{$features}; $n++) {
+						if ($features->[$n] =~ m/\/([^\/]+)$/) {
+							$features->[$n] = $1;
+						}
+					}
+					$subunits->[$m] = join(" or " ,@{$features});
 					if (@{$features} > 1) {
 						$subunits->[$m] = "(".$subunits->[$m].")";
 					} elsif (@{$features} == 0) {
@@ -47,10 +52,10 @@ for (my $i=0; $i < @{$list}; $i++) {
 			if (length($genes) == 0) {
 				$genes = "Unknown";
 			}
-			print $fhh $obj->{id}."\t".$rxns->[$j]->{id}."\t".$rxns->[$j]->{direction}."\t".$genes."\n";
+			print REACTIONS $obj->{id}."\t".$rxns->[$j]->{id}."\t".$rxns->[$j]->{direction}."\t".$genes."\n";
 		}
 	}
 }
 
-close($fh);
-close($fhh);
+close(MAIN);
+close(REACTIONS);

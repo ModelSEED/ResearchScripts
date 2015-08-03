@@ -8,6 +8,7 @@ use Bio::KBase::fbaModelServices::ScriptHelpers qw(get_workspace_object get_ws_o
 
 my $directory = $ARGV[0];
 my $genome = $ARGV[1];
+my $workspace = $ARGV[2];
 
 open(my $fhh, "<", $directory."CDD-Data.txt");
 my $line = <$fhh>;
@@ -25,7 +26,7 @@ while ($line = <$fhh>) {
 }
 close($fhh);
 
-(my $obj,my $info) = get_workspace_object($genome);
+(my $obj,my $info) = get_workspace_object($workspace."/".$genome);
 my $proteins;
 my $output = "";
 my $ftrs = $obj->{features};

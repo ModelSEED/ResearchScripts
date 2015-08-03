@@ -47,7 +47,7 @@ open(my $fhhhh, ">", $directory.$genome.".cdd.out");
 open(my $fhhh, "<", $directory.$genome.".cdd");
 print $fhhhh "Gene	Length	CDD	Start	Stop	Identity	Function	Alignlength	CDD name	Protein	CDDStart	CDDStop	E value	SEEDID\n";
 while (my $line = <$fhhh>) {
-	$array = [split(/\t/,$line)];
+	my $array = [split(/\t/,$line)];
 	my $itemarray = [split(/\|/,$array->[1])];
 	print $fhhhh $array->[0]."\t".$genes->{$array->[0]}->{dna_sequence_length}."\t".$itemarray->[2]."\t".
 		$array->[6]."\t".$array->[7]."\t".$array->[2]."\t".$genes->{$array->[0]}->{function}."\t".

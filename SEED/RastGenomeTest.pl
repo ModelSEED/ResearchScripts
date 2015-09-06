@@ -16,14 +16,10 @@ if (!defined($db)) {
 }
 my $select = "SELECT * FROM Job WHERE Job.genome_id = ?";
 my $columns = {
-	_id		 => 1,
-	id		  => 1,
-	genome_id   => 1
+#	_id		 => 1,
+#	id		  => 1,
+#	genome_id   => 1
 };
 my $jobs = $db->selectall_arrayref($select, { Slice => $columns }, $genome);
 $db->disconnect;
-if (defined($jobs->[0]->{id})) {
-	print $jobs->[0]->{id};
-} else {
-	print "NONE";
-}
+print Data::Dumper->Dump($jobs);

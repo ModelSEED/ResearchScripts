@@ -189,7 +189,7 @@ open(my $fh, ">", $directory."genes.fasta");
 print $fh $output;
 close ($fh);
 
-system("rpsblast -query ".$directory."genes.fasta -evalue 0.01 -seg no -outfmt 6 -db /disks/olson/cdd/data/Cdd -out ".$directory."genes.cdd");
+#system("rpsblast -query ".$directory."genes.fasta -evalue 0.01 -seg no -outfmt 6 -db /disks/olson/cdd/data/Cdd -out ".$directory."genes.cdd");
 
 open(my $fhhhh, ">", $directory."genes.cdd.out");
 open(my $fhhh, "<", $directory."genes.cdd");
@@ -200,7 +200,7 @@ while (my $line = <$fhhh>) {
 	print $fhhhh $array->[0]."\t".3*length($sequences->{$array->[0]})."\t".$itemarray->[2]."\t".
 		$array->[6]."\t".$array->[7]."\t".$array->[2]."\t".$functions->{$array->[0]}."\t".
 		$array->[3]."\t".$cdddata->{$itemarray->[2]}."\t".Digest::MD5::md5_hex($sequences->{$array->[0]})."\t".$array->[8]."\t".$array->[9]."\t".
-		$array->[10]."\t".$genes->{$array->[0]}->{id}."\n";
+		$array->[10]."\t".$array->[0]."\n";
 }
 close($fhhh);
 close($fhhhh);

@@ -11,11 +11,11 @@ use Bio::KBase::fbaModelServices::ScriptHelpers qw(save_workspace_object get_wor
 
 #my $prefix = "OSCAR";
 
-my $ws = "janakakbase:MetRepair";
+my $ws = "chenry:1431835409789";
 my $rxnhash = {};
 my $cpdhash = {};
 my $genehash = {};
-(my $data,my $prov) = get_workspace_object($ws."/fullDbModel");
+(my $data,my $prov) = get_workspace_object($ws."/iBsuDSM_gf");
 my $mdlrxns = $data->{modelreactions};
 for (my $i=0; $i < @{$mdlrxns}; $i++) {
 	my $id;
@@ -48,7 +48,7 @@ for (my $i=0; $i < @{$mdlcpds}; $i++) {
 	$cpdhash->{$mdlcpds->[$i]->{id}} = $mdlcpds->[$i];
 }
 
-(my $datat,$prov) = get_workspace_object($ws."/AllDR");
+(my $datat,$prov) = get_workspace_object($ws."/KBase_DSM_model");
 my $othercpdhash = {};
 $mdlcpds = $datat->{modelcompounds};
 for (my $i=0; $i < @{$mdlcpds}; $i++) {
@@ -56,10 +56,9 @@ for (my $i=0; $i < @{$mdlcpds}; $i++) {
 }
 $mdlrxns = $datat->{modelreactions};
 for (my $i=0; $i < @{$mdlrxns}; $i++) {
-	#if (defined($rxnhash->{$mdlrxns->[$i]->{id}}) && $rxnhash->{$mdlrxns->[$i]->{id}}->[1] == 0) {
-	#	$data->{modelreactions}->[$rxnhash->{$mdlrxns->[$i]->{id}}->[0]]->{modelReactionProteins} = $mdlrxns->[$i]->{modelReactionProteins};
-	#} else {
-	if (!defined($rxnhash->{$mdlrxns->[$i]->{id}})) {
+	if (defined($rxnhash->{$mdlrxns->[$i]->{id}}) && $rxnhash->{$mdlrxns->[$i]->{id}}->[1] == 0) {
+		$data->{modelreactions}->[$rxnhash->{$mdlrxns->[$i]->{id}}->[0]]->{modelReactionProteins} = $mdlrxns->[$i]->{modelReactionProteins};
+	} elsif (!defined($rxnhash->{$mdlrxns->[$i]->{id}})) {
 		my $add = 1;
 		my $prots = $mdlrxns->[$i]->{modelReactionProteins};
 		for (my $j=0; $j < @{$prots}; $j++) {
@@ -88,4 +87,4 @@ for (my $i=0; $i < @{$mdlrxns}; $i++) {
 		}
 	}
 }
-save_workspace_object($ws."/CombinedModel",$data,"KBaseFBA.FBAModel");
+save_workspace_object($ws."/iBsuDSM_merged",$data,"KBaseFBA.FBAModel");

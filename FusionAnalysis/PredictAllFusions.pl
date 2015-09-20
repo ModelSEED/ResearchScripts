@@ -12,11 +12,11 @@ while (my $line = <$fh>) {
 }
 close($fh);
 
-$array = ["kb|g.1870"];
+#$array = ["kb|g.1870"];
 
 for (my $i=0; $i < @{$array}; $i++) {
 	print "Loading ".$i.":".$array->[$i]."\n";
-	system("perl /vol/model-prod/kbase/ResearchScripts/FusionAnalysis/PredictGenomeFusions.pl ".$inputdir." ".$directory." ".$array->[$i]);
+	system("perl /vol/model-prod/kbase/ResearchScripts/FusionAnalysis/PredictGenomeFusions.pl \"".$inputdir."\" \"".$directory."\" \"".$array->[$i]."\"");
 }
 
 1;

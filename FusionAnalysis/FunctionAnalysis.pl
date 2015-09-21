@@ -13,6 +13,7 @@ while (my $line = <$fh>) {
 close($fh);
 
 my $functionhash;
+my $FunctionGenomes;
 for (my $i=0; $i < @{$array}; $i++) {
 	print "Loading ".$i.":".$array->[$i]."\n";
 	open(my $fhh, "<", $genomedir.$array->[$i]);
@@ -31,17 +32,21 @@ for (my $i=0; $i < @{$array}; $i++) {
 			$fnarray->[$j] =~ s/\#.*$//g;
 			$fnarray->[$j] =~ s/\(ec\)//g;
 			if (!defined($functionhash->{$fnarray->[$j]})) {
-				$functionhash->{$fnarray->[$j]} = 0;
+				$functionhash->{$fnarray->[$j]} = [0,0];
+				if (!defined($FunctionGenomes->{$fnarray->[$j]}->{$array->[$i]})) {
+					$FunctionGenomes->{$fnarray->[$j]}->{$array->[$i]} = 1;
+					$functionhash->{$fnarray->[$j]}->[1]++;
+				}
 			}
-			$functionhash->{$fnarray->[$j]}++;
+			$functionhash->{$fnarray->[$j]}->[0]++;
 		}
 	}
 }
 
 open ( my $out, ">", $directory."/FunctionAnalysis.txt");
-print $out "Function\tCount\n";
+print $out "Function\tCount\tGenome count\n";
 foreach my $function (keys(%{$functionhash})) {
-	print $out $function."\t".$functionhash->{$function}."\n";
+	print $out $function."\t".$functionhash->{$function}->[0]."\t".$functionhash->{$function}->[1]."\n";
 }
 close($out);
 

@@ -197,7 +197,7 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 						if ($rxn ne $id && defined($fbaobj->{rxnhash}->{$rxn})) {
 							if ($rxns->[$j]->{max} < -0.0000001 || $rxns->[$j]->{min} > 0.0000001) {
 								$foundess = 1;
-							} elsif ($fbaobj->{rxnhash}->{$rxn}->{max} > 0.0000001 || $fbaobj->{rxnhash}->{$rxn}->{min} < 0.0000001)
+							} elsif ($fbaobj->{rxnhash}->{$rxn}->{max} > 0.0000001 || $fbaobj->{rxnhash}->{$rxn}->{min} < 0.0000001) {
 								$found = 1;
 							}
 						}

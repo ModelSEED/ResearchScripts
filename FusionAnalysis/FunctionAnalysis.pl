@@ -33,10 +33,10 @@ for (my $i=0; $i < @{$array}; $i++) {
 			$fnarray->[$j] =~ s/\(ec\)//g;
 			if (!defined($functionhash->{$fnarray->[$j]})) {
 				$functionhash->{$fnarray->[$j]} = [0,0];
-				if (!defined($FunctionGenomes->{$fnarray->[$j]}->{$array->[$i]})) {
-					$FunctionGenomes->{$fnarray->[$j]}->{$array->[$i]} = 1;
-					$functionhash->{$fnarray->[$j]}->[1]++;
-				}
+			}
+			if (!defined($FunctionGenomes->{$fnarray->[$j]}->{$array->[$i]})) {
+				$FunctionGenomes->{$fnarray->[$j]}->{$array->[$i]} = 1;
+				$functionhash->{$fnarray->[$j]}->[1]++;
 			}
 			$functionhash->{$fnarray->[$j]}->[0]++;
 		}

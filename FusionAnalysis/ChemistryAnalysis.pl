@@ -191,11 +191,11 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 			my $sidergt = 0;
 			my $sideessrgt = 0;
 			foreach my $rgt (keys(%{$rxnobj->{rgts}})) {
-				my $rxncount = keys(%{$mdlobjhash->{cpdhash}->{$rgt}});
+				my $rxncount = keys(%{$mdlobjhash->{$ref}->{cpdhash}->{$rgt}});
 				if ($rxncount < 15) {
 					my $found = 0;
 					my $foundess = 0;
-					foreach my $rxn (keys(%{$mdlobjhash->{cpdhash}->{$rgt}})) {
+					foreach my $rxn (keys(%{$mdlobjhash->{$ref}->{cpdhash}->{$rgt}})) {
 						if ($rxn ne $id && defined($fbaobj->{rxnhash}->{$rxn})) {
 							if ($rxns->[$j]->{max} < -0.0000001 || $rxns->[$j]->{min} > 0.0000001) {
 								$foundess = 1;
@@ -212,7 +212,27 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 					}
 				}
 			}
-			if (abs($rxns->[$j]->{value}) > 0.0000001) {
+			if ($rxns->[$j]->{max} < -0.0000001 || $rxns->[$j]->{min} > 0.0000001) {
+				if (!defined($rxnhash->{$id}->{$dir})) {
+					$rxnhash->{$id}->{$dir} = {
+						active => 0,
+						essential => 0,
+						activemodels => 0,
+						essentialmodels => 0,
+						aveessflux => 0,
+						aveactflux => 0,
+						damagereactants => $dmgrgt,
+						sidereactants => $sidergt,
+						esssides => $sideessrgt
+					};
+				}
+				if (!defined($mdlhash->{$id}->{$dir}->{$ref})) {
+					$mdlhash->{$id}->{$dir}->{$ref} = 1;
+					$rxnhash->{$id}->{$dir}->{essentialmodels}++;
+				}
+				$rxnhash->{$id}->{$dir}->{essential}++;
+				$rxnhash->{$id}->{$dir}->{aveessflux} += abs($rxns->[$j]->{value});
+			} elsif (abs($rxns->[$j]->{value}) > 0.0000001) {
 				if ($rxns->[$j]->{value} < 0) {
 					$dir = "R";
 				}
@@ -235,27 +255,6 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 				}
 				$rxnhash->{$id}->{$dir}->{active}++;
 				$rxnhash->{$id}->{$dir}->{aveactflux} += abs($rxns->[$j]->{value});
-			}
-			if ($rxns->[$j]->{max} < -0.0000001 || $rxns->[$j]->{min} > 0.0000001) {
-				if (!defined($rxnhash->{$id}->{$dir})) {
-					$rxnhash->{$id}->{$dir} = {
-						active => 0,
-						essential => 0,
-						activemodels => 0,
-						essentialmodels => 0,
-						aveessflux => 0,
-						aveactflux => 0,
-						damagereactants => $dmgrgt,
-						sidereactants => $sidergt,
-						esssides => $sideessrgt
-					};
-				}
-				if (!defined($mdlhash->{$id}->{$dir}->{$ref})) {
-					$mdlhash->{$id}->{$dir}->{$ref} = 1;
-					$rxnhash->{$id}->{$dir}->{essentialmodels}++;
-				}
-				$rxnhash->{$id}->{$dir}->{essential}++;
-				$rxnhash->{$id}->{$dir}->{aveessflux} += abs($rxns->[$j]->{value});
 			}
 		}
 	}

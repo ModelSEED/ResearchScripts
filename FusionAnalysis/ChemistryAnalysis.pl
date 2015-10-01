@@ -162,6 +162,15 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 		for (my $j=0; $j < @{$rxns}; $j++) {
 			my $rxnid = $rxns->[$j]->{id};
 			$mdlobjhash->{$ref}->{rxnhash}->{$rxnid} = $rxns->[$j];
+			$rxns->[$j]->{_baseid} = $rxns->[$j]->{id};
+			if ($rxns->[$j]->{reaction_ref} =~ m/\/([^\/]+)$/) {
+				if ($1 ne "rxn00000") {
+					$rxns->[$j]->{_baseid} = $1;
+				}
+			}
+			if ($rxns->[$j]->{_baseid} =~ m/(.+)_[a-z]\d+$/) {
+				$rxns->[$j]->{_baseid} = $1;
+			}
 			for (my $k=0; $k < @{$rxns->[$j]->{modelReactionReagents}}; $k++) {
 				if ($rxns->[$j]->{modelReactionReagents}->[$k]->{modelcompound_ref} =~ m/\/([^\/]+)$/) {
 					my $id = $1;
@@ -187,6 +196,7 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 			my $id = $1;
 			my $dir = "F";
 			my $rxnobj = $mdlobjhash->{$ref}->{rxnhash}->{$id};
+			my $baseid = $rxnobj->{_baseid};
 			my $dmgrgt = keys(%{$rxnobj->{damagecpd}});
 			my $sidergt = 0;
 			my $sideessrgt = 0;
@@ -213,8 +223,8 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 				}
 			}
 			if ($rxns->[$j]->{max} < -0.0000001 || $rxns->[$j]->{min} > 0.0000001) {
-				if (!defined($rxnhash->{$id}->{$dir})) {
-					$rxnhash->{$id}->{$dir} = {
+				if (!defined($rxnhash->{$baseid}->{$dir})) {
+					$rxnhash->{$baseid}->{$dir} = {
 						active => 0,
 						essential => 0,
 						activemodels => 0,
@@ -226,18 +236,18 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 						esssides => $sideessrgt
 					};
 				}
-				if (!defined($mdlhash->{$id}->{$dir}->{$ref})) {
-					$mdlhash->{$id}->{$dir}->{$ref} = 1;
-					$rxnhash->{$id}->{$dir}->{essentialmodels}++;
+				if (!defined($mdlhash->{$baseid}->{$dir}->{$ref})) {
+					$mdlhash->{$baseid}->{$dir}->{$ref} = 1;
+					$rxnhash->{$baseid}->{$dir}->{essentialmodels}++;
 				}
-				$rxnhash->{$id}->{$dir}->{essential}++;
-				$rxnhash->{$id}->{$dir}->{aveessflux} += abs($rxns->[$j]->{value});
+				$rxnhash->{$baseid}->{$dir}->{essential}++;
+				$rxnhash->{$baseid}->{$dir}->{aveessflux} += abs($rxns->[$j]->{value});
 			} elsif (abs($rxns->[$j]->{value}) > 0.0000001) {
 				if ($rxns->[$j]->{value} < 0) {
 					$dir = "R";
 				}
-				if (!defined($rxnhash->{$id}->{$dir})) {
-					$rxnhash->{$id}->{$dir} = {
+				if (!defined($rxnhash->{$baseid}->{$dir})) {
+					$rxnhash->{$baseid}->{$dir} = {
 						active => 0,
 						essential => 0,
 						activemodels => 0,
@@ -249,12 +259,12 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 						esssides => $sideessrgt
 					};
 				}
-				if (!defined($mdlhash->{$id}->{$dir}->{$ref})) {
-					$mdlhash->{$id}->{$dir}->{$ref} = 1;
-					$rxnhash->{$id}->{$dir}->{activemodels}++;
+				if (!defined($mdlhash->{$baseid}->{$dir}->{$ref})) {
+					$mdlhash->{$baseid}->{$dir}->{$ref} = 1;
+					$rxnhash->{$baseid}->{$dir}->{activemodels}++;
 				}
-				$rxnhash->{$id}->{$dir}->{active}++;
-				$rxnhash->{$id}->{$dir}->{aveactflux} += abs($rxns->[$j]->{value});
+				$rxnhash->{$baseid}->{$dir}->{active}++;
+				$rxnhash->{$baseid}->{$dir}->{aveactflux} += abs($rxns->[$j]->{value});
 			}
 		}
 	}

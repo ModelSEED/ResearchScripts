@@ -11,6 +11,7 @@ use Bio::KBase::fbaModelServices::ScriptHelpers qw(save_workspace_object get_wor
 
 my $directory = $ARGV[0];
 my $workspace = $ARGV[1];
+my $genomelist = $ARGV[2];
 
 my @aa_1_letter_order = qw( A C D E F G H I K L M N P Q R S T V W Y );  # Alpha by 1 letter
 my @aa_3_letter_order = qw( A R N D C Q E G H I L K M F P S T W Y V );  # PAM matrix order
@@ -340,31 +341,11 @@ my %three_letter_to_one_letter_aa = (
 );
 
 my $gids = {};
-my $genomes = {
-#	bin01 => "Bacteroidetes OCL P2A10",
-#	bin02 => "Idiomarina HL53",
-#	bin03 => "Marinobacter HL58",
-#	bin04 => "Oceanicaulis OCL P1H8",
-#	bin05 => "Rhodobaca OCL P2D11",
-#	bin06 => "Halomonas",
-#	bin07 => "Rhodobacteraceae",
-#	bin08 => "Oceanicola HL7711 P1E5",
-#	bin09 => "Rhodobacteraceae",
-#	bin10 => "Algoriphagus HL49",
-#	bin11 => "Phormidesmis priestleyi ANA",
-#	bin12 => "Rhodobacteraceae",
-#	bin13 => "Unknown species",
-#	bin14 => "Marinobacter HL55",
-#	bin15 => "Porphyrobacter",
-#	bin16 => "Phormidium OSCR",
-#	bin17 => "Rhizobiales ACL P1B5",
-#	bin18 => "Rhodobacteraceae",
-#	bin20 => "Porphyrobacter HL46",
-	bin21 => "Unknown species",
-#	bin22 => "Unknown species",
-#	bin23 => "Unknown species",
-#	bin24 => "Rhodobacteraceae"
-};
+my $array = [split(/;/,$genomelist)];
+my $genomes = {};
+foreach my $item (@{$array}) {
+	$genomes->{$item} = $item;
+}
 
 foreach my $key (keys(%{$genomes})) {
 	print $key."\n";
@@ -447,7 +428,7 @@ foreach my $key (keys(%{$genomes})) {
 	}
 	$gc = $gc/$length;
 	close(FILE);
-	$object->{contigs} = [sort { $a->{sequence} <=> $b->{sequence} } @{$object->{contigs}}];
+	$object->{contigs} = [sort { $a->{sequence} cmp $b->{sequence} } @{$object->{contigs}}];
 	my $str = "";
 	for (my $i=0; $i < @{$object->{contigs}}; $i++) {
 		if (length($str) > 0) {

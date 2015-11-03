@@ -18,8 +18,10 @@ chomp($fusionheading);
 while (my $line = <$fa>) {
 	chomp($line);
 	my $items = [split(/\t/,$line)];
-	$genehash->{$items->[0]} = [];
-	$fusionhash->{$items->[0]} = $line;
+	if ($items->[0] ne "Gene") {
+		$genehash->{$items->[0]} = [];
+		$fusionhash->{$items->[0]} = $line;
+	}
 }
 close($fa);
 

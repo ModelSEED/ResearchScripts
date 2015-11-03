@@ -117,9 +117,9 @@ foreach my $id (keys(%{$genedata})) {
 		$genedata->{$id}->[0]->[4] = $start;
 		$genedata->{$id}->[0]->[5] = $end;
 	} else {
-		$genedata->{$id}->[0]->[3] = "?"
-		$genedata->{$id}->[0]->[4] = "0"
-		$genedata->{$id}->[0]->[5] = "0"
+		$genedata->{$id}->[0]->[3] = "?";
+		$genedata->{$id}->[0]->[4] = "0";
+		$genedata->{$id}->[0]->[5] = "0";
 	}
 	$genehash->{$id} = $genedata->{$id}->[0];
 }

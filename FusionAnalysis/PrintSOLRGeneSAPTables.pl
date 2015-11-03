@@ -39,7 +39,7 @@ close($fb);
 
 my $list = [keys(%{$genehash})];
 my $templist = [];
-my $headings = ["function","length","location"];
+my $headings = ["function","length","location","genome-name"];
 my $genedata;
 for (my $i=0; $i < @{$list}; $i++) {
 	push(@{$templist},$list->[$i]);
@@ -50,10 +50,15 @@ for (my $i=0; $i < @{$list}; $i++) {
 			-data => $headings
 		});
 		foreach my $id (keys(%{$genedata})) {
+			if (!defined($genedata->{$id}->[0]->[3])) {
+				$genedata->{$id}->[0]->[6] = "unknown";
+			} else {
+				$genedata->{$id}->[0]->[6] = $genedata->{$id}->[0]->[3];
+			}
 			if (defined($genedata->{$id}->[0]->[0])) {
 				$genedata->{$id}->[0]->[0] =~ s/\s*#.+//;
 				my $array = [split(/\s*;\s+|\s+[\@\/]\s+/,$genedata->{$id}->[0]->[0])];
-				$genedata->{$id}->[0]->[0] = join("|",@{$array});
+				$genedata->{$id}->[0]->[0] = join("||",@{$array});
 			} else {
 				$genedata->{$id}->[0]->[0] = "unknown";
 			}
@@ -94,10 +99,15 @@ $genedata = $sapsvr->ids_to_data({
 	-data => $headings
 });
 foreach my $id (keys(%{$genedata})) {
+	if (!defined($genedata->{$id}->[0]->[3])) {
+		$genedata->{$id}->[0]->[6] = "unknown";
+	} else {
+		$genedata->{$id}->[0]->[6] = $genedata->{$id}->[0]->[3];
+	}
 	if (defined($genedata->{$id}->[0]->[0])) {
 		$genedata->{$id}->[0]->[0] =~ s/\s*#.+//;
 		my $array = [split(/\s*;\s+|\s+[\@\/]\s+/,$genedata->{$id}->[0]->[0])];
-		$genedata->{$id}->[0]->[0] = join("|",@{$array});
+		$genedata->{$id}->[0]->[0] = join("||",@{$array});
 	} else {
 		$genedata->{$id}->[0]->[0] = "unknown";
 	}
@@ -132,14 +142,14 @@ foreach my $id (keys(%{$genedata})) {
 }
 
 open (my $oa, ">", $directory."/SOLR-FusionsTable.txt");
-print $oa $fusionheading."\tfunction\tlength\tcontig\tdirection\tstart\tstop\tsequence\n";
+print $oa $fusionheading."\tfunction\tlength\tcontig\tdirection\tstart\tstop\tspecies\tsequence\n";
 foreach my $item (keys(%{$fusionhash})) {
 	print $oa $fusionhash->{$item}."\t".join("\t",@{$genehash->{$item}})."\n";
 }
 close($oa);
 
 open (my $ob, ">", $directory."/SOLR-TrainingTable.txt");
-print $ob $trainingheading."\tfunction\tlength\tcontig\tdirection\tstart\tstop\tsequence\n";
+print $ob $trainingheading."\tfunction\tlength\tcontig\tdirection\tstart\tstop\tspecies\tsequence\n";
 foreach my $item (keys(%{$traininghash})) {
 	print $ob $traininghash->{$item}."\t".join("\t",@{$genehash->{$item}})."\n";
 }

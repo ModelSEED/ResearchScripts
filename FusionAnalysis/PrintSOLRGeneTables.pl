@@ -76,7 +76,7 @@ close($oa);
 open (my $ob, ">", $directory."/SOLR-2TrainingTable.txt");
 print $ob $trainingheading."\tcdds\n";
 foreach my $item (keys(%{$traininghash})) {
-	print $oa $traininghash->{$item}."\t".join(";",@{$genehash->{$item}})."\n";
+	print $ob $traininghash->{$item}."\t".join(";",@{$genehash->{$item}})."\n";
 }
 close($ob);
 

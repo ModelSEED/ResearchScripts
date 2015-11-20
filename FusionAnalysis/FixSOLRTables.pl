@@ -31,9 +31,9 @@ close($fd);
 open(my $fa, "<", $directory."/SOLR-FusionsTable.txt");
 $line = <$fa>;
 chomp($line);
-my @items = [split(/\t/,$line)];
-@items = splice(@items,2,1);
-@items = splice(@items,1,1);
+my @items = split(/\t/,$line);
+splice(@items,2,1);
+splice(@items,1,1);
 open(my $fb, ">", $directory."/SOLR-FusionsTable2.txt");
 print $fb join("\t",@items)."\n";
 while ($line = <$fa>) {
@@ -41,8 +41,8 @@ while ($line = <$fa>) {
 	@items = split(/\t/,$line);
 	my $columns = @items;
 	if ($columns == 28) {
-		@items = splice(@items,2,1);
-		@items = splice(@items,1,1);
+		splice(@items,2,1);
+		splice(@items,1,1);
 		my $cdds = [split(/;/,$items[25])];
 		for (my $i=0; $i < @{$cdds}; $i++) {
 			my $cdddata = [split(/:/,$cdds->[$i])];

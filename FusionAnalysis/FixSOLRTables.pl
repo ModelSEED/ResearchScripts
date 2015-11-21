@@ -40,7 +40,17 @@ while ($line = <$fa>) {
 	chomp($line);
 	@items = split(/\t/,$line);
 	my $columns = @items;
-	if ($columns == 28) {
+	if ($columns == 28 || $columns == 27) {
+		if ($items[19] eq "unknown") {
+			$items[19] = $items[2];
+		}
+		if ($items[20] == 0) {
+			$items[20] = $items[1];
+		}
+		if ($columns == 27) {
+			$items[27] = $items[26];
+			$items[26] = "unknown";
+		}
 		splice(@items,2,1);
 		splice(@items,1,1);
 		my $cdds = [split(/;/,$items[25])];
@@ -71,7 +81,7 @@ while ($line = <$fe>) {
 	chomp($line);
 	@items = split(/\t/,$line);
 	my $columns = @items;
-	if ($columns == 13) {
+	if ($columns == 13 || $columns == 12) {
 		my $cdds = [split(/;/,$items[10])];
 		for (my $i=0; $i < @{$cdds}; $i++) {
 			my $cdddata = [split(/:/,$cdds->[$i])];
@@ -79,7 +89,11 @@ while ($line = <$fe>) {
 			$cdds->[$i] = join(":",@{$cdddata});
 		}
 		$items[10] = join(";",@{$cdds});
-		print $ff join("\t",@items)."\n";
+		if ($columns == 13) {
+			print $ff join("\t",@items)."\n";
+		} else {
+			print $ff join("\t",@items)."\tnone\n";
+		}
 	} else {
 		print $line."\n";
 	}

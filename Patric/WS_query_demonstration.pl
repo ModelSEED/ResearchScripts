@@ -8,7 +8,11 @@ my $username = Bio::P3::Workspace::ScriptHelpers::user();
 my $output = $ws->ls({
 	paths => ["/"],
 	query => {
-		"permissions.".$username => ["r","w","a"],
+		'$or' => [
+			{"permissions.".$username => "r"},
+			{"permissions.".$username => "w"},
+			{"permissions.".$username => "a"}
+		]
 	}
 });
 print "1:".Data::Dumper->Dump([$output]);

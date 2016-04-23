@@ -25,38 +25,33 @@ while (my $line = <$fh>) {
 }
 close($fh);
 
-print "Loading blast file list!\n";
-my $array;
-open(my $fhh, "<", $directory."BlastFileList.txt");
+print "Loading genome list!\n";
+my $genomelist;
+open(my $fhh, "<", $directory."GenomeList.txt");
 while (my $line = <$fhh>) {
 	chomp($line);
-	push(@{$array},$line);
+	push(@{$genomelist},$line);
 }
 close($fhh);
 
 print "Loading blast data!\n";
-my $genomehash;
-my $plantgenehash;
-for (my $i=0; $i < @{$array}; $i++) {
-	print "Loading ".$i." ".$array->[$i]."\n";
-	open(my $fhhh, "<", "/homes/seaver/Projects/Plants_PubSEED_Sims/Blast_Results/".$array->[$i]);
-	while (my $line = <$fhhh>) {
-		chomp($line);
-		my $blastdata = [split(/\t/,$line)];
-		if ($blastdata->[1] =~ m/(fig\|\d+\.\d+)\./) {
-			$genomehash->{$1} = 1;
-			$plantgenehash->{$blastdata->[1]}->{$blastdata->[0]} = 1;
-		}
-	}
-	close($fhhh);
+open(my $fhhh, "<", $directory."BlastOutput.txt");
+my $genehash;
+while (my $line = <$fhhh>) {
+	chomp($line);
+	my $array = [split(/\t/,$line)];
+	$genehash->{$array->[0]} = [split(/;/,$array->[1])];
 }
+close($fhhh);
 
 my $alreadydone = {};
-print "Loading genome data of ".keys(%{$genomehash})."!\n";
-foreach my $genome (keys(%{$genomehash})) {
+my $candidategenes;
+print "Searching for transporter candidates!\n";
+#for (my $i=0; $i < @{$genomelist}; $i++) {
+for (my $i=0; $i < 3; $i++) {
+	my $genome = $genomelist->[$i];
 	if (!defined($alreadydone->{$genome})) {
 		print "Loading genome ".$genome."\n";
-		my $colocalizedgenes;
 		my $genomeHash = $sapsvr->all_features({
 			-ids => [$genome],
 		});
@@ -64,12 +59,8 @@ foreach my $genome (keys(%{$genomehash})) {
 			-ids => $genomeHash->{$genome}
 		});
 		my $functions = $sapsvr->ids_to_functions({-ids => $genomeHash->{$genome}});
-		foreach my $gene (keys(%{$functions})) {
-			$functions->{$gene} = lc($functions->{$gene});
-			$functions->{$gene} =~ s/[\d\-]+\.[\d\-]+\.[\d\-]+\.[\d\-]+//g;
-			$functions->{$gene} =~ s/\s//g;
-			$functions->{$gene} =~ s/\#.*$//g;
-			$functions->{$gene} =~ s/\(ec\)//g;
+		for (my $j=0; $j < @{$genomeHash->{$genome}}; $j++) {
+			print $genomeHash->{$genome}->[$j]."\t".$lochash->{$genomeHash->{$genome}->[$j]}."\t".$functions->{$genomeHash->{$genome}->[$j]}."\n";
 		}
 		my $contigs = {};
 		my $geneindex = {};
@@ -82,30 +73,48 @@ foreach my $genome (keys(%{$genomehash})) {
 				$geneindex->{$gene} = $2;
 			}
 		}
+		foreach my $gene (keys(%{$functions})) {
+			$functions->{$gene} =~ s/\s*#.+//;
+			$functions->{$gene} = [sort(split(/\s*;\s+|\s+[\@\/]\s+/,$functions->{$gene}))];
+			for (my $j=0; $j < @{$functions->{$gene}}; $j++) {
+				$functions->{$gene}->[$j] = lc($functions->{$gene}->[$j]);
+				$functions->{$gene}->[$j] =~ s/[\d\-]+\.[\d\-]+\.[\d\-]+\.[\d\-]+//g;
+				$functions->{$gene}->[$j] =~ s/\s//g;
+				$functions->{$gene}->[$j] =~ s/\#.*$//g;
+				$functions->{$gene}->[$j] =~ s/\(ec\)//g;
+			}
+		}
 		foreach my $contig (keys(%{$contigs})) {
 			$contigs->{$contig} = [sort { $geneindex->{$a} <=> $geneindex->{$b} } @{$contigs->{$contig}}];
-			for (my $i=0;$i < @{$contigs->{$contig}}; $i++) {
-				if (defined($rolehash->{$functions->{$contigs->{$contig}->[$i]}})) {
-					my $start = $i-5;
-					my $stop = $i+6;
-					if ($start < 0) {
-						$start = 0;
-					}
-					if ($stop > @{$contigs->{$contig}}) {
-						$stop = @{$contigs->{$contig}};
-					}
-					for (my $j=$start;$j < $stop; $j++) {
-						if (!defined($rolehash->{$functions->{$contigs->{$contig}->[$j]}})) {
-							if (!defined($plantgenehash->{$contigs->{$contig}->[$j]})) {
-								$colocalizedgenes->{$contigs->{$contig}->[$j]} = 1;
-							}
+			for (my $j=0;$j < @{$contigs->{$contig}}; $j++) {
+				for (my $n=0; $n < @{$functions->{$contigs->{$contig}->[$j]}}; $n++) {
+					if (defined($rolehash->{$functions->{$contigs->{$contig}->[$j]}->[$n]})) {
+						my $start = $j-5;
+						my $stop = $j+6;
+						if ($start < 0) {
+							$start = 0;
 						}
+						if ($stop > @{$contigs->{$contig}}) {
+							$stop = @{$contigs->{$contig}};
+						}
+						for (my $k=$start;$k < $stop; $k++) {
+							for (my $m=0;$m < @{$functions->{$contigs->{$contig}->[$k]}}; $m++) {
+								if (!defined($rolehash->{$functions->{$contigs->{$contig}->[$k]}->[$m]})) {
+									if (defined($genehash->{$contigs->{$contig}->[$k]})) {
+										for (my $p=0; $p < @{$genehash->{$contigs->{$contig}->[$k]}}; $p++) {
+											$candidategenes->{$genehash->{$contigs->{$contig}->[$k]}->[$p]}->{$contigs->{$contig}->[$k]} = 1;											
+										}
+									}
+								}
+							}
+						}	
 					}
 				}
 			}
 		}
-		foreach my $gene (keys(%{$colocalizedgenes})) {
-			print "Colocalized genes:".join(";",keys(%{$colocalizedgenes}))."\n";
-		}
 	}
+}
+print "Printing candidates:\n";
+foreach my $candidate (keys(%{$candidategenes})) {
+	print $candidate."\t".join(";",keys(%{$candidategenes->{$candidate}}))."\n";
 }

@@ -5,6 +5,8 @@ use warnings;
 use ModelSEED::Client::SAP;
 use Data::Dumper;
 
+$| = 1;
+
 my $directory = $ARGV[0];
 my $window = 5;
 

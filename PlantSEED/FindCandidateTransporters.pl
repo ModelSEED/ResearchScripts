@@ -52,11 +52,11 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 #for (my $i=0; $i < 3; $i++) {
 	my $genome = $genomelist->[$i];
 	if (!defined($alreadydone->{$genome})) {
+		my $count = 0;
 		print "Loading genome ".$genome."\n";
 		my $genomeHash = $sapsvr->all_features({
 			-ids => [$genome],
 		});
-		print Data::Dumper->Dump([$genomeHash]);
 		my $lochash = $sapsvr->fid_locations({
 			-ids => $genomeHash->{$genome}
 		});
@@ -104,6 +104,7 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 								if (!defined($rolehash->{$functions->{$contigs->{$contig}->[$k]}->[$m]})) {
 									if (defined($genehash->{$contigs->{$contig}->[$k]})) {
 										for (my $p=0; $p < @{$genehash->{$contigs->{$contig}->[$k]}}; $p++) {
+											$count++;
 											$candidategenes->{$genehash->{$contigs->{$contig}->[$k]}->[$p]}->{$contigs->{$contig}->[$k]} = 1;											
 										}
 									}
@@ -114,6 +115,7 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 				}
 			}
 		}
+		print $count." candidates found!\n";
 	}
 }
 print "Printing candidates:\n";

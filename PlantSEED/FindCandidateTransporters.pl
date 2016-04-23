@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use ModelSEED::Client::SAP;
+use Data::Dumper;
 
 my $directory = $ARGV[0];
 my $window = 5;
@@ -47,28 +48,29 @@ close($fhhh);
 my $alreadydone = {};
 my $candidategenes;
 print "Searching for transporter candidates!\n";
-#for (my $i=0; $i < @{$genomelist}; $i++) {
-for (my $i=0; $i < 3; $i++) {
+for (my $i=0; $i < @{$genomelist}; $i++) {
+#for (my $i=0; $i < 3; $i++) {
 	my $genome = $genomelist->[$i];
 	if (!defined($alreadydone->{$genome})) {
 		print "Loading genome ".$genome."\n";
 		my $genomeHash = $sapsvr->all_features({
 			-ids => [$genome],
 		});
+		print Data::Dumper->Dump([$genomeHash]);
 		my $lochash = $sapsvr->fid_locations({
 			-ids => $genomeHash->{$genome}
 		});
 		my $functions = $sapsvr->ids_to_functions({-ids => $genomeHash->{$genome}});
 		for (my $j=0; $j < @{$genomeHash->{$genome}}; $j++) {
-			print $genomeHash->{$genome}->[$j]."\t".$lochash->{$genomeHash->{$genome}->[$j]}."\t".$functions->{$genomeHash->{$genome}->[$j]}."\n";
+			#print $genomeHash->{$genome}->[$j]."\t".$lochash->{$genomeHash->{$genome}->[$j]}->[0]."\t".$functions->{$genomeHash->{$genome}->[$j]}."\n";
 		}
 		my $contigs = {};
 		my $geneindex = {};
 		foreach my $gene (keys(%{$lochash})) {
-			if ($lochash->{$gene} =~ m/(.+)_(\d+)_(\d+)$/) {
+			if ($lochash->{$gene}->[0] =~ m/(.+)_(\d+)_(\d+)$/) {
 				push(@{$contigs->{$1}},$gene);
 				$geneindex->{$gene} = $2;
-			} elsif ($lochash->{$gene} =~ m/(.+)_(\d+)[\+-](\d+)$/) {
+			} elsif ($lochash->{$gene}->[0] =~ m/(.+)_(\d+)[\+-](\d+)$/) {
 				push(@{$contigs->{$1}},$gene);
 				$geneindex->{$gene} = $2;
 			}

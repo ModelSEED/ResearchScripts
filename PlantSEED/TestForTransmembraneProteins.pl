@@ -32,7 +32,7 @@ my $geneseqs = $sapsvr->ids_to_sequences(
 	-fasta   => 0
 );
 
-print "Gene\tInside helices\tOutside helices\tModel\n";
+print "Gene\tInside helices\tOutside helices\tModel\tCount\n";
 foreach my $gene (keys(%{$geneseqs})) {
 	my $seq = $geneseqs->{$gene};
 	my $browser = LWP::UserAgent->new;
@@ -50,6 +50,7 @@ foreach my $gene (keys(%{$geneseqs})) {
 	my $insidecount = 0;
 	my $outsidecount = 0;
 	my $model = 1;
+	my $count = @{$genehash->{$gene}};
 	for (my $i=0; $i < @{$array}; $i++) {
 		if ($array->[$i] =~ m/Inside\sto\soutside\shelices\s:\s+(\d+)\sfound/) {
 			my $count = $1;
@@ -79,5 +80,5 @@ foreach my $gene (keys(%{$geneseqs})) {
 			$model = 0;
 		}
 	}
-	print $gene."\t".$insidecount."\t".$outsidecount."\t".$model."\n";
+	print $gene."\t".$insidecount."\t".$outsidecount."\t".$model."\t".$count."\n";
 }

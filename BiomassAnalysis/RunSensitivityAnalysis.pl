@@ -31,8 +31,8 @@ for (my $i=0; $i < @{$fbas}; $i++) {
 my $count = 0;
 for (my $i=0; $i < @{$models}; $i++) {
 	if ($i % $procs  == $index) {
-		$models->[$i]->[1] = "243276.5.model";
-		#if (!defined($fbahash->{$models->[$i]->[1].".fba"})) {
+		#$models->[$i]->[1] = "243276.5.model";
+		if (!defined($fbahash->{$models->[$i]->[1].".fba"})) {
 			if ($count % 100 == 0) {
 				$impl = fba_tools::fba_toolsImpl->new();		}
 			eval {
@@ -60,8 +60,8 @@ for (my $i=0; $i < @{$models}; $i++) {
 				print $i.":".$models->[$i]->[1].":success\n";
 			}
 			$count++;
-			exit();
-		#}
+			#exit();
+		}
 	}
 }
 

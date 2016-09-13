@@ -24,8 +24,8 @@ my $modelcount = 0;
 print "FBA count:".@{$fbas}."\n";
 my $numbio = 0;
 my $numcoupled = 0;
-#for (my $i=0; $i < @{$fbas}; $i++) {
-for (my $i=0; $i < 100; $i++) {
+for (my $i=0; $i < @{$fbas}; $i++) {
+#for (my $i=0; $i < 100; $i++) {
 	my $rxnhash = {};
 	my $modelid = substr($fbas->[$i]->[1],0,length($fbas->[$i]->[1])-4);
 	my $output = $ws->get_objects([{
@@ -147,7 +147,6 @@ foreach my $model (keys(%{$modelhash})) {
 	}	
 	print "\n";
 }
-
 
 {
     package LocalCallContext;

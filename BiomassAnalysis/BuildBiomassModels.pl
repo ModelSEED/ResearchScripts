@@ -48,7 +48,6 @@ for (my $i=0; $i < @{$genomes}; $i++) {
 	}
 }
 
-
 {
     package LocalCallContext;
     use strict;

@@ -14,6 +14,28 @@ my $sapsvr = ModelSEED::Client::SAP->new();
 my $directory = $ARGV[0];
 my $data = load_file($directory."/AllFusions.txt");
 
+
+my $GenomeHash;
+for (my $i=0; $i < @{$data}; $i++) {
+	my $item = $data->[$i];
+	my $array = [split(/\t/,$item)];
+	my $genomeid;
+	if ($array->[0] =~ m/(fig\|\d+\.\d+\)\.(.+)/) {
+		$genomeid = $1;
+		if (!defined($GenomeHash->{$genomeid})) {
+			$GenomeHash->{$genomeid} = {
+				gene => [],
+				count => 0
+			};
+		}
+		push(@{$GenomeHash->{$genomeid}->{genes}},$2);
+		$GenomeHash->{$genomeid}->{count}++;
+	}
+
+
+
+
+
 #Getting hashes of roles to reactions and subsystems
 $fba->_setContext(undef,{},undef,undef,undef);
 my $template = $fba->_get_msobject("ModelTemplate","KBaseTemplateModels","GramNegModelTemplate");
@@ -52,8 +74,7 @@ my $NMTS = [];
 my $NMSS = [];
 my $NMNS = [];
 for (my $i=0; $i < @{$data}; $i++) {
-	my $item = $data->[$i];
-	my $array = [split(/\t/,$item)];
+	
 	push(@{$genes},$array->[0]);
 	push(@{$split},$array->[1]);
 	if (@{$genes} >= 1000) {

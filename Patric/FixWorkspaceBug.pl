@@ -12,18 +12,19 @@ my $conn = MongoDB::Connection->new(%$config);
 my $db = $conn->get_database("WorkspaceBuild");
 
 my $cursor = $db->get_collection('workspaces')->find({
-	name => "models",
+	name => "home",
 	owner => "nconrad\@patricbrc.org"
 });
 my $object = $cursor->next;
 
 $cursor = $db->get_collection('objects')->find({
 	workspace_uuid => $object->{uuid},
+	path => qr/^models\//
 });
 while ($object = $cursor->next) {
 	print $object->{path}."/".$object->{name}."\n";
 }
 
-#$db->get_collection('objects')->remove({
-#	workspace_uuid => $object->{uuid},
-#});
+$db->get_collection('objects')->remove({
+	workspace_uuid => $object->{uuid},
+});

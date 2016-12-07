@@ -11,16 +11,15 @@ my $directory = $ARGV[0];
 my $procindex = $ARGV[1];
 my $numprocs = $ARGV[2];
 
-my $list = get_ws_objects_list("KBasePublicModelsV4","KBaseFBA.FBAModel");
+my $list = get_ws_objects_list("janakakbase:CM-VR","KBaseFBA.FBAModel");
 my $mdllist;
 for (my $i=0; $i < @{$list}; $i++) {
-	if ($list->[$i]->[1] =~ m/\.gf$/) {
-		push(@{$mdllist},$list->[$i]);
-	}
+	push(@{$mdllist},$list->[$i]->[1]);
 }
-
-my $fba = get_fba_client();
 for (my $i=0; $i < @{$mdllist}; $i++) {
+	
+	
+	
 	my $value = $i-$procindex;
 	if (($value % $numprocs) == 0) {
 		my $sbml = $fba->export_fbamodel({

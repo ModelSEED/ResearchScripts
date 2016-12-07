@@ -204,24 +204,24 @@ foreach my $gene (keys(%{$GeneCDDs})) {
 			my $reason = "";
 			my $predictedfusion = 0;
 			my $leftdist = $length/3-$position;
-			if ($length >= 600) {
-				if ($leftcdd > 0) {
-					if ($rightcdd > 0) {
-						if ($matches <= 1000) {
-							if ($maxleftalign > 50) {
-								if ($maxrightalign > 50) {
+			if ($length >= 600) {*
+				if ($leftcdd > 0) {*
+					if ($rightcdd > 0) {*
+						if ($matches <= 1000) {*
+							if ($maxleftalign > 50) {*
+								if ($maxrightalign > 50) {*
 									if ($bestleft >= 18) {
 										if ($bestright >= 18) {
-											if ((3*($maxleftalign+$maxrightalign)/$length) >=0.4) {
-												if ($oversg >= 0 && $position >= 58) {
-													if ($leftdist >= 60) {
-														if (($oversg/($rightsg+$leftsg)) <= 1) {
-															if (($leftlinks+$rightlinks) < 3000) {
-																if ((3*$position/$length) >= 0.1) {
-																	if ((3*$leftdist/$length) >= 0.1) {
-																		if ($count > 1) {
-																			if ($rightlinks < 1500 ) {
-																				if ($leftlinks < 1500) {
+											if ((3*($maxleftalign+$maxrightalign)/$length) >=0.4) {*
+												if ($oversg >= 0 && $position >= 58) {*
+													if ($leftdist >= 60) {*
+														if (($oversg/($rightsg+$leftsg)) <= 1) {*
+															if (($leftlinks+$rightlinks) < 3000) {*
+																if ((3*$position/$length) >= 0.1) {*
+																	if ((3*$leftdist/$length) >= 0.1) {*
+																		if ($count > 1) {*
+																			if ($rightlinks < 1500 ) {*
+																				if ($leftlinks < 1500) {*
 																					$predictedfusion = 1;
 																				} else {
 																					$reason = "Left links > 1500";

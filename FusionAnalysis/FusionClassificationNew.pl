@@ -49,6 +49,12 @@ while (my $line = <$fhh>) {
 }
 close($fhh);
 
+open ( my $outh, ">", $directory."/GenomeFusionCount.txt");
+foreach my $genome (keys(%{$Genomes})) {
+	print $outh $genome."\t".$Genomes->{$genome}."\n";
+}
+close($outh);
+
 open ( my $out, ">", $directory."/FunctionFusionAnalysis.txt");
 print $out "Function\tCount\tGenome count\tFusions\tFusion genomes\n";
 foreach my $function (keys(%{$functionhash})) {

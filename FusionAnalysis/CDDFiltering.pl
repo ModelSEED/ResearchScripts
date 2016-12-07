@@ -3,6 +3,7 @@
 $|=1;
 my $directory = $ARGV[0];
 my $inputdir = $ARGV[1];
+my $genome = $ARGV[2];
 
 my $array;
 open(my $fh, "<", $inputdir."GenomeList.txt");

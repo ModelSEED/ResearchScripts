@@ -14,9 +14,11 @@ my $models = $ws->list_objects({
 	type => "KBaseFBA.FBAModel",
 });
 for (my $i=0; $i < @{$models}; $i++) {
+#for (my $i=0; $i < 1; $i++) {
 	my $model = $store->get_object("janakakbase:CM-VR/".$models->[$i]->[1]);
 	my $sbml = $model->export({format => "sbml"});
-	open ( my $fh, ">", $directory."/".$models->[$i]->[1]);
+	print $directory."/".$models->[$i]->[1].".sbml\n";
+	open ( my $fh, ">", $directory."/".$models->[$i]->[1].".sbml");
     print $fh $sbml."\n";
     close($fh);
 }

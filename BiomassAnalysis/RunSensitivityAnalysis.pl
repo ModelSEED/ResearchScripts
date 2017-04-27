@@ -18,7 +18,7 @@ my $models = $ws->list_objects({
 });
 
 for (my $i=0; $i < @{$models}; $i++) {
-	$impl->run_flux_balance_analysis({
+	Bio::KBase::ObjectAPI::functions::func_run_flux_balance_analysis({
 		workspace => $fbaws,
 		fbamodel_id => $models->[$i]->[1],
 		fba_output_id => $models->[$i]->[1].".sensfba",
@@ -28,7 +28,7 @@ for (my $i=0; $i < @{$models}; $i++) {
 		minimize_flux => 1,
 		sensitivity_analysis => 1
 	});
-	$impl->run_flux_balance_analysis({
+	Bio::KBase::ObjectAPI::functions::func_run_flux_balance_analysis({
 		workspace => $fbaws,
 		fbamodel_id => $models->[$i]->[1],
 		fba_output_id => $models->[$i]->[1].".mmfva",
@@ -38,7 +38,7 @@ for (my $i=0; $i < @{$models}; $i++) {
 		minimize_flux => 1,
 		fva => 1
 	});
-	$impl->run_flux_balance_analysis({
+	Bio::KBase::ObjectAPI::functions::func_run_flux_balance_analysis({
 		workspace => $fbaws,
 		fbamodel_id => $models->[$i]->[1],
 		fba_output_id => $models->[$i]->[1].".comfva",

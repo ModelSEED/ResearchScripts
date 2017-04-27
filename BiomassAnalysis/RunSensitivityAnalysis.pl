@@ -16,7 +16,7 @@ my $mediaws = "KBaseMedia";
 
 my $ws = Bio::KBase::kbaseenv::ws_client();
 my $models = $ws->list_objects({
-	workspace => [$modelws],
+	workspaces => [$modelws],
 	type => "KBaseFBA.FBAModel"
 });
 

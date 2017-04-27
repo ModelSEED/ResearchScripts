@@ -7,7 +7,7 @@ my $procs = $ARGV[0];
 my $index = $ARGV[1];
 
 my $impl = fba_tools::fba_toolsImpl->new();
-Bio::KBase::utilities::create_context_from_client_config();
+Bio::KBase::kbaseenv::create_context_from_client_config();
 
 my $modelws = "20905";
 my $fbaws = "20955";

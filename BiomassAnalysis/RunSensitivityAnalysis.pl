@@ -9,8 +9,8 @@ my $index = $ARGV[1];
 my $impl = fba_tools::fba_toolsImpl->new();
 Bio::KBase::kbaseenv::create_context_from_client_config();
 
-my $modelws = "20905";
-my $fbaws = "20955";
+my $modelws = "chenry:narrative_1493181437626";
+my $fbaws = "chenry:narrative_1493303324098";
 my $media = "Carbon-D-Glucose";
 my $mediaws = "KBaseMedia";
 

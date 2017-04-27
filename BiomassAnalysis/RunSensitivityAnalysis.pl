@@ -3,6 +3,9 @@ use Data::Dumper;
 use fba_tools::fba_toolsImpl;
 local $| = 1;
 
+my $procs = $ARGV[0];
+my $index = $ARGV[1];
+
 my $impl = fba_tools::fba_toolsImpl->new();
 Bio::KBase::utilities::create_context_from_client_config();
 
@@ -18,32 +21,34 @@ my $models = $ws->list_objects({
 });
 
 for (my $i=0; $i < @{$models}; $i++) {
-	Bio::KBase::ObjectAPI::functions::func_run_flux_balance_analysis({
-		workspace => $fbaws,
-		fbamodel_id => $models->[$i]->[1],
-		fba_output_id => $models->[$i]->[1].".sensfba",
-		fbamodel_workspace => $modelws,
-		media_id => $media,
-		media_workspace => $mediaws,
-		minimize_flux => 1,
-		sensitivity_analysis => 1
-	});
-	Bio::KBase::ObjectAPI::functions::func_run_flux_balance_analysis({
-		workspace => $fbaws,
-		fbamodel_id => $models->[$i]->[1],
-		fba_output_id => $models->[$i]->[1].".mmfva",
-		fbamodel_workspace => $modelws,
-		media_id => $media,
-		media_workspace => $mediaws,
-		minimize_flux => 1,
-		fva => 1
-	});
-	Bio::KBase::ObjectAPI::functions::func_run_flux_balance_analysis({
-		workspace => $fbaws,
-		fbamodel_id => $models->[$i]->[1],
-		fba_output_id => $models->[$i]->[1].".comfva",
-		fbamodel_workspace => $modelws,
-		minimize_flux => 1,
-		fva => 1
-	});
+	if ($i % $procs  == $index) {
+		Bio::KBase::ObjectAPI::functions::func_run_flux_balance_analysis({
+			workspace => $fbaws,
+			fbamodel_id => $models->[$i]->[1],
+			fba_output_id => $models->[$i]->[1].".sensfba",
+			fbamodel_workspace => $modelws,
+			media_id => $media,
+			media_workspace => $mediaws,
+			minimize_flux => 1,
+			sensitivity_analysis => 1
+		});
+		Bio::KBase::ObjectAPI::functions::func_run_flux_balance_analysis({
+			workspace => $fbaws,
+			fbamodel_id => $models->[$i]->[1],
+			fba_output_id => $models->[$i]->[1].".mmfva",
+			fbamodel_workspace => $modelws,
+			media_id => $media,
+			media_workspace => $mediaws,
+			minimize_flux => 1,
+			fva => 1
+		});
+		Bio::KBase::ObjectAPI::functions::func_run_flux_balance_analysis({
+			workspace => $fbaws,
+			fbamodel_id => $models->[$i]->[1],
+			fba_output_id => $models->[$i]->[1].".comfva",
+			fbamodel_workspace => $modelws,
+			minimize_flux => 1,
+			fva => 1
+		});
+	}
 }

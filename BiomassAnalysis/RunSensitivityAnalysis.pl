@@ -1,26 +1,49 @@
 use strict;
 use Data::Dumper;
 use fba_tools::fba_toolsImpl;
-
 local $| = 1;
-
-my $model = $ARGV[0];#ws/id
-my $media = $ARGV[1];#ws/id
-my $fba = $ARGV[2];
-
-$model = [split(/\//,$model)];
-$media = [split(/\//,$media)];
-$fba = [split(/\//,$fba)];
 
 my $impl = fba_tools::fba_toolsImpl->new();
 Bio::KBase::utilities::create_context_from_client_config();
-$impl->run_flux_balance_analysis({
-	workspace => $fba->[0],
-	fbamodel_id => $model->[1],
-	fba_output_id => $fba->[1],
-	fbamodel_workspace => $model->[0],
-	media_id => $media->[1],
-	media_workspace => $media->[0],
-	minimize_flux => 1,
-	sensitivity_analysis => 1
+
+my $modelws = "20905";
+my $fbaws = "20955";
+my $media = "Carbon-D-Glucose";
+my $mediaws = "KBaseMedia";
+
+my $ws = Bio::KBase::kbaseenv::ws_client();
+my $models = $ws->list_objects({
+	workspace => [$modelws],
+	type => "KBaseFBA.FBAModel"
 });
+
+for (my $i=0; $i < @{$models}; $i++) {
+	$impl->run_flux_balance_analysis({
+		workspace => $fbaws,
+		fbamodel_id => $models->[$i]->[1],
+		fba_output_id => $models->[$i]->[1].".sensfba",
+		fbamodel_workspace => $modelws,
+		media_id => $media,
+		media_workspace => $mediaws,
+		minimize_flux => 1,
+		sensitivity_analysis => 1
+	});
+	$impl->run_flux_balance_analysis({
+		workspace => $fbaws,
+		fbamodel_id => $models->[$i]->[1],
+		fba_output_id => $models->[$i]->[1].".mmfva",
+		fbamodel_workspace => $modelws,
+		media_id => $media,
+		media_workspace => $mediaws,
+		minimize_flux => 1,
+		fva => 1
+	});
+	$impl->run_flux_balance_analysis({
+		workspace => $fbaws,
+		fbamodel_id => $models->[$i]->[1],
+		fba_output_id => $models->[$i]->[1].".comfva",
+		fbamodel_workspace => $modelws,
+		minimize_flux => 1,
+		fva => 1
+	});
+}

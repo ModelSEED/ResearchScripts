@@ -59,6 +59,7 @@ for (my $i=0; $i < @{$models}; $i++) {
 					equation => $rxn->equation(),
 					definition => $rxn->definition(),
 					pathway => undef,
+					pathways => [],
 					coupledbios => {},
 					coupledrxns => {},
 					mmclasses => {},
@@ -72,6 +73,9 @@ for (my $i=0; $i < @{$models}; $i++) {
 					$reaction_hash->{$id}->{roles} = $full_rxn_data->{$id}->{roles}
 				}
 				if (defined($full_rxn_data->{$id}->{kegg_pathways})) {
+					for (my $n=0; $n < @{$full_rxn_data->{$id}->{kegg_pathways}}; $n++) {
+						push(@{$reaction_hash->{$id}->{pathways}},$pathwaytrans->{$full_rxn_data->{$id}->{kegg_pathways}->[$n]});
+					}
 					for (my $m=0; $m < @{$sortedpathways}; $m++) {
 						for (my $n=0; $n < @{$full_rxn_data->{$id}->{kegg_pathways}}; $n++) {
 							if ($pathwaytrans->{$full_rxn_data->{$id}->{kegg_pathways}->[$n]} eq $sortedpathways->[$m]) {
@@ -167,6 +171,6 @@ for (my $i=0; $i < @{$models}; $i++) {
 				}
 			}
 		}
-	}
+	};
 }
 Bio::KBase::ObjectAPI::utilities::PRINTFILE($outputfile,[Bio::KBase::ObjectAPI::utilities::TOJSON($reaction_hash,1)]);

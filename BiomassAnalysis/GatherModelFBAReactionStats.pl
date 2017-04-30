@@ -40,10 +40,10 @@ my $models = $ws->list_objects({
 });
 
 my $reaction_hash;
-#for (my $i=0; $i < @{$models}; $i++) {
-for (my $i=0; $i < 10; $i++) {
+for (my $i=0; $i < @{$models}; $i++) {
+#for (my $i=0; $i < 10; $i++) {
 	print "Processing ".$models->[$i]->[1]."\n";
-	#eval {
+	eval {
 		my $model = $impl->util_get_object($modelws."/".$models->[$i]->[1]);
 		my $rxns = $model->modelreactions();
 		for (my $j=0; $j < @{$rxns}; $j++) {
@@ -171,6 +171,6 @@ for (my $i=0; $i < 10; $i++) {
 				}
 			}
 		}
-	#};
+	};
 }
 Bio::KBase::ObjectAPI::utilities::PRINTFILE($outputfile,[Bio::KBase::ObjectAPI::utilities::TOJSON($reaction_hash,1)]);

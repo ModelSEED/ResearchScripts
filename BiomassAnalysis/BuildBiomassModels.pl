@@ -18,12 +18,14 @@ my $gramhash = {};
 for (my $i=0; $i < @{$models}; $i++) {
 	if ($models->[$i]->[1] =~ m/(.+)\.RAST\.mdl/) {
 		my $genomeid = $1;
-		my $model = $impl->util_get_object("jplfaria:narrative_1493091104031/".$models->[$i]->[1]);
-		if ($model->biomasses()->[0]->name() =~ m/GramPositiveBiomass/) {
-			$gramhash->{$genomeid} = "p";
-		} else {
-			$gramhash->{$genomeid} = "n";
-		}
+		eval {
+			my $model = $impl->util_get_object("jplfaria:narrative_1493091104031/".$models->[$i]->[1]);
+			if ($model->biomasses()->[0]->name() =~ m/GramPositiveBiomass/) {
+				$gramhash->{$genomeid} = "p";
+			} else {
+				$gramhash->{$genomeid} = "n";
+			}
+		};
 	}
 }
 

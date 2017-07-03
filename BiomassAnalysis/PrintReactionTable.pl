@@ -1,19 +1,23 @@
-#!/usr/bin/perl -w
-
 use strict;
 use fba_tools::fba_toolsImpl;
-$|=1;
+use Data::Dumper;
+local $| = 1;
 
-my $directory "/disks/p3dev3/ReactionData/";
+my $impl = fba_tools::fba_toolsImpl->new();
+Bio::KBase::kbaseenv::create_context_from_client_config();
+
+my $directory = "/Users/janakaanl/MSRepo/ResearchScripts/IGap/";
 my $cpddata = Bio::KBase::ObjectAPI::utilities::FROMJSON(join("\n",@{Bio::KBase::ObjectAPI::utilities::LOADFILE($directory."Compounds.json")}));
 my $globalcpdhash;
 for (my $i=0; $i < @{$cpddata}; $i++) {
 	$globalcpdhash->{$cpddata->[$i]->{id}} = $cpddata->[$i];
+	#print &Dumper ($globalcpdhash->{$cpddata->[$i]->{id}})."\n";
 }
 my $rxnmodeldata = Bio::KBase::ObjectAPI::utilities::FROMJSON(join("\n",@{Bio::KBase::ObjectAPI::utilities::LOADFILE($directory."ModelFBAData.json")}));
 
-Bio::KBase::kbaseenv::create_context_from_client_config();
+
 my $pathway_file = Bio::KBase::ObjectAPI::utilities::LOADFILE($directory."RankedKEGGPathways.txt");
+
 my $pathwayhash = {};
 my $pathwayarray = [];
 my $pathwayid = {};
@@ -28,6 +32,8 @@ for (my $i=1; $i < @{$pathway_file}; $i++) {
 	}
 }
 my $rxndata = Bio::KBase::ObjectAPI::utilities::FROMJSON(join("\n",@{Bio::KBase::ObjectAPI::utilities::LOADFILE($directory."Reactions.json")}));
+
+
 my $rxndatahash = {};
 for (my $i=0; $i < @{$rxndata}; $i++) {
 	$rxndatahash->{$rxndata->[$i]->{id}} = $rxndata->[$i];
@@ -35,11 +41,30 @@ for (my $i=0; $i < @{$rxndata}; $i++) {
 #Print the reactions, organized and prioritized by pathway
 open(my $fout,">",$directory."ModelReactions.txt");
 print $fout "Pathway\tReaction\tEquation\tReversibility\tStatus\tKEGG ID\tMetaCyc ID\tName\tEC numbers\tRoles";
+print  "Pathway\tReaction\tEquation\tReversibility\tStatus\tKEGG ID\tMetaCyc ID\tName\tEC numbers\tRoles";
+
+my $initial_genomes = Bio::KBase::kbaseenv::ws_client()->list_objects({
+       	workspaces => ["janakakbase:narrative_1499012973666"],
+        type => "KBaseGenomes.Genome",
+});
+
+my $genomelist;
+my $genome_hash = {};
+for (my $i=0; $i < @{$initial_genomes}; $i++) {
+        if ($initial_genomes->[$i]->[1] =~ m/(.+)\.RAST$/) {
+                $genome_hash->{$initial_genomes->[$i]->[1]} = $1;
+                push(@{$genomelist},$initial_genomes->[$i]->[1]);
+        }
+}
+
 my $pathwaymodelhash;
 for (my $i=0; $i < @{$genomelist}; $i++) {
 	print $fout "\t".$genomelist->[$i];
+	#print "\t".$genomelist->[$i];
 }
 print $fout "\n";
+#print "\n";
+#die;
 my $donerxn = {};
 for (my $i=0; $i < @{$pathwayarray}; $i++) {
 	 my $list = [];
@@ -164,7 +189,7 @@ sub print_reaction {
 					}
 					my $cpdid = $rxngdata->{biomassdep}->[$j]->[1];
 					$cpdid =~ s/_c0//;
-					$line .= $globalcpdhash->{$cpdid}->{name}; 
+					$line .= $globalcpdhash->{$cpdid}->{name};
 				}
 				$line .= "/";
 			}

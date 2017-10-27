@@ -13,7 +13,7 @@ my $output = Bio::KBase::kbaseenv::list_objects({
 
 my $genomelist;
 for (my $i=0; $i < @{$output}; $i++) {
-	if ($output->[$i]->[2] =~ m/KBaseGenomes\.Genome/) {
+	if ($output->[$i]->[2] =~ m/KBaseGenomes\.Genome/ && $output->[$i]->[1] =~ m/\.RAST$/) {
 		push(@{$genomelist},$output->[$i]->[1]);
 	}
 }

@@ -1,48 +1,34 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Config::Simple;
-use Bio::KBase::fbaModelServices::Impl;
-use File::Path;
-$|=1;
+use Data::Dumper;
+use fba_tools::fba_toolsImpl;
+local $| = 1;
 
-my $config = $ARGV[0];
-if (!defined($config)) {
-	print STDERR "No config file provided!\n";
-	exit(-1);
-}
-if (!-e $config) {
-	print STDERR "Config file ".$config." not found!\n";
-	exit(-1);
-}
+my $workspace = $ARGV[0];
+my $media = $ARGV[1];
+my $template = $ARGV[2];
 
-my $c = Config::Simple->new();
-$c->read($config);
+my $impl = fba_tools::fba_toolsImpl->new();
+Bio::KBase::kbaseenv::create_context_from_client_config();
+Bio::KBase::ObjectAPI::functions::set_handler($impl);
 
-$Bio::KBase::fbaModelServices::Server::CallContext = {token => $c->param("kbclientconfig.auth")};
-my $fba = Bio::KBase::fbaModelServices::Impl->new({"workspace-url" => "http://kbase.us/services/ws"});
-$fba->_setContext($Bio::KBase::fbaModelServices::Server::CallContext,{});
-my $ws = $fba->_workspaceServices();
-my $genomes = $ws->list_objects({
-	workspaces => ["KBasePublicGenomesV5"],
-	type => "KBaseGenomes.Genome",
+my $output = Bio::KBase::kbaseenv::list_objects({
+	workspaces => [$workspace]
 });
 
-my $genomehash;
-for (my $i=0; $i < @{$models}; $i++) {
-	if ($genomes->[$i]->[1] =~ m/^(\d+\.\d+)\./) {
-		$genomehash->{$1} = 1;
+for (my $i=0; $i < @{$output}; $i++) {
+	if ($output->[$i]->[2] =~ m/KBaseGenomes\.Genome/) {
+		Bio::KBase::ObjectAPI::functions::func_build_metabolic_model({
+			workspace => $workspace,
+			genome_id => $output->[$i]->[1],
+			fbamodel_output_id => $output->[$i]->[1].".model",
+			media_id => $media,
+			template_id => $template,
+			genome_workspace => $workspace,
+			template_workspace => $workspace,
+			media_workspace => $workspace,
+			gapfill_model => 1,
+		});
 	}
 }
-for (my $i=0; $i < @{$genomes}; $i++) {
-	if (!defined($genomehash->{$genomes->[$i]->[1]})) {
-		$fba->queue_job({method => "genome_to_fbamodel",parameters => {
-			templatemodel => "FullBiomassTemplate",
-	    	templatemodel_workspace => "chenrydemo",
-			genome => $genomes->[$i]->[1],
-			workspace => "chenry:BiomassAnalysisMMModels",
-	    	genome_workspace => "pubSEEDGenomes",
-	    	model => $genomes->[$i]->[1].".fbamdl",
-		}});
-	}
-};

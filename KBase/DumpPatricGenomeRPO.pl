@@ -30,6 +30,8 @@ my @res = $d->query("genome_feature",
 	["eq", "product", "DNA-directed RNA polymerase beta subunit (EC 2.7.7.6)"],
 );
 
+print "RPOB count:".@res."\n";
+
 for (my $i=0; $i < @res; $i++) {
 	if ($res[$i]->{patric_id} =~ m/fig\|(\d+\.\d+)\./) {
 		my $genomeid = $1;
@@ -47,6 +49,8 @@ print "Now retrieving rpoC!\n";
 	["eq", "annotation", "PATRIC"],
 	["eq", "product", "DNA-directed RNA polymerase beta' subunit (EC 2.7.7.6)"],
 );
+
+print "RPOC count:".@res."\n";
 
 for (my $i=0; $i < @res; $i++) {
 	if ($res[$i]->{patric_id} =~ m/fig\|(\d+\.\d+)\./) {

@@ -41,7 +41,7 @@ for (my $i=0; $i < 100; $i++) {
 					}
 					my $sortedlist = [sort { $b->{start} cmp $a->{start} } @{$unsortedlist}];
 					for my $ent (@{$sortedlist}) {
-				    		next if $ent->{product} eq '';
+				    		next if !defined($ent->{product}) || $ent->{product} eq '';
 					    	my $function = $ent->{product};
 					  	my $array = [split(/\#/,$function)];
 					  	$function = shift(@{$array});

@@ -44,7 +44,6 @@ foreach my $genome (keys(%{$genomes})) {
 				}
 			}
 			unlink($output_dir."compout");
-			last;
 		} else {
 			print $genome." failed!\n";
 			$fail++;

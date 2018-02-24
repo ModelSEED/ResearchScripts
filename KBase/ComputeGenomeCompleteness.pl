@@ -24,7 +24,7 @@ foreach my $genome (keys(%{$genomes})) {
 			$genus = $1;
 		}
 		
-		system("perl /disks/p3dev3/code/Genome_quality/core_PGF_genome_quality.pl -c ".$core_dir." -d ".$kmer_dir." -u ".$url." -g Escherichia -p ".$fasta_dir.$genome."/".$genome.".PATRIC.faa > ".$output_dir."compout");
+		system("perl /disks/p3dev3/code/Genome_quality/core_PGF_genome_quality.pl -c ".$core_dir." -d ".$kmer_dir." -u ".$url." -g ".$genus." -p ".$fasta_dir.$genome."/".$genome.".PATRIC.faa > ".$output_dir."compout");
 		
 		if (-e $output_dir."compout") {
 			my $output = &LOADFILE($output_dir."compout");

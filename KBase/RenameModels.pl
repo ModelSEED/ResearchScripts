@@ -144,14 +144,11 @@ my $count = 0;
 my $rxn_not_found = {};
 foreach my $genome (@{$genomes}) {
 	print $genome."\n";
-	my $g = $handler->util_get_object("chenry:narrative_1524167538737/".$genome);
-	$ws->rename_object({
-		obj => {"ref" => "chenry:narrative_1524167538737/".$g->id().".fbamodel"},
-		new_name => $genome.".RAST2.mdl"
-	});
-	$g->id($genome);
-	$handler->util_save_object($g,"chenry:narrative_1524167538737/".$genome);
-	$g = $handler->util_get_object("chenry:narrative_1524167538737/".$genome.".RAST2");
-	$g->id($genome."RAST2");
-	$handler->util_save_object($g,"chenry:narrative_1524167538737/".$genome.".RAST2");
+	my $g = $handler->util_get_object("chenry:narrative_1524167538737/".$genome.".RAST");
+	#$ws->rename_object({
+	#	obj => {"ref" => "chenry:narrative_1524167538737/".$g->id().".fbamodel"},
+	#	new_name => $genome.".RAST2.mdl"
+	#});
+	$g->id($genome.".RAST");
+	$handler->util_save_object($g,"chenry:narrative_1524167538737/".$genome.".RAST");
 }

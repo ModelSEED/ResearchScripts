@@ -19,5 +19,6 @@ chdir("/disks/p3dev3/code/ModelSEEDDatabase/Scripts/Release/");
 system("python Build_Model_Template.py ".$template_name." /disks/p3dev3/code/ModelSEEDDatabase/Templates/".$template_name);
 
 my $template_data = Bio::KBase::ObjectAPI::utilities::FROMJSON(join("\n",@{Bio::KBase::ObjectAPI::utilities::LOADFILE("/disks/p3dev3/code/ModelSEEDDatabase/Templates/".$template_name."/".$template_name.".json")}));
+$template_data->{biochemistry_ref} = "kbase/default";
 
 $handler->util_save_object($template_data,$workspace."/".$template_name,{hash => 1,type => "KBaseFBA.NewModelTemplate"});

@@ -14,7 +14,9 @@ my $ws = Bio::KBase::kbaseenv::ws_client();
 my $workspace = $ARGV[0];
 my $template_name = $ARGV[1];
 
-system("python /disks/p3dev3/code/ModelSEEDDatabase/Scripts/Release/Build_Model_Template.py ".$template_name." /disks/p3dev3/code/ModelSEEDDatabase/Templates/".$template_name);
+chdir("/disks/p3dev3/code/ModelSEEDDatabase/Scripts/Release/");
+
+system("python Build_Model_Template.py ".$template_name." /disks/p3dev3/code/ModelSEEDDatabase/Templates/".$template_name);
 
 my $template_data = Bio::KBase::ObjectAPI::utilities::FROMJSON(join("\n",@{Bio::KBase::ObjectAPI::utilities::LOADFILE("/disks/p3dev3/code/ModelSEEDDatabase/Templates/".$template_name)}));
 

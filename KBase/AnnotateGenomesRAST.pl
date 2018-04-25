@@ -21,7 +21,7 @@ my $objects = Bio::KBase::kbaseenv::list_objects({
 
 my $client = Bio::KBase::kbaseenv::rast_client();
 for (my $i=0; $i < @{$objects}; $i++) {
-	if ($objects->[$i]->[1] != m/\.RAST/) {
+	if ($objects->[$i]->[1] !~ m/\.RAST/) {
 		print $i.":".$objects->[$i]->[1]."\n";
 		my $genome = $handler->util_get_object($workspace."/".$objects->[$i]->[1]);
 		my $data = $genome->serializeToDB();

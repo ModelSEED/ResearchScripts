@@ -28,11 +28,14 @@ for (my $i=0; $i < @{$objects}; $i++) {
 		my $newgenome = $client->run_pipeline($data,{stages => Bio::KBase::constants::gene_annotation_pipeline()});
 		my $genehash = {};
 		for (my $j=0; $j < @{$newgenome->{features}}; $j++) {
+			#print $newgenome->{features}->[$j]->{id}."\t".$newgenome->{features}->[$j]->{function}."\n";
 			$genehash->{$newgenome->{features}->[$j]->{id}} = $newgenome->{features}->[$j];
 		}
 		my $ftrs = $genome->features();
 		for (my $k=0; $k < @{$ftrs}; $k++) {
-			$ftrs->[$k]->function($genehash->{$ftrs->[$k]->id()}->{function});
+			if (defined($genehash->{$ftrs->[$k]->id()}->{function})) {
+				$ftrs->[$k]->function($genehash->{$ftrs->[$k]->id()}->{function});
+			}
 		}
 		$handler->util_save_object($genome,$workspace."/".$objects->[$i]->[1].".RAST2");
 	}

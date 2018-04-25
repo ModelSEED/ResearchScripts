@@ -248,8 +248,10 @@ foreach my $genome (@{$genomes}) {
 					}
 				}
 			}
-			print $fout $genome."\t".$gene."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t";
-			print $fout $present->[0]."\t".$present->[1]."\t".$geneanno->{$gene}->{RAST}."\t".$present->[2]."\t".$geneanno->{$gene}->{RAST2}."\n";
+			if ($present->[0] == 0 || $present->[1] == 0 || $present->[2] == 0) {
+				print $fout $genome."\t".$gene."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t";
+				print $fout $present->[0]."\t".$present->[1]."\t".$geneanno->{$gene}->{RAST}."\t".$present->[2]."\t".$geneanno->{$gene}->{RAST2}."\n";
+			}
 		}
 	}
 }
@@ -285,7 +287,9 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 								}
 							}
 						}
-						print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".$rastrole."\t".$rast2."\t".$rast2role."\n";
+						if ($orig == 0 || $rast == 0 || $rast2 == 0) {
+							print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".$rastrole."\t".$rast2."\t".$rast2role."\n";
+						}
 					}
 				}
 			}

@@ -261,29 +261,29 @@ print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\tCurrent roles\t
 foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	foreach my $orig (keys(%{$unique_combinations_hash->{$rxnid}})) {
 		foreach my $rast (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}})) {
-			my $genecount = 0;
-			my $genomecount = 0;
-			my $eqn = "";
-			my $ec = "";
-			my $roles = "";
-			if (defined($rxnhash->{$rxnid})) {
-				$eqn = $rxnhash->{$rxnid}->{definition};
-				if (defined($rxnhash->{$rxnid}->{ec_numbers})) {
-					$ec = join("|",@{$rxnhash->{$rxnid}->{ec_numbers}});
-				}
-				if (defined($rxnhash->{$rxnid}->{roles})) {
-					for (my $i=0; $i < @{$rxnhash->{$rxnid}->{roles}}; $i++) {
-						my $temparray = [split/;/,$rxnhash->{$rxnid}->{roles}->[$i]];
-						if (length($roles) > 0) {
-							$roles .= "|";
+			foreach my $rast2 (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}})) {
+				my $genecount = 0;
+				my $genomecount = 0;
+				my $eqn = "";
+				my $ec = "";
+				my $roles = "";
+				if (defined($rxnhash->{$rxnid})) {
+					$eqn = $rxnhash->{$rxnid}->{definition};
+					if (defined($rxnhash->{$rxnid}->{ec_numbers})) {
+						$ec = join("|",@{$rxnhash->{$rxnid}->{ec_numbers}});
+					}
+					if (defined($rxnhash->{$rxnid}->{roles})) {
+						for (my $i=0; $i < @{$rxnhash->{$rxnid}->{roles}}; $i++) {
+							my $temparray = [split/;/,$rxnhash->{$rxnid}->{roles}->[$i]];
+							if (length($roles) > 0) {
+								$roles .= "|";
+							}
+							$roles .= $temparray->[1];
 						}
-						$roles .= $temparray->[1];
 					}
 				}
-			}
-			my $role1hash = {};
-			my $role2hash = {};
-			foreach my $rast2 (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}})) {
+				my $role1hash = {};
+				my $role2hash = {};
 				foreach my $rastrole (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}})) {
 					$role1hash->{$rastrole} = 1;
 					foreach my $rast2role (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}})) {

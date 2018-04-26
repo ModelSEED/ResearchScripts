@@ -261,37 +261,42 @@ print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\tCurrent roles\t
 foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	foreach my $orig (keys(%{$unique_combinations_hash->{$rxnid}})) {
 		foreach my $rast (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}})) {
+			my $genecount = 0;
+			my $genomecount = 0;
+			my $eqn = "";
+			my $ec = "";
+			my $roles = "";
+			if (defined($rxnhash->{$rxnid})) {
+				$eqn = $rxnhash->{$rxnid}->{definition};
+				if (defined($rxnhash->{$rxnid}->{ec_numbers})) {
+					$ec = join("|",@{$rxnhash->{$rxnid}->{ec_numbers}});
+				}
+				if (defined($rxnhash->{$rxnid}->{roles})) {
+					for (my $i=0; $i < @{$rxnhash->{$rxnid}->{roles}}; $i++) {
+						my $temparray = [split/;/,$rxnhash->{$rxnid}->{roles}->[$i]];
+						if (length($roles) > 0) {
+							$roles .= "|";
+						}
+						$roles .= $temparray->[1];
+					}
+				}
+			}
+			my $role1hash = {};
+			my $role2hash = {};
 			foreach my $rast2 (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}})) {
 				foreach my $rastrole (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}})) {
+					$role1hash->{$rastrole} = 1;
 					foreach my $rast2role (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}})) {
-						my $genomecount = keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}});
-						my $genecount = 0;
+						$role1hash->{$rast2role} = 1;
+						$genomecount += keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}});
 						foreach my $genome (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}})) {
 							$genecount += keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}->{$genome}});
 						}
-						my $eqn = "";
-						my $ec = "";
-						my $roles = "";
-						if (defined($rxnhash->{$rxnid})) {
-							$eqn = $rxnhash->{$rxnid}->{definition};
-							if (defined($rxnhash->{$rxnid}->{ec_numbers})) {
-								$ec = join("|",@{$rxnhash->{$rxnid}->{ec_numbers}});
-							}
-							if (defined($rxnhash->{$rxnid}->{roles})) {
-								for (my $i=0; $i < @{$rxnhash->{$rxnid}->{roles}}; $i++) {
-									my $temparray = [split/;/,$rxnhash->{$rxnid}->{roles}->[$i]];
-									if (length($roles) > 0) {
-										$roles .= "|";
-									}
-									$roles .= $temparray->[1];
-								}
-							}
-						}
-						if ($orig == 0 || $rast == 0 || $rast2 == 0) {
-							print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".$rastrole."\t".$rast2."\t".$rast2role."\n";
-						}
 					}
-				}
+				}	
+			}
+			if ($orig == 0 || $rast == 0 || $rast2 == 0) {
+				print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".join("|",keys(%{$role1hash}))."\t".$rast2."\t".join("|",keys(%{$role2hash}))."\n";
 			}
 		}
 	}	

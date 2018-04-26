@@ -294,9 +294,9 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 						}
 					}
 				}	
-			}
-			if ($orig == 0 || $rast == 0 || $rast2 == 0) {
-				print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".join("|",keys(%{$role1hash}))."\t".$rast2."\t".join("|",keys(%{$role2hash}))."\n";
+				if ($orig == 0 || $rast == 0 || $rast2 == 0) {
+					print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".join("|",keys(%{$role1hash}))."\t".$rast2."\t".join("|",keys(%{$role2hash}))."\n";
+				}
 			}
 		}
 	}	

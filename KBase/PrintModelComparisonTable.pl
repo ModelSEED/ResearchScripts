@@ -12,6 +12,7 @@ Bio::KBase::ObjectAPI::functions::set_handler($handler);
 my $ws = Bio::KBase::kbaseenv::ws_client();
 
 my $directory = $ARGV[0];
+my $workspace = $ARGV[1];
 
 my $genomes = [qw(
 100226.1
@@ -149,11 +150,11 @@ my $unique_combinations_hash;
 open (my $fout, ">", $directory."/FullTable.txt");
 print $fout "Genome\tGene\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST annotation\tRAST2\tRAST2 annotation\n";
 foreach my $genome (@{$genomes}) {
-	my $g1 = $handler->util_get_object("chenry:narrative_1524167538737/".$genome.".RAST",{raw => 1});
-	my $g2 = $handler->util_get_object("chenry:narrative_1524167538737/".$genome.".RAST2",{raw => 1});
-	my $m1 = $handler->util_get_object("chenry:narrative_1524167538737/Seed".$genome,{raw => 1});
-	my $m2 = $handler->util_get_object("chenry:narrative_1524167538737/".$genome.".RAST.fbamodel",{raw => 1});
-	my $m3 = $handler->util_get_object("chenry:narrative_1524167538737/".$genome.".RAST2.mdl",{raw => 1});
+	my $g1 = $handler->util_get_object($workspace."/".$genome.".RAST",{raw => 1});
+	my $g2 = $handler->util_get_object($workspace."/".$genome.".RAST2",{raw => 1});
+	my $m1 = $handler->util_get_object($workspace."/Seed".$genome,{raw => 1});
+	my $m2 = $handler->util_get_object($workspace."/".$genome.".RAST.fbamodel",{raw => 1});
+	my $m3 = $handler->util_get_object($workspace."/".$genome.".RAST2.fbamodel",{raw => 1});
 	for (my $i=0; $i < @{$g1->{features}}; $i++) {
 		if ($g1->{features}->[$i]->{id} =~ m/(peg\.\d+)/) {
 			my $geneid = $1;

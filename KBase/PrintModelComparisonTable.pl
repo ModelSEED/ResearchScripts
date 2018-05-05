@@ -263,13 +263,13 @@ foreach my $genome (@{$genomes}) {
 }
 close($fout);
 open (my $fout2, ">", $directory."/CombinedTable.txt");
-print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST2\tRAST annotation\tRAST2 annotation\n";
+print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST2\tAnnotations\n";
 foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	foreach my $orig (keys(%{$unique_combinations_hash->{$rxnid}})) {
 		foreach my $rast (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}})) {
 			foreach my $rast2 (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}})) {
-				my $genecount = 0;
-				my $genomecount = 0;
+				my $genehash = {};
+				my $genomehash = {};
 				my $eqn = "";
 				my $ec = "";
 				my $roles = "";
@@ -291,17 +291,34 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 				my $role1hash = {};
 				my $role2hash = {};
 				foreach my $rastrole (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}})) {
-					$role1hash->{$rastrole} = 1;
+					if (!defined($role1hash->{$rastrole})) {
+						$role1hash->{$rastrole} = 0;
+					}
+					$role1hash->{$rastrole}++;
 					foreach my $rast2role (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}})) {
-						$role1hash->{$rast2role} = 1;
-						$genomecount += keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}});
+						if (!defined($role2hash->{$rastrole})) {
+							$role2hash->{$rastrole} = 0;
+						}
+						$role2hash->{$rastrole}++;
 						foreach my $genome (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}})) {
-							$genecount += keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}->{$genome}});
+							$genomehash->{$genome} = 1; 
+							foreach my $gene (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}->{$genome}})) {
+								$genehash->{$gene} = 1; 
+							}
 						}
 					}
 				}	
+				my $genecount = keys(%{$genehash});
+				my $genomecount = keys(%{$genomehash});
 				if ($orig == 0 || $rast == 0 || $rast2 == 0) {
-					print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".$rast2."\t".join("|",keys(%{$role1hash}))."\t".join("|",keys(%{$role2hash}))."\n";
+					print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".$rast2;
+					foreach my $role (keys(%{$role1hash})) {
+						print $fout2 "\t1:".$role.":".$role1hash->{$role};
+					}
+					foreach my $role (keys(%{$role2hash})) {
+						print $fout2 "\t2:".$role.":".$role2hash->{$role};
+					}
+					print $fout2."\n";
 				}
 			}
 		}

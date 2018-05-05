@@ -148,7 +148,7 @@ my $genehash;
 my $geneanno;
 my $unique_combinations_hash;
 open (my $fout, ">", $directory."/FullTable.txt");
-print $fout "Genome\tGene\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST annotation\tRAST2\tRAST2 annotation\n";
+print $fout "Genome\tGene\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST2\tRAST annotation\tRAST2 annotation\n";
 foreach my $genome (@{$genomes}) {
 	my $g1 = $handler->util_get_object($workspace."/".$genome.".RAST",{raw => 1});
 	my $g2 = $handler->util_get_object($workspace."/".$genome.".RAST2",{raw => 1});
@@ -251,14 +251,14 @@ foreach my $genome (@{$genomes}) {
 			}
 			if ($present->[0] == 0 || $present->[1] == 0 || $present->[2] == 0) {
 				print $fout $genome."\t".$gene."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t";
-				print $fout $present->[0]."\t".$present->[1]."\t".$geneanno->{$gene}->{RAST}."\t".$present->[2]."\t".$geneanno->{$gene}->{RAST2}."\n";
+				print $fout $present->[0]."\t".$present->[1]."\t".$present->[2]."\t".$geneanno->{$gene}->{RAST}."\t".$geneanno->{$gene}->{RAST2}."\n";
 			}
 		}
 	}
 }
 close($fout);
 open (my $fout2, ">", $directory."/CombinedTable.txt");
-print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST annotation\tRAST2\tRAST2 annotation\n";
+print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST2\tRAST annotation\tRAST2 annotation\n";
 foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	foreach my $orig (keys(%{$unique_combinations_hash->{$rxnid}})) {
 		foreach my $rast (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}})) {
@@ -296,7 +296,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 					}
 				}	
 				if ($orig == 0 || $rast == 0 || $rast2 == 0) {
-					print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".join("|",keys(%{$role1hash}))."\t".$rast2."\t".join("|",keys(%{$role2hash}))."\n";
+					print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".$rast2."\t".join("|",keys(%{$role1hash}))."\t".join("|",keys(%{$role2hash}))."\n";
 				}
 			}
 		}

@@ -150,6 +150,7 @@ my $unique_combinations_hash;
 open (my $fout, ">", $directory."/FullTable.txt");
 print $fout "Genome\tGene\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST2\tRAST annotation\tRAST2 annotation\n";
 foreach my $genome (@{$genomes}) {
+	eval {
 	my $g1 = $handler->util_get_object($workspace."/".$genome.".RAST",{raw => 1});
 	my $g2 = $handler->util_get_object($workspace."/".$genome.".RAST2",{raw => 1});
 	my $m1 = $handler->util_get_object($workspace."/Seed".$genome,{raw => 1});
@@ -254,6 +255,10 @@ foreach my $genome (@{$genomes}) {
 				print $fout $present->[0]."\t".$present->[1]."\t".$present->[2]."\t".$geneanno->{$gene}->{RAST}."\t".$geneanno->{$gene}->{RAST2}."\n";
 			}
 		}
+	}
+	};
+	if ($@) {
+		print "Error on ".$genome."\n".$@."\n";
 	}
 }
 close($fout);

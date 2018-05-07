@@ -147,8 +147,8 @@ my $rxnhash = Bio::KBase::utilities::reaction_hash();
 my $genehash;
 my $geneanno;
 my $unique_combinations_hash;
-open (my $fout, ">", $directory."/FullTable.txt");
-print $fout "Genome\tGene\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST2\tRAST annotation\tRAST2 annotation\n";
+#open (my $fout, ">", $directory."/FullTable.txt");
+#print $fout "Genome\tGene\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST2\tRAST annotation\tRAST2 annotation\n";
 foreach my $genome (@{$genomes}) {
 	eval {
 	my $g1 = $handler->util_get_object($workspace."/".$genome.".RAST",{raw => 1});
@@ -251,8 +251,8 @@ foreach my $genome (@{$genomes}) {
 				}
 			}
 			if ($present->[0] == 0 || $present->[1] == 0 || $present->[2] == 0) {
-				print $fout $genome."\t".$gene."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t";
-				print $fout $present->[0]."\t".$present->[1]."\t".$present->[2]."\t".$geneanno->{$gene}->{RAST}."\t".$geneanno->{$gene}->{RAST2}."\n";
+				#print $fout $genome."\t".$gene."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t";
+				#print $fout $present->[0]."\t".$present->[1]."\t".$present->[2]."\t".$geneanno->{$gene}->{RAST}."\t".$geneanno->{$gene}->{RAST2}."\n";
 			}
 		}
 	}
@@ -261,7 +261,7 @@ foreach my $genome (@{$genomes}) {
 		print "Error on ".$genome."\n".$@."\n";
 	}
 }
-close($fout);
+#close($fout);
 open (my $fout2, ">", $directory."/CombinedTable.txt");
 print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST2\tAnnotations\n";
 foreach my $rxnid (keys(%{$unique_combinations_hash})) {
@@ -318,7 +318,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 					foreach my $role (keys(%{$role2hash})) {
 						print $fout2 "\t2:".$role.":".$role2hash->{$role};
 					}
-					print $fout2."\n";
+					print $fout2 "\n";
 				}
 			}
 		}

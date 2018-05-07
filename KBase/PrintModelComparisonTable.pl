@@ -293,19 +293,19 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 				my $role1hash = {};
 				my $role2hash = {};
 				foreach my $rastrole (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}})) {
-					if (!defined($role1hash->{$rastrole})) {
-						$role1hash->{$rastrole} = 0;
-					}
-					$role1hash->{$rastrole}++;
 					foreach my $rast2role (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}})) {
-						if (!defined($role2hash->{$rastrole})) {
-							$role2hash->{$rastrole} = 0;
-						}
-						$role2hash->{$rastrole}++;
 						foreach my $genome (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}})) {
 							$genomehash->{$genome} = 1; 
 							foreach my $gene (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}->{$genome}})) {
-								$genehash->{$gene} = 1; 
+								$genehash->{$gene} = 1;
+								if (!defined($role1hash->{$rastrole})) {
+									$role1hash->{$rastrole} = 0;
+								}
+								$role1hash->{$rastrole}++;
+								if (!defined($role2hash->{$role2hash})) {
+									$role2hash->{$role2hash} = 0;
+								}
+								$role2hash->{$role2hash}++;
 							}
 						}
 					}
@@ -314,10 +314,12 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 				my $genomecount = keys(%{$genomehash});
 				if ($orig == 0 || $rast == 0 || $rast2 == 0) {
 					print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".$rast2;
-					foreach my $role (keys(%{$role1hash})) {
+					my $rolelist = [sort { $role1hash->{$b} <=> $role1hash->{$a} } keys(%{$role1hash})];
+					foreach my $role (@{$rolelist}) {
 						print $fout2 "\t1:".$role.":".$role1hash->{$role};
 					}
-					foreach my $role (keys(%{$role2hash})) {
+					$rolelist = [sort { $role2hash->{$b} <=> $role2hash->{$a} } keys(%{$role2hash})];
+					foreach my $role (@{$rolelist}) {
 						print $fout2 "\t2:".$role.":".$role2hash->{$role};
 					}
 					print $fout2 "\n";

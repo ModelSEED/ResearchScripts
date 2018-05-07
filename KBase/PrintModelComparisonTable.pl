@@ -156,6 +156,8 @@ foreach my $genome (@{$genomes}) {
 	my $m1 = $handler->util_get_object($workspace."/Seed".$genome,{raw => 1});
 	my $m2 = $handler->util_get_object($workspace."/".$genome.".RAST.fbamodel",{raw => 1});
 	my $m3 = $handler->util_get_object($workspace."/".$genome."RAST2.fbamodel",{raw => 1});
+	my $genehash = {};
+	my $geneanno = {};
 	for (my $i=0; $i < @{$g1->{features}}; $i++) {
 		if ($g1->{features}->[$i]->{id} =~ m/(peg\.\d+)/) {
 			my $geneid = $1;

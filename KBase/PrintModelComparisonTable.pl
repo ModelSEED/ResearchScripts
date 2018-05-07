@@ -270,7 +270,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	foreach my $orig (keys(%{$unique_combinations_hash->{$rxnid}})) {
 		foreach my $rast (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}})) {
 			foreach my $rast2 (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}})) {
-				my $genehash = {};
+				$genehash = {};
 				my $genomehash = {};
 				my $eqn = "";
 				my $ec = "";

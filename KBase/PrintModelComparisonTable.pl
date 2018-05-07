@@ -302,17 +302,17 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 									$role1hash->{$rastrole} = 0;
 								}
 								$role1hash->{$rastrole}++;
-								if (!defined($role2hash->{$role2hash})) {
-									$role2hash->{$role2hash} = 0;
+								if (!defined($role2hash->{$rast2role})) {
+									$role2hash->{$rast2role} = 0;
 								}
-								$role2hash->{$role2hash}++;
+								$role2hash->{$rast2role}++;
 							}
 						}
 					}
 				}	
 				my $genecount = keys(%{$genehash});
 				my $genomecount = keys(%{$genomehash});
-				if ($orig == 0 || $rast == 0 || $rast2 == 0) {
+				#if ($orig == 0 || $rast == 0 || $rast2 == 0) {
 					print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".$rast2;
 					my $rolelist = [sort { $role1hash->{$b} <=> $role1hash->{$a} } keys(%{$role1hash})];
 					foreach my $role (@{$rolelist}) {
@@ -323,7 +323,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 						print $fout2 "\t2:".$role.":".$role2hash->{$role};
 					}
 					print $fout2 "\n";
-				}
+				#}
 			}
 		}
 	}	

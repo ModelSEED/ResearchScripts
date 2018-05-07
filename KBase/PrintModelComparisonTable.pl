@@ -265,67 +265,110 @@ foreach my $genome (@{$genomes}) {
 }
 #close($fout);
 open (my $fout2, ">", $directory."/CombinedTable.txt");
-print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\tCurrent roles\tOrig\tRAST\tRAST2\tAnnotations\n";
+print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\t111\t011\t001\t010\t100\t110\t101\tCurrent roles\tAnnotations\n";
 foreach my $rxnid (keys(%{$unique_combinations_hash})) {
+	my $instances;
+	my $role1hash = {};
+	my $role2hash = {};
+	my $totalgenome = 0;
+	my $totalgenes = 0;
+	my $eqn = "";
+	my $ec = "";
+	my $roles = "";
+	if (defined($rxnhash->{$rxnid})) {
+		$eqn = $rxnhash->{$rxnid}->{definition};
+		if (defined($rxnhash->{$rxnid}->{ec_numbers})) {
+			$ec = join("|",@{$rxnhash->{$rxnid}->{ec_numbers}});
+		}
+		if (defined($rxnhash->{$rxnid}->{roles})) {
+			for (my $i=0; $i < @{$rxnhash->{$rxnid}->{roles}}; $i++) {
+				my $temparray = [split/;/,$rxnhash->{$rxnid}->{roles}->[$i]];
+				if (length($roles) > 0) {
+					$roles .= "|";
+				}
+				$roles .= $temparray->[1];
+			}
+		}
+	}
 	foreach my $orig (keys(%{$unique_combinations_hash->{$rxnid}})) {
 		foreach my $rast (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}})) {
 			foreach my $rast2 (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}})) {
 				$genehash = {};
 				my $genomehash = {};
-				my $eqn = "";
-				my $ec = "";
-				my $roles = "";
-				if (defined($rxnhash->{$rxnid})) {
-					$eqn = $rxnhash->{$rxnid}->{definition};
-					if (defined($rxnhash->{$rxnid}->{ec_numbers})) {
-						$ec = join("|",@{$rxnhash->{$rxnid}->{ec_numbers}});
-					}
-					if (defined($rxnhash->{$rxnid}->{roles})) {
-						for (my $i=0; $i < @{$rxnhash->{$rxnid}->{roles}}; $i++) {
-							my $temparray = [split/;/,$rxnhash->{$rxnid}->{roles}->[$i]];
-							if (length($roles) > 0) {
-								$roles .= "|";
-							}
-							$roles .= $temparray->[1];
-						}
-					}
-				}
-				my $role1hash = {};
-				my $role2hash = {};
 				foreach my $rastrole (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}})) {
 					foreach my $rast2role (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}})) {
 						foreach my $genome (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}})) {
 							$genomehash->{$genome} = 1; 
 							foreach my $gene (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}->{$genome}})) {
 								$genehash->{$gene} = 1;
-								if (!defined($role1hash->{$rastrole})) {
-									$role1hash->{$rastrole} = 0;
+								if (!defined($role1hash->{$rastrole}->{$orig.$rast.$rast2})) {
+									$role1hash->{$rastrole}->{$orig.$rast.$rast2} = 0;
 								}
-								$role1hash->{$rastrole}++;
-								if (!defined($role2hash->{$rast2role})) {
-									$role2hash->{$rast2role} = 0;
+								$role1hash->{$rastrole}->{$orig.$rast.$rast2}++;
+								if (!defined($role2hash->{$rast2role}->{$orig.$rast.$rast2})) {
+									$role2hash->{$rast2role}->{$orig.$rast.$rast2} = 0;
 								}
-								$role2hash->{$rast2role}++;
+								$role2hash->{$rast2role}->{$orig.$rast.$rast2}++;
 							}
 						}
 					}
 				}	
 				my $genecount = keys(%{$genehash});
 				my $genomecount = keys(%{$genomehash});
-				#if ($orig == 0 || $rast == 0 || $rast2 == 0) {
-					print $fout2 $genomecount."\t".$genecount."\t".$rxnid."\t".$eqn."\t".$ec."\t".$roles."\t".$orig."\t".$rast."\t".$rast2;
-					my $rolelist = [sort { $role1hash->{$b} <=> $role1hash->{$a} } keys(%{$role1hash})];
-					foreach my $role (@{$rolelist}) {
-						print $fout2 "\t1:".$role.":".$role1hash->{$role};
-					}
-					$rolelist = [sort { $role2hash->{$b} <=> $role2hash->{$a} } keys(%{$role2hash})];
-					foreach my $role (@{$rolelist}) {
-						print $fout2 "\t2:".$role.":".$role2hash->{$role};
-					}
-					print $fout2 "\n";
-				#}
+				$instances->{$orig.$rast.$rast2} = [$genomecount,$genecount];
+				$totalgenome += $genomecount;
+				$totalgenes += $genecount;
 			}
 		}
-	}	
+	}
+	my $types = ["111","011","001","010","100","110","101"];
+	print $fout2 $totalgenome."\t".$totalgenes."\t".$rxnid."\t".$eqn."\t".$ec;
+	foreach my $type (@{$types}) {
+		if (defined($instances->{$type})) {
+			print $fout2 "\t".$instances->{$type}->[0].":".$instances->{$type}->[1];
+		} else {
+			print $fout2 "\t0:0";
+		}
+	}
+	print $fout2 "\t".$roles;
+	my $rolelist = [sort { $role1hash->{$b} <=> $role1hash->{$a} } keys(%{$role1hash})];
+	foreach my $role (@{$rolelist}) {
+		print $fout2 "\t1;".$role.";";
+		if (defined($role1hash->{$role}->{"001"})) {
+			print $fout2 $role1hash->{$role}->{"001"}.":";
+		} else {
+			print $fout2  "0:";
+		}
+		if (defined($role1hash->{$role}->{"100"})) {
+			print $fout2 $role1hash->{$role}->{"100"}.":";
+		} else {
+			print $fout2  "0:";
+		}
+		if (defined($role1hash->{$role}->{"101"})) {
+			print $fout2 $role1hash->{$role}->{"101"};
+		} else {
+			print $fout2  "0";
+		}
+	}
+	$rolelist = [sort { $role2hash->{$b} <=> $role2hash->{$a} } keys(%{$role2hash})];
+	foreach my $role (@{$rolelist}) {
+		print $fout2 "\t2;".$role.";";
+		if (defined($role2hash->{$role}->{"010"})) {
+			print $fout2 $role2hash->{$role}->{"010"}.":";
+		} else {
+			print $fout2  "0:";
+		}
+		if (defined($role2hash->{$role}->{"100"})) {
+			print $fout2 $role2hash->{$role}->{"100"}.":";
+		} else {
+			print $fout2  "0:";
+		}
+		if (defined($role2hash->{$role}->{"110"})) {
+			print $fout2 $role2hash->{$role}->{"110"};
+		} else {
+			print $fout2  "0";
+		}
+	}
+	print $fout2 "\n";	
 }
 close($fout2);

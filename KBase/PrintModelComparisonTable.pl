@@ -296,7 +296,13 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 				$genehash = {};
 				my $genomehash = {};
 				foreach my $rastrole (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}})) {
+					if (!defined($role1hash->{$rastrole}->{newcount})) {
+						$role1hash->{$rastrole}->{newcount} = 0;
+					}
 					foreach my $rast2role (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}})) {
+						if (!defined($role2hash->{$rast2role}->{newcount})) {
+							$role2hash->{$rast2role}->{newcount} = 0;
+						}
 						foreach my $genome (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}})) {
 							$genomehash->{$genome} = 1; 
 							foreach my $gene (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}->{$genome}})) {
@@ -305,10 +311,16 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 									$role1hash->{$rastrole}->{$orig.$rast.$rast2} = 0;
 								}
 								$role1hash->{$rastrole}->{$orig.$rast.$rast2}++;
+								if ($orig.$rast.$rast2 eq "001" || $orig.$rast.$rast2 eq "100" || $orig.$rast.$rast2 eq "101") {
+									$role1hash->{$rastrole}->{newcount}++;
+								}
 								if (!defined($role2hash->{$rast2role}->{$orig.$rast.$rast2})) {
 									$role2hash->{$rast2role}->{$orig.$rast.$rast2} = 0;
 								}
 								$role2hash->{$rast2role}->{$orig.$rast.$rast2}++;
+								if ($orig.$rast.$rast2 eq "010" || $orig.$rast.$rast2 eq "100" || $orig.$rast.$rast2 eq "110") {
+									$role2hash->{$rast2role}->{newcount}++;
+								}
 							}
 						}
 					}
@@ -325,48 +337,52 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	print $fout2 $totalgenome."\t".$totalgenes."\t".$rxnid."\t".$eqn."\t".$ec;
 	foreach my $type (@{$types}) {
 		if (defined($instances->{$type})) {
-			print $fout2 "\t".$instances->{$type}->[0].":".$instances->{$type}->[1];
+			print $fout2 "\t".$instances->{$type}->[1];
 		} else {
-			print $fout2 "\t0:0";
+			print $fout2 "\t0";
 		}
 	}
 	print $fout2 "\t".$roles;
-	my $rolelist = [sort { $role1hash->{$b} <=> $role1hash->{$a} } keys(%{$role1hash})];
+	my $rolelist = [sort { $role1hash->{$b}->{newcount} <=> $role1hash->{$a}->{newcount} } keys(%{$role1hash})];
 	foreach my $role (@{$rolelist}) {
-		print $fout2 "\t1;".$role.";";
-		if (defined($role1hash->{$role}->{"001"})) {
-			print $fout2 $role1hash->{$role}->{"001"}.":";
-		} else {
-			print $fout2  "0:";
-		}
-		if (defined($role1hash->{$role}->{"100"})) {
-			print $fout2 $role1hash->{$role}->{"100"}.":";
-		} else {
-			print $fout2  "0:";
-		}
-		if (defined($role1hash->{$role}->{"101"})) {
-			print $fout2 $role1hash->{$role}->{"101"};
-		} else {
-			print $fout2  "0";
+		if ($role1hash->{$role}->{newcount} > 0) {
+			print $fout2 "\t1;".$role.";";
+			if (defined($role1hash->{$role}->{"001"})) {
+				print $fout2 $role1hash->{$role}->{"001"}.":";
+			} else {
+				print $fout2  "0:";
+			}
+			if (defined($role1hash->{$role}->{"100"})) {
+				print $fout2 $role1hash->{$role}->{"100"}.":";
+			} else {
+				print $fout2  "0:";
+			}
+			if (defined($role1hash->{$role}->{"101"})) {
+				print $fout2 $role1hash->{$role}->{"101"};
+			} else {
+				print $fout2  "0";
+			}
 		}
 	}
-	$rolelist = [sort { $role2hash->{$b} <=> $role2hash->{$a} } keys(%{$role2hash})];
+	$rolelist = [sort { $role2hash->{$b}->{newcount} <=> $role2hash->{$a}->{newcount} } keys(%{$role2hash})];
 	foreach my $role (@{$rolelist}) {
-		print $fout2 "\t2;".$role.";";
-		if (defined($role2hash->{$role}->{"010"})) {
-			print $fout2 $role2hash->{$role}->{"010"}.":";
-		} else {
-			print $fout2  "0:";
-		}
-		if (defined($role2hash->{$role}->{"100"})) {
-			print $fout2 $role2hash->{$role}->{"100"}.":";
-		} else {
-			print $fout2  "0:";
-		}
-		if (defined($role2hash->{$role}->{"110"})) {
-			print $fout2 $role2hash->{$role}->{"110"};
-		} else {
-			print $fout2  "0";
+		if ($role2hash->{$role}->{newcount} > 0) {
+			print $fout2 "\t2;".$role.";";
+			if (defined($role2hash->{$role}->{"010"})) {
+				print $fout2 $role2hash->{$role}->{"010"}.":";
+			} else {
+				print $fout2  "0:";
+			}
+			if (defined($role2hash->{$role}->{"100"})) {
+				print $fout2 $role2hash->{$role}->{"100"}.":";
+			} else {
+				print $fout2  "0:";
+			}
+			if (defined($role2hash->{$role}->{"110"})) {
+				print $fout2 $role2hash->{$role}->{"110"};
+			} else {
+				print $fout2  "0";
+			}
 		}
 	}
 	print $fout2 "\n";	

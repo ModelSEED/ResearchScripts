@@ -268,8 +268,7 @@ open (my $fout2, ">", $directory."/CombinedTable.txt");
 print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\t111\t011\t001\t010\t100\t110\t101\tCurrent roles\tAnnotations\n";
 foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	my $instances;
-	my $role1hash = {};
-	my $role2hash = {};
+	my $rolehash = {};
 	my $totalgenome = 0;
 	my $totalgenes = 0;
 	my $eqn = "";
@@ -296,30 +295,50 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 				$genehash = {};
 				my $genomehash = {};
 				foreach my $rastrole (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}})) {
-					if (!defined($role1hash->{$rastrole}->{newcount})) {
-						$role1hash->{$rastrole}->{newcount} = 0;
+					if (!defined($rolehash->{$rastrole}->{newcount})) {
+						$rolehash->{$rastrole}->{newcount} = {
+							rast1 => 0,
+							all => 0,
+							rast2 => 0
+						};
 					}
 					foreach my $rast2role (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}})) {
-						if (!defined($role2hash->{$rast2role}->{newcount})) {
-							$role2hash->{$rast2role}->{newcount} = 0;
+						if (!defined($rolehash->{$rast2role}->{newcount})) {
+							$rolehash->{$rast2role}->{newcount} = {
+								rast1 => 0,
+								all => 0,
+								rast2 => 0
+							};
 						}
 						foreach my $genome (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}})) {
 							$genomehash->{$genome} = 1; 
 							foreach my $gene (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}->{$rast2role}->{$genome}})) {
 								$genehash->{$gene} = 1;
-								if (!defined($role1hash->{$rastrole}->{$orig.$rast.$rast2})) {
-									$role1hash->{$rastrole}->{$orig.$rast.$rast2} = 0;
+								if (!defined($rolehash->{$rastrole}->{$orig.$rast.$rast2})) {
+									$rolehash->{$rastrole}->{$orig.$rast.$rast2} = {
+										rast1 => 0,
+										all => 0,
+										rast2 => 0
+									};
 								}
-								$role1hash->{$rastrole}->{$orig.$rast.$rast2}++;
+								$rolehash->{$rastrole}->{$orig.$rast.$rast2}->{all}++;
+								$rolehash->{$rastrole}->{$orig.$rast.$rast2}->{rast1}++;
 								if ($orig.$rast.$rast2 eq "001" || $orig.$rast.$rast2 eq "100" || $orig.$rast.$rast2 eq "101") {
-									$role1hash->{$rastrole}->{newcount}++;
+									$rolehash->{$rastrole}->{newcount}->{all}++;
+									$rolehash->{$rastrole}->{newcount}->{rast1}++;
 								}
-								if (!defined($role2hash->{$rast2role}->{$orig.$rast.$rast2})) {
-									$role2hash->{$rast2role}->{$orig.$rast.$rast2} = 0;
+								if (!defined($rolehash->{$rast2role}->{$orig.$rast.$rast2})) {
+									$rolehash->{$rast2role}->{$orig.$rast.$rast2} = {
+										rast1 => 0,
+										all => 0,
+										rast2 => 0
+									};
 								}
-								$role2hash->{$rast2role}->{$orig.$rast.$rast2}++;
+								$rolehash->{$rast2role}->{$orig.$rast.$rast2}->{all}++;
+								$rolehash->{$rast2role}->{$orig.$rast.$rast2}->{rast2}++;
 								if ($orig.$rast.$rast2 eq "010" || $orig.$rast.$rast2 eq "100" || $orig.$rast.$rast2 eq "110") {
-									$role2hash->{$rast2role}->{newcount}++;
+									$rolehash->{$rast2role}->{newcount}->{all}++;
+									$rolehash->{$rast2role}->{newcount}->{rast2}++;
 								}
 							}
 						}
@@ -343,43 +362,38 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 		}
 	}
 	print $fout2 "\t".$roles;
-	my $rolelist = [sort { $role1hash->{$b}->{newcount} <=> $role1hash->{$a}->{newcount} } keys(%{$role1hash})];
+	my $rolelist = [sort { $rolehash->{$b}->{newcount}->{all} <=> $rolehash->{$a}->{newcount}->{all} } keys(%{$rolehash})];
 	foreach my $role (@{$rolelist}) {
-		if ($role1hash->{$role}->{newcount} > 0) {
-			print $fout2 "\t1;".$role.";";
-			if (defined($role1hash->{$role}->{"001"})) {
-				print $fout2 $role1hash->{$role}->{"001"}.":";
+		if ($rolehash->{$role}->{newcount}->{all} > 0) {
+			print $fout2 "\t".$rolehash->{$role}->{newcount}->{rast1}."|".$rolehash->{$role}->{newcount}->{rast2}.";".$role.";";
+			if (defined($rolehash->{$role}->{"001"})) {
+				print $fout2 $rolehash->{$role}->{"001"}->{rast1}.":";
 			} else {
 				print $fout2  "0:";
 			}
-			if (defined($role1hash->{$role}->{"100"})) {
-				print $fout2 $role1hash->{$role}->{"100"}.":";
+			if (defined($rolehash->{$role}->{"100"})) {
+				print $fout2 $rolehash->{$role}->{"100"}->{rast1}.":";
 			} else {
 				print $fout2  "0:";
 			}
-			if (defined($role1hash->{$role}->{"101"})) {
-				print $fout2 $role1hash->{$role}->{"101"};
+			if (defined($rolehash->{$role}->{"101"})) {
+				print $fout2 $rolehash->{$role}->{"101"}->{rast1};
 			} else {
 				print $fout2  "0";
 			}
-		}
-	}
-	$rolelist = [sort { $role2hash->{$b}->{newcount} <=> $role2hash->{$a}->{newcount} } keys(%{$role2hash})];
-	foreach my $role (@{$rolelist}) {
-		if ($role2hash->{$role}->{newcount} > 0) {
-			print $fout2 "\t2;".$role.";";
-			if (defined($role2hash->{$role}->{"010"})) {
-				print $fout2 $role2hash->{$role}->{"010"}.":";
+			print "|";
+			if (defined($rolehash->{$role}->{"010"})) {
+				print $fout2 $rolehash->{$role}->{"010"}->{rast2}.":";
 			} else {
 				print $fout2  "0:";
 			}
-			if (defined($role2hash->{$role}->{"100"})) {
-				print $fout2 $role2hash->{$role}->{"100"}.":";
+			if (defined($rolehash->{$role}->{"100"})) {
+				print $fout2 $rolehash->{$role}->{"100"}->{rast2}.":";
 			} else {
 				print $fout2  "0:";
 			}
-			if (defined($role2hash->{$role}->{"110"})) {
-				print $fout2 $role2hash->{$role}->{"110"};
+			if (defined($rolehash->{$role}->{"110"})) {
+				print $fout2 $rolehash->{$role}->{"110"}->{rast2};
 			} else {
 				print $fout2  "0";
 			}

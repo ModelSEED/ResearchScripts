@@ -381,7 +381,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 			} else {
 				print $fout2  "0";
 			}
-			print "|";
+			print $fout2 "|";
 			if (defined($rolehash->{$role}->{"010"})) {
 				print $fout2 $rolehash->{$role}->{"010"}->{rast2}.":";
 			} else {

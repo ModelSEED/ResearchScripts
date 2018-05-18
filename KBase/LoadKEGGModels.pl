@@ -289,7 +289,7 @@ foreach my $genome (@{$genomes}) {
 		my $id = $genome;
 		print $genome."\t".$count."\n";
 		$id =~ s/\.txt//;
-		my $data = Bio::KBase::ObjectAPI::utilities::LOADFILE("/Users/chenry/workspace/ModelSEEDModels/kegg_models/".$genome);
+		my $data = Bio::KBase::ObjectAPI::utilities::LOADFILE("/disks/p3dev3/ModelComparison/kegg_models/".$genome);
 		my $genome = $handler->util_get_object("jplfaria:narrative_1524466549180/".$id);
 		my $class = $genome->template_classification();
 		my $template = "NewKBaseModelTemplates/GramPosModelTemplate";

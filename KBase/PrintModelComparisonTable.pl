@@ -143,6 +143,10 @@ my $genomes = [qw(
 445932.3
 )];
 
+my $letters = [qw(
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+)];
+
 my $rxnhash = Bio::KBase::utilities::reaction_hash();
 my $genehash;
 my $geneanno;
@@ -264,6 +268,7 @@ foreach my $genome (@{$genomes}) {
 	}
 }
 #close($fout);
+my $alllabels = {};
 open (my $fout2, ">", $directory."/CombinedTable.txt");
 print $fout2 "Num genomes\tNum genes\tRxn\tEquation\tEC numbers\t111\t011\t001\t010\t100\t110\t101\tCurrent roles\tAnnotations\n";
 foreach my $rxnid (keys(%{$unique_combinations_hash})) {
@@ -271,24 +276,6 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	my $rolehash = {};
 	my $totalgenome = 0;
 	my $totalgenes = 0;
-	my $eqn = "";
-	my $ec = "";
-	my $roles = "";
-	if (defined($rxnhash->{$rxnid})) {
-		$eqn = $rxnhash->{$rxnid}->{definition};
-		if (defined($rxnhash->{$rxnid}->{ec_numbers})) {
-			$ec = join("|",@{$rxnhash->{$rxnid}->{ec_numbers}});
-		}
-		if (defined($rxnhash->{$rxnid}->{roles})) {
-			for (my $i=0; $i < @{$rxnhash->{$rxnid}->{roles}}; $i++) {
-				my $temparray = [split/;/,$rxnhash->{$rxnid}->{roles}->[$i]];
-				if (length($roles) > 0) {
-					$roles .= "|";
-				}
-				$roles .= $temparray->[1];
-			}
-		}
-	}
 	foreach my $orig (keys(%{$unique_combinations_hash->{$rxnid}})) {
 		foreach my $rast (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}})) {
 			foreach my $rast2 (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}})) {
@@ -296,6 +283,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 				my $genomehash = {};
 				foreach my $rastrole (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}})) {
 					if (!defined($rolehash->{$rastrole}->{newcount})) {
+						$rolehash->{$rastrole}->{count} = 0;
 						$rolehash->{$rastrole}->{newcount} = {
 							rast1 => 0,
 							all => 0,
@@ -304,6 +292,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 					}
 					foreach my $rast2role (keys(%{$unique_combinations_hash->{$rxnid}->{$orig}->{$rast}->{$rast2}->{$rastrole}})) {
 						if (!defined($rolehash->{$rast2role}->{newcount})) {
+							$rolehash->{$rast2role}->{count} = 0;
 							$rolehash->{$rast2role}->{newcount} = {
 								rast1 => 0,
 								all => 0,
@@ -334,6 +323,8 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 										rast2 => 0
 									};
 								}
+								$rolehash->{$rastrole}->{count}++;
+								$rolehash->{$rast2role}->{count}++;
 								$rolehash->{$rast2role}->{$orig.$rast.$rast2}->{all}++;
 								$rolehash->{$rast2role}->{$orig.$rast.$rast2}->{rast2}++;
 								if ($orig.$rast.$rast2 eq "010" || $orig.$rast.$rast2 eq "100" || $orig.$rast.$rast2 eq "110") {
@@ -353,6 +344,30 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 		}
 	}
 	my $types = ["111","011","001","010","100","110","101"];
+	my $eqn = "";
+	my $ec = "";
+	my $roles = "";
+	if (defined($rxnhash->{$rxnid})) {
+		$eqn = $rxnhash->{$rxnid}->{definition};
+		if (defined($rxnhash->{$rxnid}->{ec_numbers})) {
+			$ec = join("|",@{$rxnhash->{$rxnid}->{ec_numbers}});
+		}
+		if (defined($rxnhash->{$rxnid}->{roles})) {
+			for (my $i=0; $i < @{$rxnhash->{$rxnid}->{roles}}; $i++) {
+				my $temparray = [split/;/,$rxnhash->{$rxnid}->{roles}->[$i]];
+				if (length($roles) > 0) {
+					$roles .= "|";
+				}
+				my $count = 0;
+				if (defined($rolehash->{$temparray->[1]})) {
+					$count = $rolehash->{$temparray->[1]};
+				}
+				my $id = $i+1;
+				$alllabels->{$rxnid}->{currroles}->{$temparray->[1]} = $id;
+				$roles .= $id.":".$temparray->[1].":".$count;
+			}
+		}
+	}
 	print $fout2 $totalgenome."\t".$totalgenes."\t".$rxnid."\t".$eqn."\t".$ec;
 	foreach my $type (@{$types}) {
 		if (defined($instances->{$type})) {
@@ -363,9 +378,18 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	}
 	print $fout2 "\t".$roles;
 	my $rolelist = [sort { $rolehash->{$b}->{newcount}->{all} <=> $rolehash->{$a}->{newcount}->{all} } keys(%{$rolehash})];
+	my $count = 0;
 	foreach my $role (@{$rolelist}) {
 		if ($rolehash->{$role}->{newcount}->{all} > 0) {
-			print $fout2 "\t".$rolehash->{$role}->{newcount}->{rast1}."|".$rolehash->{$role}->{newcount}->{rast2}.";".$role.";";
+			my $lettercount = floor($count/26);
+			my $mod = $count%26;
+			my $label = "";
+			for (my $i=0; $i < @{$lettercount}; $i++) {
+				$label .= $letters[$mod];
+			}
+			$count++;
+			$alllabels->{$rxnid}->{newroles}->{$role} = $label;
+			print $fout2 "\t".$label."|".$rolehash->{$role}->{newcount}->{rast1}."|".$rolehash->{$role}->{newcount}->{rast2}.";".$role.";";
 			if (defined($rolehash->{$role}->{"001"})) {
 				print $fout2 $rolehash->{$role}->{"001"}->{rast1}.":";
 			} else {
@@ -402,3 +426,4 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	print $fout2 "\n";	
 }
 close($fout2);
+Bio::KBase::ObjectAPI::utilities::PRINTFILE($directory."/RoleTables.txt",[Bio::KBase::ObjectAPI::utilities::TOJSON($alllabels,1)]);

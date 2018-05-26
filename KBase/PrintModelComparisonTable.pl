@@ -2,6 +2,7 @@
 
 use strict;
 use Data::Dumper;
+use POSIX qw/floor/;
 use fba_tools::fba_toolsImpl;
 local $| = 1;
 
@@ -382,10 +383,10 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	foreach my $role (@{$rolelist}) {
 		if ($rolehash->{$role}->{newcount}->{all} > 0) {
 			my $lettercount = floor($count/26);
-			my $mod = $count%26;
+			my $mod = $count % 26;
 			my $label = "";
 			for (my $i=0; $i < @{$lettercount}; $i++) {
-				$label .= $letters[$mod];
+				$label .= $letters->[$mod];
 			}
 			$count++;
 			$alllabels->{$rxnid}->{newroles}->{$role} = $label;

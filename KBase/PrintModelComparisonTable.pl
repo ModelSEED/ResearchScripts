@@ -385,7 +385,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 			my $lettercount = floor($count/26);
 			my $mod = $count % 26;
 			my $label = "";
-			for (my $i=0; $i < @{$lettercount}; $i++) {
+			for (my $i=0; $i < $lettercount; $i++) {
 				$label .= $letters->[$mod];
 			}
 			$count++;

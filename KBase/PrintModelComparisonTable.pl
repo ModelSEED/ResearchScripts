@@ -382,7 +382,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 	my $count = 0;
 	foreach my $role (@{$rolelist}) {
 		if ($rolehash->{$role}->{newcount}->{all} > 0) {
-			my $lettercount = floor($count/26);
+			my $lettercount = floor($count/26)+1;
 			my $mod = $count % 26;
 			my $label = "";
 			for (my $i=0; $i < $lettercount; $i++) {

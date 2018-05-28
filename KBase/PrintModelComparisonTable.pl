@@ -361,7 +361,7 @@ foreach my $rxnid (keys(%{$unique_combinations_hash})) {
 				}
 				my $count = 0;
 				if (defined($rolehash->{$temparray->[1]})) {
-					$count = $rolehash->{$temparray->[1]};
+					$count = $rolehash->{$temparray->[1]}->{count};
 				}
 				my $id = $i+1;
 				$alllabels->{$rxnid}->{currroles}->{$temparray->[1]} = $id;

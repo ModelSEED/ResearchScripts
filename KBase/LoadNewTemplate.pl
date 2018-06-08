@@ -22,6 +22,7 @@ my $template_data = Bio::KBase::ObjectAPI::utilities::FROMJSON(join("\n",@{Bio::
 $template_data->{biochemistry_ref} = "kbase/default";
 
 my $tempobj = Bio::KBase::ObjectAPI::KBaseFBA::ModelTemplate->new($template_data);
+$tempobj->parent($handler->util_store());
 my $rxns = $tempobj->reactions();
 for (my $i=0; $i < @{$rxns}; $i++) {
 	$rxns->[$i]->compute_penalties({});

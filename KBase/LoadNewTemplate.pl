@@ -28,4 +28,4 @@ for (my $i=0; $i < @{$rxns}; $i++) {
 	$rxns->[$i]->compute_penalties({});
 }
 
-$handler->util_save_object($tempobj,$workspace."/".$template_name});
+$handler->util_save_object($tempobj->serializeToDB(),$workspace."/".$template_name},{hash => 1,type => "KBaseFBA.NewModelTemplate"});

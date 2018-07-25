@@ -10,12 +10,19 @@ my $handler = fba_tools::fba_toolsImpl->new();
 Bio::KBase::kbaseenv::create_context_from_client_config();
 Bio::KBase::ObjectAPI::functions::set_handler($handler);
 
-#Gathering user arguments
-my $modelfile = "/Users/chenry/Dropbox/workspace/Cesar/patric-16S-selected-blasted-filtered-annotations.map";
+my $directory = $ARGV[0];
+if (!defined($directory) || $directory eq "") {
+	$directory = "/Users/chenry/Dropbox/workspace/Cesar/";
+}
+my $modelfile = $directory."patric-16S-selected-blasted-filtered-annotations.map";
 my $workspace = "chenry:narrative_1530974574420";
-
-#Loading models
 my $mdldata = Bio::KBase::ObjectAPI::utilities::LOADFILE($modelfile);
+my $mdlhash;
+for (my $i=0; $i < @{$mdldata}; $i++) {
+	my $array = [split(/,/,$mdldata->[$i])];
+	$mdlhash->{$array->[0]} = 1;
+}
+
 my $params = {
 	workspace => "chenry:narrative_1530974574420",
 	fbamodel_id => undef,
@@ -23,11 +30,10 @@ my $params = {
 	media_id => "Carbon-D-Glucose",
 	media_workspace => "KBaseMedia"
 };
-for (my $i=0; $i < @{$mdldata}; $i++) {
-	my $array = [split(/,/,$mdldata->[$i])];
-	if (!-e "/Users/chenry/Dropbox/workspace/Cesar/FBAResults/".$array->[0].".fba.txt") {
-		$params->{fbamodel_id} = $array->[0];
-		$params->{fba_output_id} = $array->[0].".fba";
+foreach my $mdlid (keys(%{$mdlhash})) {
+	if (!-e $directory."FBA/".$mdlid.".touch") {
+		$params->{fbamodel_id} = $mdlid;
+		$params->{fba_output_id} = $mdlid.".metabolite_interaction.fba";
 		$params = Bio::KBase::utilities::args($params,["workspace","fbamodel_id"],{
 			fbamodel_workspace => $params->{workspace},
 			media_id => undef,
@@ -113,5 +119,7 @@ for (my $i=0; $i < @{$mdldata}; $i++) {
 		$handler->util_log("Saving FBA results.");
 		$fba->id($params->{fba_output_id});
 		my $wsmeta = $handler->util_save_object($fba,Bio::KBase::utilities::buildref($params->{fba_output_id},$params->{workspace}),{type => "KBaseFBA.FBA"});
+		system("touch ".$directory."FBA/".$mdlid.".touch");
+		exit();
 	}
 }

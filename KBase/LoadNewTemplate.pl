@@ -21,4 +21,11 @@ system("python Build_Model_Template.py ".$template_name." /disks/p3dev3/code/Mod
 my $template_data = Bio::KBase::ObjectAPI::utilities::FROMJSON(join("\n",@{Bio::KBase::ObjectAPI::utilities::LOADFILE("/disks/p3dev3/code/ModelSEEDDatabase/Templates/".$template_name."/".$template_name.".json")}));
 $template_data->{biochemistry_ref} = "kbase/default";
 
-$handler->util_save_object($template_data,$workspace."/".$template_name,{hash => 1,type => "KBaseFBA.NewModelTemplate"});
+my $tempobj = Bio::KBase::ObjectAPI::KBaseFBA::ModelTemplate->new($template_data);
+$tempobj->parent($handler->util_store());
+my $rxns = $tempobj->reactions();
+for (my $i=0; $i < @{$rxns}; $i++) {
+	$rxns->[$i]->compute_penalties({});
+}
+
+$handler->util_save_object($tempobj->serializeToDB(),$workspace."/".$template_name},{hash => 1,type => "KBaseFBA.NewModelTemplate"});

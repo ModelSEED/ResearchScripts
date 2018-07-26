@@ -120,6 +120,5 @@ foreach my $mdlid (keys(%{$mdlhash})) {
 		$fba->id($params->{fba_output_id});
 		my $wsmeta = $handler->util_save_object($fba,Bio::KBase::utilities::buildref($params->{fba_output_id},$params->{workspace}),{type => "KBaseFBA.FBA"});
 		system("touch ".$directory."FBA/".$mdlid.".touch");
-		exit();
 	}
 }

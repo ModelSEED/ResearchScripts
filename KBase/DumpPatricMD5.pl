@@ -63,9 +63,6 @@ for (my $i=0; $i < 100; $i++) {
 				}
 			}
 		}
-		if ($count == 100) {
-			last;
-		}
 	}
 	close ($fh);
 	print $i."\t".$count."\n";

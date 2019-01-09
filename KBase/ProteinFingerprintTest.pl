@@ -19,7 +19,7 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 	my $id = "";
 	my $seq;
 	for (my $j=0; $j < @{$lines}; $j++) {
-		if ($line =~ m/>([^\s^\t]+)[\s\t]/) {
+		if ($lines->[$j] =~ m/>([^\s^\t]+)[\s\t]/) {
 			if (defined($id)) {
 				if ($count > 100) {
 					exit(0);
@@ -55,7 +55,7 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			$id = $1;
 			$seq = "";
 		} else {
-			$seq .= $line;
+			$seq .= $lines->[$j];
 		}
 	}
 }

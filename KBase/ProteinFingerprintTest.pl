@@ -133,32 +133,34 @@ sub compute_stats {
 			}
 		}
 	}
-	my $kmersize = ($size-1)*$depth;
-	if (!defined($fstats->{$kmersize}->{genedist}->{$output->{total}})) {
-		$fstats->{$kmersize}->{genedist}->{$output->{total}} = 0;
-	}
-	$fstats->{$kmersize}->{genedist}->{$output->{total}}++;
-	my $genuscount = keys(%{$output->{genus}});
-	if (!defined($fstats->{$kmersize}->{genusdist}->{$genuscount})) {
-		$fstats->{$kmersize}->{genusdist}->{$genuscount} = 0;
-	}
-	$fstats->{$kmersize}->{genusdist}->{$genuscount}++;
-	my $funccount = keys(%{$output->{funcs}});
-	if (!defined($fstats->{$kmersize}->{funcdist}->{$funccount})) {
-		$fstats->{$kmersize}->{funcdist}->{$funccount} = 0;
-	}
-	$fstats->{$kmersize}->{funcdist}->{$funccount}++;
-	
-	my $genuslist = [sort { $output->{genus}->{$a} <=> $output->{genus}->{$b} } keys(%{$output->{genus}})];
-	for (my $i=0; $i < @{$genuslist}; $i++) {
-		if (defined($genuslist->[$i])) {
-			$fstats->{$kmersize}->{topgenus}->[$i] = [$output->{genus}->{$genuslist->[$i]},$genuslist->[$i]];
+	my $kmersize = $size*($depth-1);
+	if ($kmersize > 0) {
+		if (!defined($fstats->{$kmersize}->{genedist}->{$output->{total}})) {
+			$fstats->{$kmersize}->{genedist}->{$output->{total}} = 0;
 		}
-	}
-	my $funclist = [sort { $output->{funcs}->{$a} <=> $output->{funcs}->{$b} } keys(%{$output->{funcs}})];
-	for (my $i=0; $i < @{$funclist}; $i++) {
-		if (defined($funclist->[$i])) {
-			$fstats->{$kmersize}->{topfuncs}->[$i] = [$output->{funcs}->{$funclist->[$i]},$funclist->[$i]];
+		$fstats->{$kmersize}->{genedist}->{$output->{total}}++;
+		my $genuscount = keys(%{$output->{genus}});
+		if (!defined($fstats->{$kmersize}->{genusdist}->{$genuscount})) {
+			$fstats->{$kmersize}->{genusdist}->{$genuscount} = 0;
+		}
+		$fstats->{$kmersize}->{genusdist}->{$genuscount}++;
+		my $funccount = keys(%{$output->{funcs}});
+		if (!defined($fstats->{$kmersize}->{funcdist}->{$funccount})) {
+			$fstats->{$kmersize}->{funcdist}->{$funccount} = 0;
+		}
+		$fstats->{$kmersize}->{funcdist}->{$funccount}++;
+		
+		my $genuslist = [sort { $output->{genus}->{$a} <=> $output->{genus}->{$b} } keys(%{$output->{genus}})];
+		for (my $i=0; $i < @{$genuslist}; $i++) {
+			if (defined($genuslist->[$i])) {
+				$fstats->{$kmersize}->{topgenus}->[$i] = [$output->{genus}->{$genuslist->[$i]},$genuslist->[$i]];
+			}
+		}
+		my $funclist = [sort { $output->{funcs}->{$a} <=> $output->{funcs}->{$b} } keys(%{$output->{funcs}})];
+		for (my $i=0; $i < @{$funclist}; $i++) {
+			if (defined($funclist->[$i])) {
+				$fstats->{$kmersize}->{topfuncs}->[$i] = [$output->{funcs}->{$funclist->[$i]},$funclist->[$i]];
+			}
 		}
 	}
 	return $output;

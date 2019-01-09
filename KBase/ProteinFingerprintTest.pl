@@ -21,12 +21,6 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 	for (my $j=0; $j < @{$lines}; $j++) {
 		if ($lines->[$j] =~ m/>([^\s^\t]+)[\s\t]/) {
 			if (defined($id)) {
-				if ($count > 100) {
-					Bio::KBase::ObjectAPI::utilities::PRINTFILE($path."/hash.json",[Bio::KBase::ObjectAPI::utilities::TOJSON($hash,1)]);
-					exit(0);
-				}
-				print "ID:".$id."\n";
-				print "Sequence:".$seq."\n";
 				my $found = 0;
 				my $start = $location - $scanrange;
 				if ($start < 0) {
@@ -39,7 +33,6 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 				for (my $k=0; $k < ($stop-$start); $k++) {
 					my $query = substr($seq,$start+$k,$size);
 					if (defined($hash->{$query})) {
-						print "0:".$query."\n";
 						&add_node($id,$query,$hash,1,$seq,$start+$k,$size);
 						$found = 1;
 						last;
@@ -47,7 +40,6 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 				}
 				if ($found == 0) {
 					my $query = substr($seq,$location,$size);
-					print "0:".$query."\n";
 					&add_node($id,$query,$hash,1,$seq,$location,$size);
 				}
 				$count++;
@@ -58,13 +50,18 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			$seq .= $lines->[$j];
 		}
 	}
+	if ($count > 1000) {
+		last;
+	}
 }
+
+my $stats = {};
+my $output = &compute_stats($stats,$hash,$size,1);
+Bio::KBase::ObjectAPI::utilities::PRINTFILE($path."/stats.json",[Bio::KBase::ObjectAPI::utilities::TOJSON($stats,1)]);
 
 sub add_node {
 	my ($id,$query,$fhash,$level,$seq,$start,$ssize) = @_;
-	print $level.":".$query."\n";
 	if ($start+$ssize*($level+1) >= length($seq)) {
-		print "DONE-EARLY\n";
 		push(@{$fhash->{genes}},$id);
 		return 1;
 	}
@@ -76,9 +73,45 @@ sub add_node {
 		my $newquery = substr($seq,$start+$ssize*$level,$ssize);
 		return &add_node($id,$newquery,$newhash,$level+1,$seq,$start,$ssize);
 	}
-	print "DONE\n";
-	push(@{$fhash->{$query}},$id);
+	push(@{$fhash->{$query}->{genes}},$id);
 	return 1;
 }
 
-Bio::KBase::ObjectAPI::utilities::PRINTFILE($path."/hash.json",[Bio::KBase::ObjectAPI::utilities::TOJSON($hash,1)]);
+sub compute_stats {
+	my ($fstats,$fhash,$size,$depth) = @_;
+	my $list = [keys(%{$fhash})];
+	my $output = {
+		total => 0,
+		genus => {}
+	};
+	for (my $i=0; $i < @{$list}; $i++) {
+		if ($list->[$i] eq "genes") {
+			for (my $j=0; $j < @{$fhash->{genes}}; $j++) {
+				$output->{total}++;
+			}
+		} else {
+			my $subout = &compute_stats($fstats,$fhash->{$list->[$i]},$size,$depth+1);
+			$output->{total} += $subout->{total};
+			my $genuslist = [keys(%{$subout->{genus}})];
+			for (my $j=0; $j < @{$genuslist}; $j++) {
+				if (!defined($output->{genus}->{$genuslist->[$j]})) {
+					$output->{genus}->{$genuslist->[$j]} = 0;
+				}
+				$output->{genus}->{$genuslist->[$j]} += $subout->{genus}->{$genuslist->[$j]};
+			}
+		}
+	}
+	my $kmersize = $size*$depth;
+	if (!defined($fstats->{$kmersize}->{genedist}->{$output->{total}})) {
+		$fstats->{$kmersize}->{genedist}->{$output->{total}} = 0;
+	}
+	$fstats->{$kmersize}->{genedist}->{$output->{total}}++;
+	my $genuscount = keys(%{$output->{genus}});
+	if (!defined($fstats->{$kmersize}->{genusdist}->{$genuscount})) {
+		$fstats->{$kmersize}->{genusdist}->{$genuscount} = 0;
+	}
+	$fstats->{$kmersize}->{genusdist}->{$genuscount}++;
+	return $output;
+}
+
+#Bio::KBase::ObjectAPI::utilities::PRINTFILE($path."/hash.json",[Bio::KBase::ObjectAPI::utilities::TOJSON($hash,1)]);

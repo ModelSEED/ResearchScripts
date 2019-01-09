@@ -39,16 +39,15 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 					my $query = substr($seq,$start+$k,$size);
 					if (defined($hash->{$query})) {
 						print "0:".$query."\n";
-						&add_node($id,$query,$hash->{$query},1,$seq,$start+$k,$size);
+						&add_node($id,$query,$hash,1,$seq,$start+$k,$size);
 						$found = 1;
 						last;
 					}
 				}
 				if ($found == 0) {
 					my $query = substr($seq,$location,$size);
-					$hash->{$query} = {};
 					print "0:".$query."\n";
-					&add_node($id,$query,$hash->{$query},1,$seq,$location,$size);
+					&add_node($id,$query,$hash,1,$seq,$location,$size);
 				}
 				$count++;
 			}
@@ -63,6 +62,11 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 sub add_node {
 	my ($id,$query,$fhash,$level,$seq,$start,$ssize) = @_;
 	print $level.":".$query."\n";
+	if ($start+$ssize*($level+1) >= length($seq)) {
+		print "DONE-EARLY\n";
+		push(@{$fhash->{genes}},$id);
+		return 1;
+	}
 	if ($level <= 14) {
 		if (!defined($fhash->{$query})) {
 			$fhash->{$query} = {};

@@ -39,8 +39,10 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 					}
 				}
 				if ($found == 0) {
-					my $query = substr($seq,$location,$size);
-					&add_node($id,$query,$hash,1,$seq,$location,$size);
+					if (($location+$size) < length($seq)) {
+						my $query = substr($seq,$location,$size);
+						&add_node($id,$query,$hash,1,$seq,$location,$size);
+					}
 				}
 				$count++;
 			}

@@ -90,6 +90,14 @@ sub compute_stats {
 		if ($list->[$i] eq "genes") {
 			for (my $j=0; $j < @{$fhash->{genes}}; $j++) {
 				$output->{total}++;
+				if ($fhash->{genes}->[$j] =~ m/\|(\d+\.\d+)\./) {
+					my $species = $genomes->{$1}->{n};
+					my $array = [split(/\s/,$species)];
+					if (!defined($output->{genus}->{$array->[0]})) {
+						$output->{genus}->{$array->[0]} = 0;
+					}
+					$output->{genus}->{$array->[0]}++;
+				}
 			}
 		} else {
 			my $subout = &compute_stats($fstats,$fhash->{$list->[$i]},$size,$depth+1);

@@ -38,36 +38,36 @@ for (my $i=0; $i < $count; $i++) {
 			n => $res[$i]->{genome_name},
 			d => $dom,
 			t => $taxonomy,
-			ssu => []
+#			ssu => []
 		};
 	}
 }
 
-print "Now retrieving 16s!\n";
-
-my(@fields) = qw(feature_type
-		 patric_id
-		 na_sequence
-		 product
-		 );
-		 
-@res = $d->query("genome_feature",
-	["select", @fields],
-	["eq", "feature_type", "rRNA"],
-	["eq", "annotation", "PATRIC"],
-	["eq", "product", "SSU rRNA"],
-);
-
-my $count = @res;
-print "Total 16s = ".$count."\n";
-
-for (my $i=0; $i < $count; $i++) {
-	if ($res[$i]->{patric_id} =~ m/fig\|(\d+\.\d+)\./) {
-		my $genomeid = $1;
-		if (defined($output->{$genomeid})) {
-			push(@{$output->{$genomeid}->{ssu}},$res[$i]->{na_sequence});
-		}
-	}
-}
+#print "Now retrieving 16s!\n";
+#
+#my(@fields) = qw(feature_type
+#		 patric_id
+#		 na_sequence
+#		 product
+#		 );
+#		 
+#@res = $d->query("genome_feature",
+#	["select", @fields],
+#	["eq", "feature_type", "rRNA"],
+#	["eq", "annotation", "PATRIC"],
+#	["eq", "product", "SSU rRNA"],
+#);
+#
+#my $count = @res;
+#print "Total 16s = ".$count."\n";
+#
+#for (my $i=0; $i < $count; $i++) {
+#	if ($res[$i]->{patric_id} =~ m/fig\|(\d+\.\d+)\./) {
+#		my $genomeid = $1;
+#		if (defined($output->{$genomeid})) {
+#			push(@{$output->{$genomeid}->{ssu}},$res[$i]->{na_sequence});
+#		}
+#	}
+#}
 
 Bio::KBase::ObjectAPI::utilities::PRINTFILE($filename,[Bio::KBase::ObjectAPI::utilities::TOJSON($output,1)]);

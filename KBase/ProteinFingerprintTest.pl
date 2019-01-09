@@ -66,7 +66,7 @@ sub add_node {
 	if ($start+$ssize*($level+1) >= length($seq)) {
 		print "DONE-EARLY\n";
 		push(@{$fhash->{genes}},$id);
-		return 1;hash
+		return 1;
 	}
 	if ($level <= 14) {
 		if (!defined($fhash->{$query})) {

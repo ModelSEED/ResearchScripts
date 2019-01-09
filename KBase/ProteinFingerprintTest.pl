@@ -155,7 +155,7 @@ sub compute_stats {
 		for (my $i=0; $i < @{$genuslist}; $i++) {
 			if (defined($genuslist->[$i])) {
 				my $fract = $output->{genus}->{$genuslist->[$i]}/$output->{total};
-				$fract = floor($fract/10);
+				$fract = floor($fract*10);
 				if (!defined($fstats->{$kmersize}->{genusfract}->[$i]->[$fract])) {
 					$fstats->{$kmersize}->{genusfract}->[$i]->[$fract] = 0;
 				}
@@ -166,7 +166,7 @@ sub compute_stats {
 		for (my $i=0; $i < @{$funclist}; $i++) {
 			if (defined($funclist->[$i])) {
 				my $fract = $output->{funcs}->{$funclist->[$i]}/$output->{total};
-				$fract = floor($fract/10);
+				$fract = floor($fract*10);
 				if (!defined($fstats->{$kmersize}->{funcfract}->[$i]->[$fract])) {
 					$fstats->{$kmersize}->{funcfract}->[$i]->[$fract] = 0;
 				}

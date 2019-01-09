@@ -19,6 +19,7 @@ my $hash = {};
 my $funchash = {};
 my $genomelist = [keys(%{$genomes})];
 for (my $i=0; $i < @{$genomelist}; $i++) { 
+	print "Genome:".$i." of ".$totalgenomes."\n";
 	my $lines = &LOADFILE("/vol/patric3/downloads/genomes/".$genomelist->[$i]."/".$genomelist->[$i].".PATRIC.faa");
 	my $id;
 	my $func;
@@ -61,9 +62,9 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			$seq .= $lines->[$j];
 		}
 	}
-	if ($count > 1000) {
-		last;
-	}
+#	if ($count > 1000000) {
+#		last;
+#	}
 }
 print "Count:".$count."\n";
 my $stats = {};

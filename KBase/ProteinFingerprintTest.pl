@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
-use JSON::XS;
+#use JSON::XS;
 use JSON;
 local $| = 1;
 
@@ -111,7 +111,7 @@ sub compute_stats {
 					if (!defined($output->{funcs}->{$funchash->{$fhash->{genes}->[$j]}})) {
 						$output->{funcs}->{$funchash->{$fhash->{genes}->[$j]}} = 0;
 					}
-					$output->{funcs}->{$array->[0]}++;
+					$output->{funcs}->{$funchash->{$fhash->{genes}->[$j]}}++;
 				}
 			}
 		} else {

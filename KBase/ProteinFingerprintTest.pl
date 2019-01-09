@@ -1,25 +1,30 @@
 #!/usr/bin/perl -w
 
 use strict;
-use fba_tools::fba_toolsImpl;
+use JSON::XS;
+use JSON;
 local $| = 1;
 
 my $path = $ARGV[0];
 my $size = $ARGV[1];
 my $location = $ARGV[2];
 my $scanrange = $ARGV[3];
-my $genomes = Bio::KBase::ObjectAPI::utilities::FROMJSON(join("\n",@{Bio::KBase::ObjectAPI::utilities::LOADFILE($path."/AllPatricGenomes.txt")}));
+my $segements = $ARGV[4];
+my $genomes = &FROMJSON(join("\n",@{&LOADFILE($path."/AllPatricGenomes.txt")}));
 my $totalgenomes = keys(%{$genomes});
 
 my $count = 0;
 my $hash = {};
+my $funchash = {};
 my $genomelist = [keys(%{$genomes})];
 for (my $i=0; $i < @{$genomelist}; $i++) { 
-	my $lines = Bio::KBase::ObjectAPI::utilities::LOADFILE("/vol/patric3/downloads/genomes/".$genomelist->[$i]."/".$genomelist->[$i].".PATRIC.faa");
-	my $id = "";
+	my $lines = &LOADFILE("/vol/patric3/downloads/genomes/".$genomelist->[$i]."/".$genomelist->[$i].".PATRIC.faa");
+	my $id;
+	my $func;
 	my $seq;
 	for (my $j=0; $j < @{$lines}; $j++) {
-		if ($lines->[$j] =~ m/>([^\s^\t]+)[\s\t]/) {
+		if ($lines->[$j] =~ m/^>([^\s^\t]+)/) {
+			my $newid = $1;
 			if (defined($id)) {
 				my $found = 0;
 				my $start = $location - $scanrange;
@@ -46,7 +51,10 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 				}
 				$count++;
 			}
-			$id = $1;
+			if ($lines->[$j] =~ m/^>([^\s^\t]+)\s\s\s(.+)\s\s\s/) {
+				$funchash->{$newid} = $2;
+			}
+			$id = $newid;
 			$seq = "";
 		} else {
 			$seq .= $lines->[$j];
@@ -56,10 +64,10 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 		last;
 	}
 }
-
+print "Count:".$count."\n";
 my $stats = {};
 my $output = &compute_stats($stats,$hash,$size,1);
-Bio::KBase::ObjectAPI::utilities::PRINTFILE($path."/stats.json",[Bio::KBase::ObjectAPI::utilities::TOJSON($stats,1)]);
+&PRINTFILE($path."/stats.json",[&TOJSON($stats,1)]);
 
 sub add_node {
 	my ($id,$query,$fhash,$level,$seq,$start,$ssize) = @_;
@@ -67,7 +75,7 @@ sub add_node {
 		push(@{$fhash->{genes}},$id);
 		return 1;
 	}
-	if ($level <= 14) {
+	if ($level <= $segements) {
 		if (!defined($fhash->{$query})) {
 			$fhash->{$query} = {};
 		}
@@ -84,7 +92,8 @@ sub compute_stats {
 	my $list = [keys(%{$fhash})];
 	my $output = {
 		total => 0,
-		genus => {}
+		genus => {},
+		funcs => {}
 	};
 	for (my $i=0; $i < @{$list}; $i++) {
 		if ($list->[$i] eq "genes") {
@@ -98,6 +107,12 @@ sub compute_stats {
 					}
 					$output->{genus}->{$array->[0]}++;
 				}
+				if (defined($funchash->{$fhash->{genes}->[$j]})) {
+					if (!defined($output->{funcs}->{$funchash->{$fhash->{genes}->[$j]}})) {
+						$output->{funcs}->{$funchash->{$fhash->{genes}->[$j]}} = 0;
+					}
+					$output->{funcs}->{$array->[0]}++;
+				}
 			}
 		} else {
 			my $subout = &compute_stats($fstats,$fhash->{$list->[$i]},$size,$depth+1);
@@ -109,9 +124,16 @@ sub compute_stats {
 				}
 				$output->{genus}->{$genuslist->[$j]} += $subout->{genus}->{$genuslist->[$j]};
 			}
+			$genuslist = [keys(%{$subout->{funcs}})];
+			for (my $j=0; $j < @{$genuslist}; $j++) {
+				if (!defined($output->{funcs}->{$genuslist->[$j]})) {
+					$output->{funcs}->{$genuslist->[$j]} = 0;
+				}
+				$output->{funcs}->{$genuslist->[$j]} += $subout->{funcs}->{$genuslist->[$j]};
+			}
 		}
 	}
-	my $kmersize = $size*$depth;
+	my $kmersize = ($size-1)*$depth;
 	if (!defined($fstats->{$kmersize}->{genedist}->{$output->{total}})) {
 		$fstats->{$kmersize}->{genedist}->{$output->{total}} = 0;
 	}
@@ -121,7 +143,59 @@ sub compute_stats {
 		$fstats->{$kmersize}->{genusdist}->{$genuscount} = 0;
 	}
 	$fstats->{$kmersize}->{genusdist}->{$genuscount}++;
+	my $funccount = keys(%{$output->{funcs}});
+	if (!defined($fstats->{$kmersize}->{funcdist}->{$funccount})) {
+		$fstats->{$kmersize}->{funcdist}->{$funccount} = 0;
+	}
+	$fstats->{$kmersize}->{funcdist}->{$funccount}++;
+	
+	my $genuslist = [sort { $output->{genus}->{$a} <=> $output->{genus}->{$b} } keys(%{$output->{genus}})];
+	for (my $i=0; $i < @{$genuslist}; $i++) {
+		if (defined($genuslist->[$i])) {
+			$fstats->{$kmersize}->{topgenus}->[$i] = [$output->{genus}->{$genuslist->[$i]},$genuslist->[$i]];
+		}
+	}
+	my $funclist = [sort { $output->{funcs}->{$a} <=> $output->{funcs}->{$b} } keys(%{$output->{funcs}})];
+	for (my $i=0; $i < @{$funclist}; $i++) {
+		if (defined($funclist->[$i])) {
+			$fstats->{$kmersize}->{topfuncs}->[$i] = [$output->{funcs}->{$funclist->[$i]},$funclist->[$i]];
+		}
+	}
 	return $output;
 }
 
-#Bio::KBase::ObjectAPI::utilities::PRINTFILE($path."/hash.json",[Bio::KBase::ObjectAPI::utilities::TOJSON($hash,1)]);
+sub LOADFILE {
+    my ($filename) = @_;
+    my $DataArrayRef = [];
+    open (my $fh, "<", $filename);
+    while (my $Line = <$fh>) {
+        $Line =~ s/\r//;
+        chomp($Line);
+        push(@{$DataArrayRef},$Line);
+    }
+    close($fh);
+    return $DataArrayRef;
+}
+
+sub PRINTFILE {
+    my ($filename,$arrayRef) = @_;
+    open ( my $fh, ">", $filename);
+    foreach my $Item (@{$arrayRef}) {
+    	print $fh $Item."\n";
+    }
+    close($fh);
+}
+
+sub TOJSON {
+    my ($ref,$prettyprint) = @_;
+    my $JSON = JSON->new->utf8(1);
+    if (defined($prettyprint) && $prettyprint == 1) {
+		$JSON->pretty(1);
+    }
+    return $JSON->encode($ref);
+}
+
+sub FROMJSON {
+    my ($data) = @_;
+    return decode_json $data;
+}

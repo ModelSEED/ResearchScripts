@@ -11,6 +11,7 @@ my $scanrange = $ARGV[3];
 my $genomes = Bio::KBase::ObjectAPI::utilities::FROMJSON(join("\n",@{Bio::KBase::ObjectAPI::utilities::LOADFILE($path."/AllPatricGenomes.txt")}));
 my $totalgenomes = keys(%{$genomes});
 
+my $count = 0;
 my $hash = {};
 my $genomelist = [keys(%{$genomes})];
 for (my $i=0; $i < @{$genomelist}; $i++) { 
@@ -20,6 +21,10 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 	for (my $j=0; $j < @{$lines}; $j++) {
 		if ($line =~ m/>([^\s^\t]+)[\s\t]/) {
 			if (defined($id)) {
+				if ($count > 100) {
+					exit(0);
+				}
+				print "ID:".$id."\n";
 				print "Sequence:".$seq."\n";
 				my $found = 0;
 				my $start = $location - $scanrange;
@@ -45,6 +50,7 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 					print "0:".$query."\n";
 					&add_node($id,$query,$hash->{$query},1,$seq,$location,$size);
 				}
+				$count++;
 			}
 			$id = $1;
 			$seq = "";

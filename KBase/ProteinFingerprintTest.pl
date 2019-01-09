@@ -22,6 +22,7 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 		if ($lines->[$j] =~ m/>([^\s^\t]+)[\s\t]/) {
 			if (defined($id)) {
 				if ($count > 100) {
+					Bio::KBase::ObjectAPI::utilities::PRINTFILE($path."/hash.json",[Bio::KBase::ObjectAPI::utilities::TOJSON($hash,1)]);
 					exit(0);
 				}
 				print "ID:".$id."\n";
@@ -65,7 +66,7 @@ sub add_node {
 	if ($start+$ssize*($level+1) >= length($seq)) {
 		print "DONE-EARLY\n";
 		push(@{$fhash->{genes}},$id);
-		return 1;
+		return 1;hash
 	}
 	if ($level <= 14) {
 		if (!defined($fhash->{$query})) {

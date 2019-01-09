@@ -3,6 +3,7 @@
 use strict;
 #use JSON::XS;
 use JSON;
+use POSIX;
 local $| = 1;
 
 my $path = $ARGV[0];
@@ -153,13 +154,23 @@ sub compute_stats {
 		my $genuslist = [sort { $output->{genus}->{$a} <=> $output->{genus}->{$b} } keys(%{$output->{genus}})];
 		for (my $i=0; $i < @{$genuslist}; $i++) {
 			if (defined($genuslist->[$i])) {
-				$fstats->{$kmersize}->{topgenus}->[$i] = [$output->{genus}->{$genuslist->[$i]},$genuslist->[$i]];
+				my $fract = $output->{genus}->{$genuslist->[$i]}/$output->{total};
+				$fract = floor($fract/10);
+				if (!defined($fstats->{$kmersize}->{genusfract}->[$i]->[$fract])) {
+					$fstats->{$kmersize}->{genusfract}->[$i]->[$fract] = 0;
+				}
+				$fstats->{$kmersize}->{genusfract}->[$i]->[$fract]++;
 			}
 		}
 		my $funclist = [sort { $output->{funcs}->{$a} <=> $output->{funcs}->{$b} } keys(%{$output->{funcs}})];
 		for (my $i=0; $i < @{$funclist}; $i++) {
 			if (defined($funclist->[$i])) {
-				$fstats->{$kmersize}->{topfuncs}->[$i] = [$output->{funcs}->{$funclist->[$i]},$funclist->[$i]];
+				my $fract = $output->{funcs}->{$funclist->[$i]}/$output->{total};
+				$fract = floor($fract/10);
+				if (!defined($fstats->{$kmersize}->{funcfract}->[$i]->[$fract])) {
+					$fstats->{$kmersize}->{funcfract}->[$i]->[$fract] = 0;
+				}
+				$fstats->{$kmersize}->{funcfract}->[$i]->[$fract]++;
 			}
 		}
 	}

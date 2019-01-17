@@ -11,8 +11,9 @@ Bio::KBase::ObjectAPI::functions::set_handler($handler);
 
 my $ws = Bio::KBase::kbaseenv::ws_client();
 
-my $workspace = "filipeliu:narrative_1529802940504";
-#my $workspace = "chenry:narrative_1524167538737";
+my $workspace = $ARGV[0];
+#$workspace = "filipeliu:narrative_1529802940504";
+#$workspace = "chenry:narrative_1524167538737";
 
 my $objects = Bio::KBase::kbaseenv::list_objects({
 	workspaces => [$workspace],

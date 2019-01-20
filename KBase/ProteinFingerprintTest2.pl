@@ -235,8 +235,6 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 	}
 }
 
-
-my $output = &compute_stats($stats,$hash,$size,1);
 &PRINTFILE($path."/stats.json",[&TOJSON($stats,1)]);
 
 sub LOADFILE {

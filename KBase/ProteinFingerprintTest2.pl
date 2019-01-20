@@ -85,9 +85,9 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			$seq .= $lines->[$j];
 		}
 	}
-	if ($count > 1000) {
-		last;
-	}
+	#if ($count > 1000) {
+	#	last;
+	#}
 }
 print "Count:".$count."\n";
 print "Too short:".$tooshort."\n";
@@ -230,9 +230,9 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			$seq .= $lines->[$j];
 		}
 	}
-	if ($count > 1000) {
-		last;
-	}
+	#if ($count > 1000) {
+	#	last;
+	#}
 }
 
 &PRINTFILE($path."/stats.json",[&TOJSON($stats,1)]);

@@ -110,7 +110,7 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			my $two = 0;
 			my $zero = 0;
 			my $hits = {};
-			my $species = {};
+			my $specieshash = {};
 			my $functions = {};
 			if (defined($id)) {
 				if (50+$size < length($seq)) {
@@ -153,24 +153,24 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 								if ($hash->{$query}->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
 									my $species = $genomes->{$1}->{n};
 									my $array = [split(/\s/,$species)];
-									if (!defined($species->{$array->[0]})) {
-										$species->{$array->[0]} = {
+									if (!defined($specieshash->{$array->[0]})) {
+										$specieshash->{$array->[0]} = {
 											"0" => 0,
 											"1" => 0,
 											"2" => 0,
 											"g" => 0
 										};
 									}
-									$species->{$array->[0]}->{$hash->{$query}->[$m]->[1]}++;
+									$specieshash->{$array->[0]}->{$hash->{$query}->[$m]->[1]}++;
 									if ($hits->{$hash->{$query}->[$m]->[0]} == 1) {
-										$species->{$array->[0]}->{g}++;
+										$specieshash->{$array->[0]}->{g}++;
 									}
 								}	
 							}
 						}
 					}
 					my $genecount = keys(%{$hits});
-					my $genuscount = keys(%{$species});
+					my $genuscount = keys(%{$specieshash});
 					my $funccount = keys(%{$functions});
 					if (!defined($stats->{middist}->{$one})) {
 						$stats->{middist}->{$one} = 0;
@@ -200,10 +200,10 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 						$stats->{funcdist}->{$funccount} = 0;
 					}
 					$stats->{funcdist}->{$funccount}++;
-					my $list = [sort { $species->{$a}->{g} <=> $species->{$b}->{g} } keys(%{$species})];
+					my $list = [sort { $specieshash->{$a}->{g} <=> $specieshash->{$b}->{g} } keys(%{$specieshash})];
 					for (my $m=0; $m < @{$list}; $m++) {
 						if (defined($list->[$m])) {
-							my $fract = $species->{$list->[$m]}->{g}/$genecount;
+							my $fract = $specieshash->{$list->[$m]}->{g}/$genecount;
 							$fract = floor($fract*10);
 							if (!defined($stats->{genusfract}->[$m]->[$fract])) {
 								$stats->{genusfract}->[$m]->[$fract] = 0;

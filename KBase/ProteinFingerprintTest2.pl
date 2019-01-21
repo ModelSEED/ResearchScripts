@@ -29,7 +29,7 @@ my $funchash = {};
 my $genomelist = [keys(%{$genomes})];
 print "Sketch start:".time()."\n";
 for (my $i=0; $i < @{$genomelist}; $i++) { 
-	print "Sketching:".$i." of ".$totalgenomes."\n";
+	print "Sketching:".$i." of ".$totalgenomes."\t".time()."\n";
 	my $lines = &LOADFILE("/vol/patric3/downloads/genomes/".$genomelist->[$i]."/".$genomelist->[$i].".PATRIC.faa");
 	my $id;
 	my $func;
@@ -97,7 +97,7 @@ foreach my $key (keys(%{$overlapping_sketches})) {
 my $stats = {};
 print "Scan start:".time()."\n";
 for (my $i=0; $i < @{$genomelist}; $i++) { 
-	print "Scanning:".$i." of ".$totalgenomes."\n";
+	print "Scanning:".$i." of ".$totalgenomes."\t".time()."\n";
 	my $lines = &LOADFILE("/vol/patric3/downloads/genomes/".$genomelist->[$i]."/".$genomelist->[$i].".PATRIC.faa");
 	my $id;
 	my $func;
@@ -119,15 +119,16 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 						if ($size > 30) {
 							$query = Digest::MD5::md5_hex($query);
 						}
-						if (defined($hash->{$query})) {
-							for (my $m=0; $m < @{$hash->{$query}}; $m++) {
-								if (!defined($hits->{$hash->{$query}->[$m]->[0]})) {
-									$hits->{$hash->{$query}->[$m]->[0]} = 0;
+						my $pointer = $hash->{$query};
+						if (defined($pointer)) {
+							for (my $m=0; $m < @{$pointer}; $m++) {
+								if (!defined($hits->{$pointer->[$m]->[0]})) {
+									$hits->{$pointer->[$m]->[0]} = 0;
 								}
 								$hitcount++;
-								$hits->{$hash->{$query}->[$m]->[0]}++;
-								if (defined($funchash->{$hash->{$query}->[$m]->[0]})) {
-									my $func = $funchash->{$hash->{$query}->[$m]->[0]};
+								$hits->{$pointer->[$m]->[0]}++;
+								if (defined($funchash->{$pointer->[$m]->[0]})) {
+									my $func = $funchash->{$pointer->[$m]->[0]};
 									if (!defined($functions->{$func})) {
 										$functions->{$func} = {
 											"0" => 0,
@@ -136,21 +137,21 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 											"g" => 0	
 										};
 									}
-									if ($hash->{$query}->[$m]->[1] eq "0") {
+									if ($pointer->[$m]->[1] eq "0") {
 										$zero++;
 									}
-									if ($hash->{$query}->[$m]->[1] eq "1") {
+									if ($pointer->[$m]->[1] eq "1") {
 										$one++;
 									}
-									if ($hash->{$query}->[$m]->[1] eq "2") {
+									if ($pointer->[$m]->[1] eq "2") {
 										$two++;
 									}
-									$functions->{$func}->{$hash->{$query}->[$m]->[1]}++;
-									if ($hits->{$hash->{$query}->[$m]->[0]} == 1) {
+									$functions->{$func}->{$pointer->[$m]->[1]}++;
+									if ($hits->{$pointer->[$m]->[0]} == 1) {
 										$functions->{$func}->{g}++;
 									}
 								}
-								if ($hash->{$query}->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
+								if ($pointer->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
 									my $species = $genomes->{$1}->{n};
 									my $array = [split(/\s/,$species)];
 									if (!defined($specieshash->{$array->[0]})) {
@@ -161,8 +162,8 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 											"g" => 0
 										};
 									}
-									$specieshash->{$array->[0]}->{$hash->{$query}->[$m]->[1]}++;
-									if ($hits->{$hash->{$query}->[$m]->[0]} == 1) {
+									$specieshash->{$array->[0]}->{$pointer->[$m]->[1]}++;
+									if ($hits->{$pointer->[$m]->[0]} == 1) {
 										$specieshash->{$array->[0]}->{g}++;
 									}
 								}	

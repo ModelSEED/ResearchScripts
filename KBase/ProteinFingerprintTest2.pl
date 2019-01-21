@@ -236,7 +236,7 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 	#}
 }
 
-&PRINTFILE($path."/stats.json",[&TOJSON($stats,1)]);
+&PRINTFILE($path."/stats-".$size.".json",[&TOJSON($stats,1)]);
 
 sub LOADFILE {
     my ($filename) = @_;

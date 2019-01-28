@@ -96,162 +96,164 @@ foreach my $key (keys(%{$overlapping_sketches})) {
 }
 
 my $filelist = [qw(
-
+GO-all
+GO-ERR2162200
+GO-ERR2162201
+GO-ERR2162202
+GO-ERR2162203
+GO-ERR2162204
+GO-ERR2162205
+GO-ERR2162206
+GO-ERR2162207
+GO-ERR2162208
+GO-ERR2162209
+GO-ERR2162210
+GO-ERR2162211
+GO-ERR2162212
+GO-ERR2162213
+GO-ERR2162214
+GO-ERR2162215
+GO-ERR2162216
+GO-ERR2162217
+GO-ERR2162218
+GO-ERR2162219
+GO-ERR2162220
+GO-ERR2162221
+GO-ERR2162222
+GO-ERR2162223
+GO-ERR2162224
 )];
 my $output = {};
 for (my $i=0; $i < @{$filelist}; $i++) {
+	print "Gene scan ".$filelist->[$i]."\n";
 	my $features = &FROMJSON(join("\n",@{&LOADFILE($path."/".$filelist->[$i].".json")}));
 	foreach my $contigid (keys(%{$features})) {
 		for (my $j=0; $j < @{$features->{$contigid}}; $j++) {
-			my $seq = $features->{$contigid}->[$j];
+			my $seq = $features->{$contigid}->[$j]->{protein_translation};
+			my $high = $features->{$contigid}->[$j]->{location}->[0]->[1] + $features->{$contigid}->[$j]->{location}->[0]->[3];
+			my $low = $features->{$contigid}->[$j]->{location}->[0]->[1];
+			if ($features->{$contigid}->[$j]->{location}->[0]->[2] eq "-") {
+				$low = $features->{$contigid}->[$j]->{location}->[0]->[1] - $features->{$contigid}->[$j]->{location}->[0]->[3];
+				$high = $features->{$contigid}->[$j]->{location}->[0]->[1];
+			}
+			if (!defined($output->{$contigid}->{lowest}) || $output->{$contigid}->{lowest} > $low) {
+				$output->{$contigid}->{lowest} = $low;
+			}
+			if (!defined($output->{$contigid}->{highest}) || $output->{$contigid}->{highest} < $high) {
+				$output->{$contigid}->{highest} = $high;
+			}
+			if ($size < length($seq)) {
+				for (my $k=0; $k < (length($seq)-$size-1); $k++) {
+					my $query = substr($seq,$k,$size);
+					if ($size > 30) {
+						$query = Digest::MD5::md5_hex($query);
+					}
+					my $pointer = $hash->{$query};
+					if (defined($pointer)) {
+						for (my $m=0; $m < @{$pointer}; $m++) {
+							my $function = "unknown";
+							if (defined($funchash->{$pointer->[$m]->[0]})) {
+								$function = $funchash->{$pointer->[$m]->[0]};
+							}
+							my $species = "unknown";
+							if ($pointer->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
+								$species = $genomes->{$1}->{n};
+							}
+							$output->{$contigid}->{genes}->{$features->{$contigid}->[$j]->{id}}->{$pointer->[$m]->[0]} = {
+								f => $function,
+								s => $species
+							};	
+						}
+					}
+				}		
+			}
 		}
 	}
 }
-
-
-my $stats = {};
-print "Scan start:".time()."\n";
-for (my $i=0; $i < @{$genomelist}; $i++) { 
-	print "Scanning:".$i." of ".$totalgenomes."\t".time()."\n";
-	my $lines = &LOADFILE("/vol/patric3/downloads/genomes/".$genomelist->[$i]."/".$genomelist->[$i].".PATRIC.faa");
+for (my $i=0; $i < @{$filelist}; $i++) {
+	print "Contig scan ".$filelist->[$i]."\n";
+	my $lines = &LOADFILE($path."/".$filelist->[$i].".json");
 	my $id;
 	my $func;
 	my $seq;
 	for (my $j=0; $j < @{$lines}; $j++) {
 		if ($lines->[$j] =~ m/^>([^\s^\t]+)/) {
 			my $newid = $1;
-			my $hitcount = 0;
-			my $one = 0;
-			my $two = 0;
-			my $zero = 0;
-			my $hits = {};
-			my $specieshash = {};
-			my $functions = {};
 			if (defined($id)) {
-				if (50+$size < length($seq)) {
-					for (my $k=0; $k < (length($seq)-$size-1); $k++) {
-						my $query = substr($seq,$k,$size);
-						if ($size > 30) {
-							$query = Digest::MD5::md5_hex($query);
-						}
-						my $pointer = $hash->{$query};
-						if (defined($pointer)) {
-							for (my $m=0; $m < @{$pointer}; $m++) {
-								if (!defined($hits->{$pointer->[$m]->[0]})) {
-									$hits->{$pointer->[$m]->[0]} = 0;
-								}
-								$hitcount++;
-								$hits->{$pointer->[$m]->[0]}++;
-								if (defined($funchash->{$pointer->[$m]->[0]})) {
-									my $func = $funchash->{$pointer->[$m]->[0]};
-									if (!defined($functions->{$func})) {
-										$functions->{$func} = {
-											"0" => 0,
-											"1" => 0,
-											"2" => 0,
-											"g" => 0	
-										};
-									}
-									if ($pointer->[$m]->[1] eq "0") {
-										$zero++;
-									}
-									if ($pointer->[$m]->[1] eq "1") {
-										$one++;
-									}
-									if ($pointer->[$m]->[1] eq "2") {
-										$two++;
-									}
-									$functions->{$func}->{$pointer->[$m]->[1]}++;
-									if ($hits->{$pointer->[$m]->[0]} == 1) {
-										$functions->{$func}->{g}++;
-									}
-								}
-								if ($pointer->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
-									my $species = $genomes->{$1}->{n};
-									my $array = [split(/\s/,$species)];
-									if (!defined($specieshash->{$array->[0]})) {
-										$specieshash->{$array->[0]} = {
-											"0" => 0,
-											"1" => 0,
-											"2" => 0,
-											"g" => 0
-										};
-									}
-									$specieshash->{$array->[0]}->{$pointer->[$m]->[1]}++;
-									if ($hits->{$pointer->[$m]->[0]} == 1) {
-										$specieshash->{$array->[0]}->{g}++;
-									}
-								}	
-							}
-						}
+				if (defined($output->{$id})) {
+					if ($output->{$id}->{lowest} > 3*$size) {
+						&CheckContigSequence(substr($seq,0,$output->{$id}->{lowest}),$output,"head",$id);
 					}
-					my $genecount = keys(%{$hits});
-					my $genuscount = keys(%{$specieshash});
-					my $funccount = keys(%{$functions});
-					if (!defined($stats->{middist}->{$one})) {
-						$stats->{middist}->{$one} = 0;
+					if (length($seq) > $output->{$id}->{highest}+3*$size) {
+						&CheckContigSequence(substr($seq,$output->{$id}->{highest}),$output,"tail",$id);
 					}
-					$stats->{middist}->{$one}++;
-					if (!defined($stats->{enddist}->{$two})) {
-						$stats->{enddist}->{$two} = 0;
-					}
-					$stats->{enddist}->{$two}++;
-					if (!defined($stats->{begdist}->{$zero})) {
-						$stats->{begdist}->{$zero} = 0;
-					}
-					$stats->{begdist}->{$zero}++;
-					if (!defined($stats->{sketchdist}->{$hitcount})) {
-						$stats->{sketchdist}->{$hitcount} = 0;
-					}
-					$stats->{sketchdist}->{$hitcount}++;
-					if (!defined($stats->{genedist}->{$genecount})) {
-						$stats->{genedist}->{$genecount} = 0;
-					}
-					$stats->{genedist}->{$genecount}++;
-					if (!defined($stats->{genusdist}->{$genuscount})) {
-						$stats->{genusdist}->{$genuscount} = 0;
-					}
-					$stats->{genusdist}->{$genuscount}++;
-					if (!defined($stats->{funcdist}->{$funccount})) {
-						$stats->{funcdist}->{$funccount} = 0;
-					}
-					$stats->{funcdist}->{$funccount}++;
-					my $list = [sort { $specieshash->{$a}->{g} <=> $specieshash->{$b}->{g} } keys(%{$specieshash})];
-					for (my $m=0; $m < @{$list}; $m++) {
-						if (defined($list->[$m])) {
-							my $fract = $specieshash->{$list->[$m]}->{g}/$genecount;
-							$fract = floor($fract*10);
-							if (!defined($stats->{genusfract}->[$m]->[$fract])) {
-								$stats->{genusfract}->[$m]->[$fract] = 0;
-							}
-							$stats->{genusfract}->[$m]->[$fract]++;
-						}
-					}
-					$list = [sort { $functions->{$a} <=> $functions->{$b} } keys(%{$functions})];
-					for (my $m=0; $m < @{$list}; $m++) {
-						if (defined($list->[$m])) {
-							my $fract = $functions->{$list->[$m]}->{g}/$genecount;
-							$fract = floor($fract*10);
-							if (!defined($stats->{funcfract}->[$m]->[$fract])) {
-								$stats->{funcfract}->[$m]->[$fract] = 0;
-							}
-							$stats->{funcfract}->[$m]->[$fract]++;
-						}
-					}			
+				} else {
+					&CheckContigSequence($seq,$output,"entire",$id);
 				}
+				$id = $newid;
+				$seq = "";
+			} else {
+				$seq .= $lines->[$j];
 			}
-			$id = $newid;
-			$seq = "";
-		} else {
-			$seq .= $lines->[$j];
 		}
-	}
-	#if ($count > 1000) {
-	#	last;
-	#}
+	}	
 }
 
-&PRINTFILE($path."/stats-".$size.".json",[&TOJSON($stats,1)]);
+&PRINTFILE($path."/output-".$size.".json",[&TOJSON($output,1)]);
+
+sub CheckContigSequence {
+    my ($seq,$outhash,$type,$contigid) = @_;
+	my $protseq = GUSTPlus::gustoenv::translate_sequence($seq,1);
+	&ScanProteinForHits($protseq,$outhash,$type."_F1",$contigid);
+	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($seq,1),1);
+	&ScanProteinForHits($protseq,$outhash,$type."_F2",$contigid);
+	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($seq,2),1);
+	&ScanProteinForHits($protseq,$outhash,$type."_F3",$contigid);
+	my $revseq = GUSTPlus::gustoenv::reverse_sequence($seq);
+	$protseq = GUSTPlus::gustoenv::translate_sequence($revseq,1);
+	&ScanProteinForHits($protseq,$outhash,$type."_R1",$contigid);
+	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($revseq,1),1);
+	&ScanProteinForHits($protseq,$outhash,$type."_R2",$contigid);
+	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($revseq,2),1);
+	&ScanProteinForHits($protseq,$outhash,$type."_R3",$contigid);	
+}
+
+sub ScanProteinForHits {
+	my ($seq,$outhash,$type,$contigid,$id) = @_;
+	if ($size < length($seq)) {
+		for (my $k=0; $k < (length($seq)-$size-1); $k++) {
+			my $query = substr($seq,$k,$size);
+			if ($size > 30) {
+				$query = Digest::MD5::md5_hex($query);
+			}
+			my $pointer = $hash->{$query};
+			if (defined($pointer)) {
+				for (my $m=0; $m < @{$pointer}; $m++) {
+					my $function = "unknown";
+					if (defined($funchash->{$pointer->[$m]->[0]})) {
+						$function = $funchash->{$pointer->[$m]->[0]};
+					}
+					my $species = "unknown";
+					if ($pointer->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
+						$species = $genomes->{$1}->{n};
+					}
+					if ($type eq "protein") {
+						$outhash->{$contigid}->{genes}->{$id}->{$pointer->[$m]->[0]} = {
+							f => $function,
+							s => $species
+						};
+					} else {
+						$outhash->{$contigid}->{raw}->{$pointer->[$m]->[0]} = {
+							type => $type,
+							f => $function,
+							s => $species
+						};
+					}	
+				}
+			}
+		}		
+	}
+}
 
 sub LOADFILE {
     my ($filename) = @_;

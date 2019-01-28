@@ -126,7 +126,7 @@ GO-ERR2162224
 my $output = {};
 for (my $i=0; $i < @{$filelist}; $i++) {
 	print "Gene scan ".$filelist->[$i]."\n";
-	my $features = &FROMJSON(join("\n",@{&LOADFILE($path."/".$filelist->[$i].".json")}));
+	my $features = &FROMJSON(join("\n",@{&LOADFILE($path."/all_genes/".$filelist->[$i].".json")}));
 	foreach my $contigid (keys(%{$features})) {
 		for (my $j=0; $j < @{$features->{$contigid}}; $j++) {
 			my $seq = $features->{$contigid}->[$j]->{protein_translation};
@@ -172,7 +172,7 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 }
 for (my $i=0; $i < @{$filelist}; $i++) {
 	print "Contig scan ".$filelist->[$i]."\n";
-	my $lines = &LOADFILE($path."/".$filelist->[$i].".json");
+	my $lines = &LOADFILE($path."/all_genes/".$filelist->[$i].".json");
 	my $id;
 	my $func;
 	my $seq;

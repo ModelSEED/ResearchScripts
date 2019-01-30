@@ -128,7 +128,18 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 	print "Gene scan ".$filelist->[$i]."\n";
 	my $features = &FROMJSON(join("\n",@{&LOADFILE($path."/all_genes/".$filelist->[$i].".json")}));
 	foreach my $contigid (keys(%{$features})) {
+		$output->{$filelist->[$i]}->{$contigid} = {
+			genes => {},
+			raw => {},
+			genehits => 0,
+			rawhits => 0
+		};
 		for (my $j=0; $j < @{$features->{$contigid}}; $j++) {
+			$output->{$filelist->[$i]}->{$contigid}->{genes}->{$features->{$contigid}->[$j]->{id}} = {
+				s => {},
+				f => {},
+				count => 0
+			};
 			my $seq = $features->{$contigid}->[$j]->{protein_translation};
 			my $high = $features->{$contigid}->[$j]->{location}->[0]->[1] + $features->{$contigid}->[$j]->{location}->[0]->[3];
 			my $low = $features->{$contigid}->[$j]->{location}->[0]->[1];
@@ -136,36 +147,15 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 				$low = $features->{$contigid}->[$j]->{location}->[0]->[1] - $features->{$contigid}->[$j]->{location}->[0]->[3];
 				$high = $features->{$contigid}->[$j]->{location}->[0]->[1];
 			}
-			if (!defined($output->{$contigid}->{lowest}) || $output->{$contigid}->{lowest} > $low) {
-				$output->{$contigid}->{lowest} = $low;
+			if (!defined($output->{$filelist->[$i]}->{$contigid}->{lowest}) || $output->{$filelist->[$i]}->{$contigid}->{lowest} > $low) {
+				$output->{$filelist->[$i]}->{$contigid}->{lowest} = $low;
 			}
-			if (!defined($output->{$contigid}->{highest}) || $output->{$contigid}->{highest} < $high) {
-				$output->{$contigid}->{highest} = $high;
+			if (!defined($output->{$filelist->[$i]}->{$contigid}->{highest}) || $output->{$filelist->[$i]}->{$contigid}->{highest} < $high) {
+				$output->{$filelist->[$i]}->{$contigid}->{highest} = $high;
 			}
-			if ($size < length($seq)) {
-				for (my $k=0; $k < (length($seq)-$size-1); $k++) {
-					my $query = substr($seq,$k,$size);
-					if ($size > 30) {
-						$query = Digest::MD5::md5_hex($query);
-					}
-					my $pointer = $hash->{$query};
-					if (defined($pointer)) {
-						for (my $m=0; $m < @{$pointer}; $m++) {
-							my $function = "unknown";
-							if (defined($funchash->{$pointer->[$m]->[0]})) {
-								$function = $funchash->{$pointer->[$m]->[0]};
-							}
-							my $species = "unknown";
-							if ($pointer->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
-								$species = $genomes->{$1}->{n};
-							}
-							$output->{$contigid}->{genes}->{$features->{$contigid}->[$j]->{id}}->{$pointer->[$m]->[0]} = {
-								f => $function,
-								s => $species
-							};	
-						}
-					}
-				}		
+			&ScanProteinForHits($seq,$output->{$filelist->[$i]},"protein",$contigid,$features->{$contigid}->[$j]->{id});
+			if ($output->{$filelist->[$i]}->{$contigid}->{genes}->{$features->{$contigid}->[$j]->{id}}->{count} > 0) {
+				$output->{$filelist->[$i]}->{$contigid}->{genehits}++;
 			}
 		}
 	}
@@ -180,15 +170,15 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 		if ($lines->[$j] =~ m/^>([^\s^\t]+)/) {
 			my $newid = $1;
 			if (defined($id)) {
-				if (defined($output->{$id})) {
-					if ($output->{$id}->{lowest} > 3*$size) {
-						&CheckContigSequence(substr($seq,0,$output->{$id}->{lowest}),$output,"head",$id);
+				if (defined($output->{$filelist->[$i]}->{$id})) {
+					if ($output->{$filelist->[$i]}->{$id}->{lowest} > 3*$size) {
+						$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence(substr($seq,0,$output->{$filelist->[$i]}->{$id}->{lowest}),$output->{$filelist->[$i]},"head",$id);
 					}
-					if (length($seq) > $output->{$id}->{highest}+3*$size) {
-						&CheckContigSequence(substr($seq,$output->{$id}->{highest}),$output,"tail",$id);
+					if (length($seq) > $output->{$filelist->[$i]}->{$id}->{highest}+3*$size) {
+						$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence(substr($seq,$output->{$filelist->[$i]}->{$id}->{highest}),$output->{$filelist->[$i]},"tail",$id);
 					}
 				} else {
-					&CheckContigSequence($seq,$output,"entire",$id);
+					$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence($seq,$output->{$filelist->[$i]},"entire",$id);
 				}
 				$id = $newid;
 				$seq = "";
@@ -199,28 +189,96 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 	}	
 }
 
-&PRINTFILE($path."/output-".$size.".json",[&TOJSON($output,1)]);
+foreach my $id (keys(%{$output})) {
+	my $genespeclines = ["Contig id\tGene id\tSpecies\tCount\tFraction"];
+	my $genefunclines = ["Contig id\tGene id\tFunction\tCount\tFraction"];
+	my $cmlines = ["Contig id\tGenes\tGeneHits\tRawHits\tHigh\tLow"];
+	my $rawspeclines = ["Contig id\tType\tSpecies\tCount\tFraction"];
+	my $rawfunclines = ["Contig id\tType\tFunction\tCount\tFraction"];
+	foreach my $contigid (keys(%{$output->{$id}})) {
+		my $genecount = keys(%{$output->{$id}->{$contigid}});
+		my $high = "-";
+		my $low = "-";
+		if (defined($output->{$id}->{$contigid}->{lowest})) {
+			$low = $output->{$id}->{$contigid}->{lowest};
+		}
+		if (defined($output->{$id}->{$contigid}->{lowest})) {
+			$high = $output->{$id}->{$contigid}->{highest};
+		}
+		push(@{$cmlines},$contigid."\t".$genecount."\t".$output->{$id}->{$contigid}->{genehits}."\t".$output->{$id}->{$contigid}->{rawhits}."\t".$output->{$id}->{$contigid}->{rawhits}."\t".$high."\t".$low);
+		foreach my $gene (keys(%{$output->{$id}->{$contigid}->{genes}})) {
+			foreach my $species (keys(%{$output->{$id}->{$contigid}->{genes}->{$gene}->{s}})) {
+				my $count = $output->{$id}->{$contigid}->{genes}->{$gene}->{s}->{$species};
+				my $fraction = $count/$output->{$id}->{$contigid}->{genes}->{$gene}->{count};
+				push(@{$genespeclines},$contigid."\t".$gene."\t".$species."\t".$count."\t".$fraction);
+			}
+			foreach my $function (keys(%{$output->{$id}->{$contigid}->{genes}->{$gene}->{f}})) {
+				my $count = $output->{$id}->{$contigid}->{genes}->{$gene}->{f}->{$function};
+				my $fraction = $count/$output->{$id}->{$contigid}->{genes}->{$gene}->{count};
+				push(@{$genefunclines},$contigid."\t".$gene."\t".$function."\t".$count."\t".$fraction);
+			}
+		}
+		foreach my $gene (keys(%{$output->{$id}->{$contigid}->{raw}})) {
+			foreach my $species (keys(%{$output->{$id}->{$contigid}->{raw}->{$gene}->{s}})) {
+				my $count = $output->{$id}->{$contigid}->{raw}->{$gene}->{s}->{$species};
+				my $fraction = $count/$output->{$id}->{$contigid}->{raw}->{$gene}->{count};
+				push(@{$rawspeclines},$contigid."\t".$gene."\t".$species."\t".$count."\t".$fraction);
+			}
+			foreach my $function (keys(%{$output->{$id}->{$contigid}->{raw}->{$gene}->{f}})) {
+				my $count = $output->{$id}->{$contigid}->{raw}->{$gene}->{f}->{$function};
+				my $fraction = $count/$output->{$id}->{$contigid}->{raw}->{$gene}->{count};
+				push(@{$rawfunclines},$contigid."\t".$gene."\t".$function."\t".$count."\t".$fraction);
+			}
+		}
+	}
+	&PRINTFILE($path."/".$size."_".$id.".contig_meta",$cmlines);
+	&PRINTFILE($path."/".$size."_".$id.".gene_spec",$genespeclines);
+	&PRINTFILE($path."/".$size."_".$id.".gene_func",$genefunclines);
+	&PRINTFILE($path."/".$size."_".$id.".contig_spec",$rawspeclines);
+	&PRINTFILE($path."/".$size."_".$id.".contig_func",$rawfunclines);
+}
 
 sub CheckContigSequence {
     my ($seq,$outhash,$type,$contigid) = @_;
+	my $count = 0;
 	my $protseq = GUSTPlus::gustoenv::translate_sequence($seq,1);
 	&ScanProteinForHits($protseq,$outhash,$type."_F1",$contigid);
+	if (defined($outhash->{$contigid}->{raw}->{$type."_F1"}) && $outhash->{$contigid}->{raw}->{$type."_F1"}->{count} > 0) {
+		$count += $outhash->{$contigid}->{raw}->{$type."_F1"}->{count};
+	}
 	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($seq,1),1);
 	&ScanProteinForHits($protseq,$outhash,$type."_F2",$contigid);
+	if (defined($outhash->{$contigid}->{raw}->{$type."_F2"}) && $outhash->{$contigid}->{raw}->{$type."_F2"}->{count} > 0) {
+		$count += $outhash->{$contigid}->{raw}->{$type."_F2"}->{count};
+	}
 	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($seq,2),1);
 	&ScanProteinForHits($protseq,$outhash,$type."_F3",$contigid);
+	if (defined($outhash->{$contigid}->{raw}->{$type."_F3"}) && $outhash->{$contigid}->{raw}->{$type."_F3"}->{count} > 0) {
+		$count += $outhash->{$contigid}->{raw}->{$type."_F3"}->{count};
+	}
 	my $revseq = GUSTPlus::gustoenv::reverse_sequence($seq);
 	$protseq = GUSTPlus::gustoenv::translate_sequence($revseq,1);
 	&ScanProteinForHits($protseq,$outhash,$type."_R1",$contigid);
+	if (defined($outhash->{$contigid}->{raw}->{$type."_R1"}) && $outhash->{$contigid}->{raw}->{$type."_R1"}->{count} > 0) {
+		$count += $outhash->{$contigid}->{raw}->{$type."_R1"}->{count};
+	}
 	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($revseq,1),1);
 	&ScanProteinForHits($protseq,$outhash,$type."_R2",$contigid);
+	if (defined($outhash->{$contigid}->{raw}->{$type."_R2"}) && $outhash->{$contigid}->{raw}->{$type."_R2"}->{count} > 0) {
+		$count += $outhash->{$contigid}->{raw}->{$type."_R2"}->{count};
+	}
 	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($revseq,2),1);
 	&ScanProteinForHits($protseq,$outhash,$type."_R3",$contigid);	
+	if (defined($outhash->{$contigid}->{raw}->{$type."_R3"}) && $outhash->{$contigid}->{raw}->{$type."_R3"}->{count} > 0) {
+		$count += $outhash->{$contigid}->{raw}->{$type."_R3"}->{count};
+	}
+	return $count;
 }
 
 sub ScanProteinForHits {
 	my ($seq,$outhash,$type,$contigid,$id) = @_;
 	if ($size < length($seq)) {
+		my $genehash = {};
 		for (my $k=0; $k < (length($seq)-$size-1); $k++) {
 			my $query = substr($seq,$k,$size);
 			if ($size > 30) {
@@ -229,25 +287,48 @@ sub ScanProteinForHits {
 			my $pointer = $hash->{$query};
 			if (defined($pointer)) {
 				for (my $m=0; $m < @{$pointer}; $m++) {
-					my $function = "unknown";
-					if (defined($funchash->{$pointer->[$m]->[0]})) {
-						$function = $funchash->{$pointer->[$m]->[0]};
+					my $new = 0;
+					if (!defined($genehash->{$pointer->[$m]->[0]})) {
+						$genehash->{$pointer->[$m]->[0]} = 0;
+						$new = 1;
 					}
-					my $species = "unknown";
-					if ($pointer->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
-						$species = $genomes->{$1}->{n};
-					}
-					if ($type eq "protein") {
-						$outhash->{$contigid}->{genes}->{$id}->{$pointer->[$m]->[0]} = {
-							f => $function,
-							s => $species
-						};
-					} else {
-						$outhash->{$contigid}->{raw}->{$pointer->[$m]->[0]} = {
-							type => $type,
-							f => $function,
-							s => $species
-						};
+					$genehash->{$pointer->[$m]->[0]}++;
+					if ($new == 1) {
+						my $function = "unknown";
+						if (defined($funchash->{$pointer->[$m]->[0]})) {
+							$function = $funchash->{$pointer->[$m]->[0]};
+						}
+						my $species = "unknown";
+						if ($pointer->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
+							$species = $genomes->{$1}->{n};
+							my $array = [split(/\s/,$species)];
+							if ($array->[1] eq "sp.") {
+								$species = $array->[0]." ".$array->[2];
+							} else {
+								$species = $array->[0]." ".$array->[1];
+							}
+						}
+						my $hash;
+						if ($type eq "protein") {
+							if (!defined($outhash->{$contigid}->{genes}->{$id})) {
+								$outhash->{$contigid}->{genes}->{$id} = {s => {},f => {},count => 0};
+							}
+							$hash = $outhash->{$contigid}->{genes}->{$id};
+						} else {
+							if (!defined($outhash->{$contigid}->{raw}->{$type})) {
+								$outhash->{$contigid}->{raw}->{$type} = {s => {},f => {},count => 0};
+							}
+							$hash = $outhash->{$contigid}->{raw}->{$type};
+						}
+						if (!defined($hash->{s}->{$species})) {
+							$hash->{s}->{$species} = 0;
+						}
+						$hash->{s}->{$species}++;
+						if (!defined($hash->{f}->{$function})) {
+							$hash->{f}->{$function} = 0;
+						}
+						$hash->{f}->{$function}++;
+						$hash->{count}++;
 					}	
 				}
 			}

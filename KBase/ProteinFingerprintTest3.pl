@@ -409,9 +409,9 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			$seq .= $lines->[$j];
 		}
 	}
-	if ($count > 1000) {
-		last;
-	}
+#	if ($count > 1000) {
+#		last;
+#	}
 }
 print "Count:".$count."\n";
 print "Too short:".$tooshort."\n";
@@ -421,32 +421,32 @@ foreach my $key (keys(%{$overlapping_sketches})) {
 
 my $filelist = [qw(
 GO-all
+GO-ERR2162200
+GO-ERR2162201
+GO-ERR2162202
+GO-ERR2162203
+GO-ERR2162204
+GO-ERR2162205
+GO-ERR2162206
+GO-ERR2162207
+GO-ERR2162208
+GO-ERR2162209
+GO-ERR2162210
+GO-ERR2162211
+GO-ERR2162212
+GO-ERR2162213
+GO-ERR2162214
+GO-ERR2162215
+GO-ERR2162216
+GO-ERR2162217
+GO-ERR2162218
+GO-ERR2162219
+GO-ERR2162220
+GO-ERR2162221
+GO-ERR2162222
+GO-ERR2162223
+GO-ERR2162224
 )];
-#GO-ERR2162200
-#GO-ERR2162201
-#GO-ERR2162202
-#GO-ERR2162203
-#GO-ERR2162204
-#GO-ERR2162205
-#GO-ERR2162206
-#GO-ERR2162207
-#GO-ERR2162208
-#GO-ERR2162209
-#GO-ERR2162210
-#GO-ERR2162211
-#GO-ERR2162212
-#GO-ERR2162213
-#GO-ERR2162214
-#GO-ERR2162215
-#GO-ERR2162216
-#GO-ERR2162217
-#GO-ERR2162218
-#GO-ERR2162219
-#GO-ERR2162220
-#GO-ERR2162221
-#GO-ERR2162222
-#GO-ERR2162223
-#GO-ERR2162224
 my $output = {};
 for (my $i=0; $i < @{$filelist}; $i++) {
 	print "Gene scan ".$filelist->[$i]."\n";
@@ -490,8 +490,8 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 	my $id;
 	my $func;
 	my $seq = "";
-	#for (my $j=0; $j < @{$lines}; $j++) {
-	for (my $j=0; $j < 1000; $j++) {
+	for (my $j=0; $j < @{$lines}; $j++) {
+	#for (my $j=0; $j < 1000; $j++) {
 		if ($lines->[$j] =~ m/^>(\w+)[\s\t]/) {
 			my $newid = $1;
 			if (defined($id)) {
@@ -573,32 +573,27 @@ sub CheckContigSequence {
 		$count += $outhash->{$contigid}->{raw}->{$type."_F1"}->{count};
 	}
 	$protseq = &translate_sequence(substr($seq,1),1);
-	print "2:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_F2",$contigid);
 	if (defined($outhash->{$contigid}->{raw}->{$type."_F2"}) && $outhash->{$contigid}->{raw}->{$type."_F2"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_F2"}->{count};
 	}
 	$protseq = &translate_sequence(substr($seq,2),1);
-	print "3:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_F3",$contigid);
 	if (defined($outhash->{$contigid}->{raw}->{$type."_F3"}) && $outhash->{$contigid}->{raw}->{$type."_F3"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_F3"}->{count};
 	}
 	my $revseq = &reverse_sequence($seq);
 	$protseq = &translate_sequence($revseq,1);
-	print "4:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_R1",$contigid);
 	if (defined($outhash->{$contigid}->{raw}->{$type."_R1"}) && $outhash->{$contigid}->{raw}->{$type."_R1"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_R1"}->{count};
 	}
 	$protseq = &translate_sequence(substr($revseq,1),1);
-	print "5:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_R2",$contigid);
 	if (defined($outhash->{$contigid}->{raw}->{$type."_R2"}) && $outhash->{$contigid}->{raw}->{$type."_R2"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_R2"}->{count};
 	}
 	$protseq = &translate_sequence(substr($revseq,2),1);
-	print "6:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_R3",$contigid);	
 	if (defined($outhash->{$contigid}->{raw}->{$type."_R3"}) && $outhash->{$contigid}->{raw}->{$type."_R3"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_R3"}->{count};

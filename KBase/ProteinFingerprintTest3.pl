@@ -85,9 +85,9 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			$seq .= $lines->[$j];
 		}
 	}
-	#if ($count > 1000) {
-	#	last;
-	#}
+	if ($count > 1000) {
+		last;
+	}
 }
 print "Count:".$count."\n";
 print "Too short:".$tooshort."\n";
@@ -196,16 +196,16 @@ foreach my $id (keys(%{$output})) {
 	my $rawspeclines = ["Contig id\tType\tSpecies\tCount\tFraction"];
 	my $rawfunclines = ["Contig id\tType\tFunction\tCount\tFraction"];
 	foreach my $contigid (keys(%{$output->{$id}})) {
-		my $genecount = keys(%{$output->{$id}->{$contigid}});
+		my $genecount = keys(%{$output->{$id}->{$contigid}->{genes}});
 		my $high = "-";
 		my $low = "-";
 		if (defined($output->{$id}->{$contigid}->{lowest})) {
 			$low = $output->{$id}->{$contigid}->{lowest};
 		}
-		if (defined($output->{$id}->{$contigid}->{lowest})) {
+		if (defined($output->{$id}->{$contigid}->{highest})) {
 			$high = $output->{$id}->{$contigid}->{highest};
 		}
-		push(@{$cmlines},$contigid."\t".$genecount."\t".$output->{$id}->{$contigid}->{genehits}."\t".$output->{$id}->{$contigid}->{rawhits}."\t".$output->{$id}->{$contigid}->{rawhits}."\t".$high."\t".$low);
+		push(@{$cmlines},$contigid."\t".$genecount."\t".$output->{$id}->{$contigid}->{genehits}."\t".$output->{$id}->{$contigid}->{rawhits}."\t".$high."\t".$low);
 		foreach my $gene (keys(%{$output->{$id}->{$contigid}->{genes}})) {
 			foreach my $species (keys(%{$output->{$id}->{$contigid}->{genes}->{$gene}->{s}})) {
 				my $count = $output->{$id}->{$contigid}->{genes}->{$gene}->{s}->{$species};
@@ -242,32 +242,38 @@ sub CheckContigSequence {
     my ($seq,$outhash,$type,$contigid) = @_;
 	my $count = 0;
 	my $protseq = GUSTPlus::gustoenv::translate_sequence($seq,1);
+	print "1:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_F1",$contigid);
 	if (defined($outhash->{$contigid}->{raw}->{$type."_F1"}) && $outhash->{$contigid}->{raw}->{$type."_F1"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_F1"}->{count};
 	}
 	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($seq,1),1);
+	print "2:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_F2",$contigid);
 	if (defined($outhash->{$contigid}->{raw}->{$type."_F2"}) && $outhash->{$contigid}->{raw}->{$type."_F2"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_F2"}->{count};
 	}
 	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($seq,2),1);
+	print "3:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_F3",$contigid);
 	if (defined($outhash->{$contigid}->{raw}->{$type."_F3"}) && $outhash->{$contigid}->{raw}->{$type."_F3"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_F3"}->{count};
 	}
 	my $revseq = GUSTPlus::gustoenv::reverse_sequence($seq);
 	$protseq = GUSTPlus::gustoenv::translate_sequence($revseq,1);
+	print "4:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_R1",$contigid);
 	if (defined($outhash->{$contigid}->{raw}->{$type."_R1"}) && $outhash->{$contigid}->{raw}->{$type."_R1"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_R1"}->{count};
 	}
 	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($revseq,1),1);
+	print "5:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_R2",$contigid);
 	if (defined($outhash->{$contigid}->{raw}->{$type."_R2"}) && $outhash->{$contigid}->{raw}->{$type."_R2"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_R2"}->{count};
 	}
 	$protseq = GUSTPlus::gustoenv::translate_sequence(substr($revseq,2),1);
+	print "6:".$protseq."\n";
 	&ScanProteinForHits($protseq,$outhash,$type."_R3",$contigid);	
 	if (defined($outhash->{$contigid}->{raw}->{$type."_R3"}) && $outhash->{$contigid}->{raw}->{$type."_R3"}->{count} > 0) {
 		$count += $outhash->{$contigid}->{raw}->{$type."_R3"}->{count};

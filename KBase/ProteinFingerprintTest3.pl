@@ -166,9 +166,12 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 	my $id;
 	my $func;
 	my $seq;
-	for (my $j=0; $j < @{$lines}; $j++) {
-		if ($lines->[$j] =~ m/^>([^\s^\t]+)/) {
+	#for (my $j=0; $j < @{$lines}; $j++) {
+	for (my $j=0; $j < 1000; $j++) {
+		print "Contig:".$lines->[$j]."\n";
+		if ($lines->[$j] =~ m/^>(\w+)[\s\t]/) {
 			my $newid = $1;
+			print "Contig ID:".$newid."\n";
 			if (defined($id)) {
 				if (defined($output->{$filelist->[$i]}->{$id})) {
 					if ($output->{$filelist->[$i]}->{$id}->{lowest} > 3*$size) {

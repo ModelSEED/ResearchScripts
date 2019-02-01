@@ -97,32 +97,32 @@ foreach my $key (keys(%{$overlapping_sketches})) {
 
 my $filelist = [qw(
 GO-all
-GO-ERR2162200
-GO-ERR2162201
-GO-ERR2162202
-GO-ERR2162203
-GO-ERR2162204
-GO-ERR2162205
-GO-ERR2162206
-GO-ERR2162207
-GO-ERR2162208
-GO-ERR2162209
-GO-ERR2162210
-GO-ERR2162211
-GO-ERR2162212
-GO-ERR2162213
-GO-ERR2162214
-GO-ERR2162215
-GO-ERR2162216
-GO-ERR2162217
-GO-ERR2162218
-GO-ERR2162219
-GO-ERR2162220
-GO-ERR2162221
-GO-ERR2162222
-GO-ERR2162223
-GO-ERR2162224
 )];
+#GO-ERR2162200
+#GO-ERR2162201
+#GO-ERR2162202
+#GO-ERR2162203
+#GO-ERR2162204
+#GO-ERR2162205
+#GO-ERR2162206
+#GO-ERR2162207
+#GO-ERR2162208
+#GO-ERR2162209
+#GO-ERR2162210
+#GO-ERR2162211
+#GO-ERR2162212
+#GO-ERR2162213
+#GO-ERR2162214
+#GO-ERR2162215
+#GO-ERR2162216
+#GO-ERR2162217
+#GO-ERR2162218
+#GO-ERR2162219
+#GO-ERR2162220
+#GO-ERR2162221
+#GO-ERR2162222
+#GO-ERR2162223
+#GO-ERR2162224
 my $output = {};
 for (my $i=0; $i < @{$filelist}; $i++) {
 	print "Gene scan ".$filelist->[$i]."\n";
@@ -162,7 +162,7 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 }
 for (my $i=0; $i < @{$filelist}; $i++) {
 	print "Contig scan ".$filelist->[$i]."\n";
-	my $lines = &LOADFILE($path."/all_genes/".$filelist->[$i].".json");
+	my $lines = &LOADFILE($path."/all_genes/".$filelist->[$i].".fasta");
 	my $id;
 	my $func;
 	my $seq;

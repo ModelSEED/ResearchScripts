@@ -165,13 +165,11 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 	my $lines = &LOADFILE($path."/all_genes/".$filelist->[$i].".fasta");
 	my $id;
 	my $func;
-	my $seq;
+	my $seq = "";
 	#for (my $j=0; $j < @{$lines}; $j++) {
 	for (my $j=0; $j < 1000; $j++) {
-		print "Contig:".$lines->[$j]."\n";
 		if ($lines->[$j] =~ m/^>(\w+)[\s\t]/) {
 			my $newid = $1;
-			print "Contig ID:".$newid."\n";
 			if (defined($id)) {
 				if (defined($output->{$filelist->[$i]}->{$id})) {
 					if ($output->{$filelist->[$i]}->{$id}->{lowest} > 3*$size) {
@@ -183,11 +181,11 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 				} else {
 					$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence($seq,$output->{$filelist->[$i]},"entire",$id);
 				}
-				$id = $newid;
-				$seq = "";
-			} else {
-				$seq .= $lines->[$j];
 			}
+			$id = $newid;
+			$seq = "";
+		} else {
+			$seq .= $lines->[$j];
 		}
 	}	
 }

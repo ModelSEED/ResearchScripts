@@ -446,6 +446,9 @@ GO-ERR2162221
 GO-ERR2162222
 GO-ERR2162223
 GO-ERR2162224
+GO-all-nonresponders
+GO-all-responders
+hotlake
 )];
 my $output = {};
 for (my $i=0; $i < @{$filelist}; $i++) {
@@ -491,16 +494,23 @@ for (my $i=0; $i < @{$filelist}; $i++) {
 	my $func;
 	my $seq = "";
 	for (my $j=0; $j < @{$lines}; $j++) {
-	#for (my $j=0; $j < 1000; $j++) {
 		if ($lines->[$j] =~ m/^>(\w+)[\s\t]/) {
 			my $newid = $1;
 			if (defined($id)) {
 				if (defined($output->{$filelist->[$i]}->{$id})) {
-					if ($output->{$filelist->[$i]}->{$id}->{lowest} > 3*$size) {
-						$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence(substr($seq,0,$output->{$filelist->[$i]}->{$id}->{lowest}),$output->{$filelist->[$i]},"head",$id);
-					}
-					if (length($seq) > $output->{$filelist->[$i]}->{$id}->{highest}+3*$size) {
-						$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence(substr($seq,$output->{$filelist->[$i]}->{$id}->{highest}),$output->{$filelist->[$i]},"tail",$id);
+					my $genecount = keys(%{$output->{$filelist->[$i]}->{$id}->{genes}});
+					if ($genecount > 0) {
+						if ($output->{$filelist->[$i]}->{$id}->{lowest} > 3*$size) {
+							$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence(substr($seq,0,$output->{$filelist->[$i]}->{$id}->{lowest}),$output->{$filelist->[$i]},"head",$id);
+						}
+						if (length($seq) > $output->{$filelist->[$i]}->{$id}->{highest}+3*$size) {
+							$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence(substr($seq,$output->{$filelist->[$i]}->{$id}->{highest}),$output->{$filelist->[$i]},"tail",$id);
+						}
+						if ($genecount < 3 && $output->{$filelist->[$i]}->{$id}->{rawhits} == 0 && $output->{$filelist->[$i]}->{$id}->{genehits} == 0) {
+							$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence($seq,$output->{$filelist->[$i]},"entire",$id);
+						}
+					} else {
+						$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence($seq,$output->{$filelist->[$i]},"entire",$id);
 					}
 				} else {
 					$output->{$filelist->[$i]}->{$id}->{rawhits} = &CheckContigSequence($seq,$output->{$filelist->[$i]},"entire",$id);

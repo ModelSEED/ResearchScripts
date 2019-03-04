@@ -449,6 +449,88 @@ GO-ERR2162224
 GO-all-nonresponders
 GO-all-responders
 hotlake
+FR-SRR5930494
+FR-SRR5930495
+FR-SRR5930496
+FR-SRR5930497
+FR-SRR5930498
+FR-SRR5930499
+FR-SRR5930500
+FR-SRR5930501
+FR-SRR5930502
+FR-SRR5930503
+FR-SRR5930504
+FR-SRR5930505
+FR-SRR5930506
+FR-SRR5930507
+FR-SRR5930508
+FR-SRR5930509
+FR-SRR5930510
+FR-SRR5930511
+FR-SRR5930512
+FR-SRR5930513
+FR-SRR5930514
+FR-SRR5930515
+FR-SRR5930516
+FR-SRR5930517
+FR-SRR5930518
+FR-SRR5930519
+FR-SRR5930520
+FR-SRR5930521
+FR-SRR5930522
+FR-SRR5930523
+FR-SRR5930524
+FR-SRR5930525
+FR-SRR5930526
+FR-SRR5930527
+FR-SRR5930528
+FR-SRR5930529
+FR-SRR5930530
+FR-SRR5930531
+FR-SRR5930532
+FR-SRR5930533
+FR-SRR5930534
+FR-SRR5930535
+FR-SRR5930536
+MA-SRR6000869
+MA-SRR6000870
+MA-SRR6000871
+MA-SRR6000873
+MA-SRR6000874
+MA-SRR6000877
+MA-SRR6000878
+MA-SRR6000890
+MA-SRR6000891
+MA-SRR6000892
+MA-SRR6000893
+MA-SRR6000894
+MA-SRR6000895
+MA-SRR6000896
+MA-SRR6000899
+MA-SRR6000900
+MA-SRR6000901
+MA-SRR6000902
+MA-SRR6000903
+MA-SRR6000905
+MA-SRR6000906
+MA-SRR6000907
+MA-SRR6000908
+MA-SRR6000909
+MA-SRR6000910
+MA-SRR6000911
+MA-SRR6000912
+MA-SRR6000920
+MA-SRR6000921
+MA-SRR6000931
+MA-SRR6000932
+MA-SRR6000940
+MA-SRR6000942
+MA-SRR6000943
+MA-SRR6000944
+MA-SRR6000945
+MA-SRR6000946
+MA-SRR6000947
+MA-SRR6000949
 )];
 my $output = {};
 for (my $i=0; $i < @{$filelist}; $i++) {
@@ -636,13 +718,14 @@ sub ScanProteinForHits {
 						}
 						my $species = "unknown";
 						if ($pointer->[$m]->[0] =~ m/\|(\d+\.\d+)\./) {
-							$species = $genomes->{$1}->{n};
-							my $array = [split(/\s/,$species)];
-							if ($array->[1] eq "sp.") {
-								$species = $array->[0]." ".$array->[2];
-							} else {
-								$species = $array->[0]." ".$array->[1];
-							}
+							$species = $1;
+#							$species = $genomes->{$1}->{n};
+#							my $array = [split(/\s/,$species)];
+#							if ($array->[1] eq "sp.") {
+#								$species = $array->[0]." ".$array->[2];
+#							} else {
+#								$species = $array->[0]." ".$array->[1];
+#							}
 						}
 						my $hash;
 						if ($type eq "protein") {

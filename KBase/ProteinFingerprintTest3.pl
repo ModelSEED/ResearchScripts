@@ -409,7 +409,7 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			$seq .= $lines->[$j];
 		}
 	}
-	if ($count > 1000) {
+	if ($i > 1000) {
 		last;
 	}
 }

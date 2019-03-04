@@ -409,9 +409,9 @@ for (my $i=0; $i < @{$genomelist}; $i++) {
 			$seq .= $lines->[$j];
 		}
 	}
-	if ($i > 1000) {
-		last;
-	}
+#	if ($i > 1000) {
+#		last;
+#	}
 }
 print "Count:".$count."\n";
 print "Too short:".$tooshort."\n";

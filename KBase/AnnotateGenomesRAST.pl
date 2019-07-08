@@ -24,12 +24,15 @@ my $client = Bio::KBase::kbaseenv::rast_client();
 for (my $i=0; $i < @{$objects}; $i++) {
 	if ($objects->[$i]->[1] !~ m/\.RAST/) {
 		print $i.":".$objects->[$i]->[1]."\n";
-		my $orig_genome = $handler->util_get_object($workspace."/".$objects->[$i]->[1],{raw => 1});
+		my $output = Bio::KBase::kbaseenv::ws_client()->get_objects([Bio::KBase::kbaseenv::configure_ws_id($workspace,$objects->[$i]->[1])]);
+		my $orig_genome = $output->[0]->{data};
+		my $type = $output->[0]->{info}->[2];
+		print $type."\n";
+		exit();
 		#my $genome_obj = Bio::KBase::ObjectAPI::KBaseGenomes::Genome->new($orig_genome);
 		#my $data = $genome_obj->serializeToDB();
 		my $newgenome = $client->run_pipeline($orig_genome,{stages => Bio::KBase::constants::gene_annotation_pipeline()});
 		my $genehash = {};
-		delete $orig_genome->{mrnas};
 		for (my $j=0; $j < @{$newgenome->{features}}; $j++) {
 			$genehash->{$newgenome->{features}->[$j]->{id}} = $newgenome->{features}->[$j];
 		}

@@ -29,6 +29,7 @@ for (my $i=0; $i < @{$objects}; $i++) {
 		#my $data = $genome_obj->serializeToDB();
 		my $newgenome = $client->run_pipeline($orig_genome,{stages => Bio::KBase::constants::gene_annotation_pipeline()});
 		my $genehash = {};
+		delete $orig_genome->{mrnas};
 		for (my $j=0; $j < @{$newgenome->{features}}; $j++) {
 			$genehash->{$newgenome->{features}->[$j]->{id}} = $newgenome->{features}->[$j];
 		}

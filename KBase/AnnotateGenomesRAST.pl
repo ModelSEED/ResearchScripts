@@ -27,8 +27,6 @@ for (my $i=0; $i < @{$objects}; $i++) {
 		my $output = Bio::KBase::kbaseenv::ws_client()->get_objects([Bio::KBase::kbaseenv::configure_ws_id($workspace,$objects->[$i]->[1])]);
 		my $orig_genome = $output->[0]->{data};
 		my $type = $output->[0]->{info}->[2];
-		print $type."\n";
-		exit();
 		#my $genome_obj = Bio::KBase::ObjectAPI::KBaseGenomes::Genome->new($orig_genome);
 		#my $data = $genome_obj->serializeToDB();
 		my $newgenome = $client->run_pipeline($orig_genome,{stages => Bio::KBase::constants::gene_annotation_pipeline()});
@@ -42,6 +40,6 @@ for (my $i=0; $i < @{$objects}; $i++) {
 			}
 		}
 		delete $orig_genome->{genbank_handle_ref};
-		$handler->util_save_object($orig_genome,$workspace."/".$objects->[$i]->[1].".RAST2",{hash => 1, type => "KBaseGenomes.Genome"});
+		$handler->util_save_object($orig_genome,$workspace."/".$objects->[$i]->[1].".RAST2",{hash => 1, type => $type});
 	}
 }

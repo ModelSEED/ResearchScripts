@@ -92,16 +92,21 @@ if ($genome_id =~ m/(.+)\.RAST$/) {
 				for (my $j=0; $j < @{$rxnhash->{$rxnid}->{kegg_pathways}}; $j++) {
 					if (!defined($datachannel->{fbamodel}->attributes()->{"pathways_".$rxnhash->{$rxnid}->{kegg_pathways}->[$j]})) {
 						$datachannel->{fbamodel}->attributes()->{"pathways_".$rxnhash->{$rxnid}->{kegg_pathways}->[$j]} = {
-							rxn => 0, nonblocked => 0, gf => 0
+							rxn => 0, nonblocked => 0, gf => 0,rxns => {}
 						};
 					}
 					if (length($rxns->[$i]->gapfillString()) > 0) {
 						$datachannel->{fbamodel}->attributes()->{"pathways_".$rxnhash->{$rxnid}->{kegg_pathways}->[$j]}->{gf}++;
+						$datachannel->{fbamodel}->attributes()->{"pathways_".$rxnhash->{$rxnid}->{kegg_pathways}->[$j]}->{rxns}->{$rxnid} = "g";
 					} else {
 						$datachannel->{fbamodel}->attributes()->{"pathways_".$rxnhash->{$rxnid}->{kegg_pathways}->[$j]}->{rxn}++;
+						$datachannel->{fbamodel}->attributes()->{"pathways_".$rxnhash->{$rxnid}->{kegg_pathways}->[$j]}->{rxns}->{$rxnid} = "n";
 					}
 					if (defined($classhash->{$rxnid}->{comp}) && $classhash->{$rxnid}->{comp} ne "Blocked") {
 						$datachannel->{fbamodel}->attributes()->{"pathways_".$rxnhash->{$rxnid}->{kegg_pathways}->[$j]}->{nonblocked}++;
+						if ($datachannel->{fbamodel}->attributes()->{"pathways_".$rxnhash->{$rxnid}->{kegg_pathways}->[$j]}->{rxns}->{$rxnid} ne "g") {
+							$datachannel->{fbamodel}->attributes()->{"pathways_".$rxnhash->{$rxnid}->{kegg_pathways}->[$j]}->{rxns}->{$rxnid} = "a";
+						}
 					}
 				}
 			}

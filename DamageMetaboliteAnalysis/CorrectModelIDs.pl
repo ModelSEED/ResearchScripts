@@ -9,18 +9,36 @@ my $impl = fba_tools::fba_toolsImpl->new();
 Bio::KBase::kbaseenv::create_context_from_client_config();
 Bio::KBase::ObjectAPI::functions::set_handler($impl);
 
-my $model = $impl->util_get_object(Bio::KBase::utilities::buildref("iMB155.trans.noex",$workspace));
+my $model = $impl->util_get_object(Bio::KBase::utilities::buildref("MMSyn1.raw",$workspace));
+
+my $lines = Bio::KBase::ObjectAPI::utilities::LOADFILE("/Users/chenry/Dropbox/workspace/Metabolite repair/JCVI modeling/Published MM model/cpd_data.tsv");
+for (my $i=0; $i < @{$lines}; $i++) {
+	my $array = [split(/\t/,$lines->[$i])];
+	my $cpd = $model->getObject("modelcompounds","M_".$array->[0]);
+	$cpd->id()
+	
+	my $kegg = $array->[1];
+	my $charge
+	
+	
+	
+	$cpd->inchikey($array->[1]);
+}
+
+
+
+
+
 my $cpds = $model->modelcompounds();
 my $rxns = $model->modelreactions();
 my $translation = {};
 for (my $i=0; $i < @{$cpds}; $i++) {
-	if ($cpds->[$i]->id() !~ m/cpd\d+/) {
-		my $id = $cpds->[$i]->id();
-		$id =~ s/[^\w]/-/g;
-		$id =~ s/\s/-/g;
-		$translation->{$cpds->[$i]->id()} = $id;
-		$cpds->[$i]->id($id)
-	}
+	my $id = $cpds->[$i]->id();
+	$id =~ s/^M_//g;
+	$id =~ s/[^\w]/-/g;
+	$id =~ s/\s/-/g;
+	$translation->{$cpds->[$i]->id()} = $id;
+	$cpds->[$i]->id($id)
 }
 my $bios = $model->biomasses();
 for (my $i=0; $i < @{$bios}; $i++) {
@@ -53,4 +71,4 @@ for (my $i=0; $i < @{$rxns}; $i++) {
 	}	
 }
 
-my $wsmeta = $impl->util_save_object($model,$workspace."/iMB155.trans.noex.fix");
+my $wsmeta = $impl->util_save_object($model,$workspace."/MMSyn1.fix");

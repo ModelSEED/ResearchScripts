@@ -32,7 +32,8 @@ while (my $Line = <$fh>) {
 }
 close($fh);
 
-
+#Converting model file to data structure
+my $model = decode_json join("\n",@{$data});
 
 #Initializing an empty problem
 my $problem = {
@@ -47,7 +48,76 @@ my $problem = {
 
 #TODO : Add the variables and constraints for flexible biomass
 #TODO : Add the additional variables and constraints for the kinetic formulation
-
+#my @metabolites=('cpd00023_c0', 'cpd00033_c0', 'cpd00035_c0', 'cpd00039_c0', 'cpd00041_c0', 'cpd00051_c0', 'cpd00053_c0', 'cpd00054_c0', 'cpd00060_c0', 'cpd00065_c0', 'cpd00066_c0', 'cpd00069_c0', 'cpd00084_c0', 'cpd00107_c0', 'cpd00119_c0', 'cpd00129_c0', 'cpd00132_c0', 'cpd00156_c0', 'cpd00161_c0', 'cpd00322_c0', 'cpd00052_c0', 'cpd00038_c0', 'cpd00062_c0', 'cpd00115_c0', 'cpd00356_c0', 'cpd00241_c0', 'cpd00357_c0', 'cpd19001_c0', 'cpd30321_c0', 'cpd00163_c0', 'cpd16443_c0', 'cpd00080_c0', 'cpd01059_c0', 'cpd00604_c0', 'cpd00214_c0', 'cpd00536_c0', 'cpd01080_c0', 'cpd00104_c0', 'cpd00056_c0', 'cpd00016_c0', 'cpd00003_c0', 'cpd00004_c0', 'cpd00006_c0', 'cpd00005_c0', 'cpd00015_c0', 'cpd00050_c0', 'cpd00010_c0', 'cpd00087_c0', 'cpd02197_c0', 'cpd00201_c0', 'cpd00347_c0', 'cpd00125_c0', 'cpd00345_c0', 'cpd25914_c0', 'cpd16503_c0', 'cpd00017_c0', 'cpd00834_c0', 'cpd12844_d0', 'cpd00032_c0', 'cpd00130_c0', 'cpd00137_c0', 'cpd00331_c0', 'cpd00159_c0', 'cpd00205_c0', 'cpd00099_c0', 'cpd00012_c0', 'cpd00014_c0');
+my %metabolites=(
+"cpd00023_c0"=> -0.13,
+"cpd00033_c0"=> -0.15,
+"cpd00035_c0"=> -0.161,
+"cpd00039_c0"=> -0.096,
+"cpd00041_c0"=> -0.098,
+"cpd00051_c0"=> -0.11,
+"cpd00053_c0"=> -0.071,
+"cpd00054_c0"=> -0.1,
+"cpd00060_c0"=> -0.049,
+"cpd00065_c0"=> -0.024,
+"cpd00066_c0"=> -0.074,
+"cpd00069_c0"=> -0.049,
+"cpd00084_c0"=> -0.029,
+"cpd00107_c0"=> -0.172,
+"cpd00119_c0"=> -0.038,
+"cpd00129_c0"=> -0.096,
+"cpd00132_c0"=> -0.056,
+"cpd00156_c0"=> -0.127,
+"cpd00161_c0"=> -0.096,
+"cpd00322_c0"=> -0.083,
+"cpd00052_c0"=> -0.026,
+"cpd00038_c0"=> -0.026,
+"cpd00062_c0"=> -0.027,
+"cpd00115_c0"=> -0.03,
+"cpd00356_c0"=> -0.026,
+"cpd00241_c0"=> -0.026,
+"cpd00357_c0"=> -0.03,
+"cpd19001_c0"=> -1.59,
+"cpd30321_c0"=> -0.2271,
+"cpd00163_c0"=> -0.766,
+"cpd16443_c0"=> -0.0377,
+"cpd00080_c0"=> -0.13,
+"cpd01059_c0"=> -0.076,
+"cpd00604_c0"=> -0.55,
+"cpd00214_c0"=> -0.329,
+"cpd00536_c0"=> -0.015,
+"cpd01080_c0"=> -0.011,
+"cpd00104_c0"=> -0.0001,
+"cpd00056_c0"=> -0.0001,
+"cpd00016_c0"=> -0.0001,
+"cpd00003_c0"=> -0.0003,
+"cpd00004_c0"=> -0.00015,
+"cpd00006_c0"=> -0.00013,
+"cpd00005_c0"=> -0.0001,
+"cpd00015_c0"=> -0.0001,
+"cpd00050_c0"=> -0.0001,
+"cpd00010_c0"=> -0.000136,
+"cpd00087_c0"=> -0.0001,
+"cpd02197_c0"=> -0.0001,
+"cpd00201_c0"=> -0.0001,
+"cpd00347_c0"=> -0.0001,
+"cpd00125_c0"=> -0.0001,
+"cpd00345_c0"=> -0.0001,
+"cpd25914_c0"=> -0.0001,
+"cpd16503_c0"=> -0.000155,
+"cpd00017_c0"=> -0.000543,
+"cpd00834_c0"=> -0.001,
+"cpd12844_d0"=> -0.000975,
+"cpd00032_c0"=> -0.0757,
+"cpd00130_c0"=> -0.037,
+"cpd00137_c0"=> -0.013,
+"cpd00331_c0"=> -0.086,
+"cpd00159_c0"=> -0.039,
+"cpd00205_c0"=> -0.307,
+"cpd00099_c0"=> -0.21,
+"cpd00012_c0"=> 0.218,
+"cpd00014_c0"=> 0.766
+);
 #Creating compound variables and constraints
 my $cpd_obj = {};
 my $cpds = $model->{modelcompounds};
@@ -63,22 +133,35 @@ foreach my $cpd (@{$cpds}) {
 	};
 	push(@{$problem->{constraints}},$cpd_obj->{$cpd->{id}}->{constraints}->{MassBalance});
 	#Creating a drain flux for every extracellular compound - drain fluxes look like this: => cpdXXXXX 
-	if ($cpd->{id} =~ m/_e\d+$/ || $cpd->{id} =~ m/cpd11416/ || $cpd->{id} =~ m/cpd02701/) {
-		#If we want to simulate something other than complete media, we need to change this
-		$cpd_obj->{$cpd->{id}}->{variables}->{Flux} = {
-			type => "Flux",
-			name => "F_".$cpd->{id},
-			binary => 0,
-			upperbound => 1000,
-			lowerbound => -1000
-		};
+	if ($cpd->{id} =~ m/_e\d+$/ || $cpd->{id} =~ m/cpd11416/ || $cpd->{id} =~ m/cpd02701/ ||  grep { $_ eq $cpd->{id}} keys %metabolites) {
+		if ( grep { $_ eq $cpd->{id}} keys %metabolites){ #if biomass drain flux
+			$cpd_obj->{$cpd->{id}}->{variables}->{Flux} = {
+				type => "Flux",
+				name => "F_drain_".$cpd->{id},
+				binary => 0,
+				upperbound => 1000,
+				lowerbound => -1000
+			};
+		}
+		else{
+			#If we want to simulate something other than complete media, we need to change this
+			$cpd_obj->{$cpd->{id}}->{variables}->{Flux} = {
+				type => "Flux",
+				name => "F_".$cpd->{id},
+				binary => 0,
+				upperbound => 1000,
+				lowerbound => -1000
+			};
+		}
 		if ($cpd->{id} =~ m/cpd11416/ || $cpd->{id} =~ m/cpd02701/) {
 			$cpd_obj->{$cpd->{id}}->{variables}->{Flux}->{upperbound} = 0;
 		}
+	
 		push(@{$problem->{variables}},$cpd_obj->{$cpd->{id}}->{variables}->{Flux});
 		#Adding drain flux to mass balanced constraint
 		push(@{$cpd_obj->{$cpd->{id}}->{constraints}->{MassBalance}->{variables}},$cpd_obj->{$cpd->{id}}->{variables}->{Flux});
 		push(@{$cpd_obj->{$cpd->{id}}->{constraints}->{MassBalance}->{coefficients}},1);
+
 	}
 }
 
@@ -130,6 +213,33 @@ foreach my $bio (@{$bios}) {
 		push(@{$cpd_obj->{$cpdid}->{constraints}->{MassBalance}->{coefficients}},$rgt->{coefficient});
 	}
 }
+$problem->{objective}->{variables} = [$bio_obj->{"bio1"}->{variables}->{Flux}];
+
+
+
+
+
+
+##### start edit
+
+my $drain_constraints;
+my $i=0;
+foreach my $met (keys %metabolites){
+	$i++;
+	my $high= .75 * abs($metabolites{$met});
+	my $low= -.75 * abs($metabolites{$met});
+	my $line1= "CA_$i: $low F_bio1 - F_drain_$met < 0  \n";
+	my $line2= "CB_$i: $high F_bio1 - F_drain_$met > 0 \n";
+	$drain_constraints .=$line1;
+	$drain_constraints .=$line2;
+	#print $constraints;
+
+
+}
+
+
+
+##### end edit
 
 #Creating objective
 my $rxnhash = {};
@@ -238,6 +348,9 @@ my $excluded_coef = 1;
 
 $problem->{objective}->{variables} = [$bio_obj->{"bio1"}->{variables}->{Flux}];
 
+
+
+
 #Printing LP file
 my $output = ['\* Problem: ProteomDrivenModelFBA *\\',"","Minimize","","","Subject To","","","Bounds","","","Binary","","","End"];
 #Printing objective
@@ -271,6 +384,9 @@ for (my $j=0; $j < @{$problem->{constraints}}; $j++) {
 	}
 	$output->[6] .= " ".$constraint->{sign}." ".$constraint->{rhs};	
 }
+
+$output->[6] .= "\n $drain_constraints";
+
 #Printing bounds
 for (my $i=0; $i < @{$problem->{variables}}; $i++) {
 	$output->[9] .= $problem->{variables}->[$i]->{lowerbound}." <= ".$problem->{variables}->[$i]->{name}." <= ".$problem->{variables}->[$i]->{upperbound}."\n";

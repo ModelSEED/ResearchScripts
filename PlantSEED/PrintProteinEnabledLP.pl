@@ -18,21 +18,21 @@ my $datasets = {Mature_leaf => 0};
 #my $datasets = {Mature_leaf => 1,root_MZ=>2};
 #my $datasets = {Mature_leaf => 1,root_MZ=>2};
 my $protein_fraction = {
-	root_MZ => ,
-	root_EZ => ,
-	root_Cortex => ,
-	root_Stele => ,
-	Embryo_20_DAP => ,
-	Embryo_38_DAP => ,
-	Endosperm_8_DAP => ,
-	Endosperm_10_DAP => ,
-	Endosperm_12_DAP => ,
-	Endosperm_Crown_27_DAP => ,
-	Pericarp_Aleurone_27_DAP => ,
-	GermEmbryo_2_DAI => ,
-	Zone_1 => ,
-	Zone_2 => ,
-	Zone_3 => ,
+	root_MZ => 0,
+	root_EZ => 0,
+	root_Cortex => 0,
+	root_Stele => 0,
+	Embryo_20_DAP => 0,
+	Embryo_38_DAP => 0,
+	Endosperm_8_DAP => 0,
+	Endosperm_10_DAP => 0,
+	Endosperm_12_DAP => 0,
+	Endosperm_Crown_27_DAP => 0,
+	Pericarp_Aleurone_27_DAP => 0,
+	GermEmbryo_2_DAI => 0,
+	Zone_1 => 0,
+	Zone_2 => 0,
+	Zone_3 => 0,
 	Mature_leaf => 0.0948
 };
 
@@ -312,27 +312,29 @@ foreach my $rxnid (keys(%{$reaction_measured_hash})) {
 	foreach my $dataset (keys(%{$datasets})) {
 		my $full_id = $rxnid.$datasets->{$dataset};
 		$rxnhash->{$full_id} = 1;
-		#Adding fit variable
-		$rxn_obj->{$full_id}->{variables}->{Measured} = {
-			type => "Measured",
-			name => "M_".$full_id,
-			binary => 0,
-			upperbound => 1000,
-			lowerbound => -1000
-		};
-		push(@{$problem->{variables}},$rxn_obj->{$full_id}->{variables}->{Measured});
-		$rxn_obj->{$full_id}->{constraints}->{Measured} = {
-			name => "MC_".$full_id,
-			type => "Measured",
-			variables => [$rxn_obj->{$full_id}->{variables}->{Flux},$rxn_obj->{$full_id}->{variables}->{Measured}],
-			coefficients => [1,-1],
-			rhs => $reaction_measured_hash->{$rxnid}->{$dataset},
-			sign => "="
-		};
-		push(@{$problem->{constraints}},$rxn_obj->{$full_id}->{constraints}->{Measured});
-		push(@{$problem->{objective}->{variables}},$rxn_obj->{$full_id}->{variables}->{Measured});
-		push(@{$problem->{objective}->{coefficients}},$measured_coef);
-		push(@{$problem->{objective}->{quadratic}},1);
+		if (defined($rxn_obj->{$full_id}->{variables}->{Flux})) {
+			#Adding fit variable
+			$rxn_obj->{$full_id}->{variables}->{Measured} = {
+				type => "Measured",
+				name => "M_".$full_id,
+				binary => 0,
+				upperbound => 1000,
+				lowerbound => -1000
+			};
+			push(@{$problem->{variables}},$rxn_obj->{$full_id}->{variables}->{Measured});
+			$rxn_obj->{$full_id}->{constraints}->{Measured} = {
+				name => "MC_".$full_id,
+				type => "Measured",
+				variables => [$rxn_obj->{$full_id}->{variables}->{Flux},$rxn_obj->{$full_id}->{variables}->{Measured}],
+				coefficients => [1,-1],
+				rhs => $reaction_measured_hash->{$rxnid}->{$dataset},
+				sign => "="
+			};
+			push(@{$problem->{constraints}},$rxn_obj->{$full_id}->{constraints}->{Measured});
+			push(@{$problem->{objective}->{variables}},$rxn_obj->{$full_id}->{variables}->{Measured});
+			push(@{$problem->{objective}->{coefficients}},$measured_coef);
+			push(@{$problem->{objective}->{quadratic}},1);
+		}
 	}
 }
 
@@ -343,27 +345,29 @@ foreach my $rxnid (keys(%{$reaction_vopt_hash})) {
 		foreach my $dataset (keys(%{$datasets})) {
 			my $full_id = $rxnid.$datasets->{$dataset};
 			$rxnhash->{$full_id} = 1;
-			#Adding fit variable
-			$rxn_obj->{$full_id}->{variables}->{KcatOpt} = {
-				type => "KcatOpt",
-				name => "K_".$full_id,
-				binary => 0,
-				upperbound => 1000,
-				lowerbound => -1000
-			};
-			push(@{$problem->{variables}},$rxn_obj->{$full_id}->{variables}->{KcatOpt});
-			$rxn_obj->{$full_id}->{constraints}->{KcatOpt} = {
-				name => "KC_".$full_id,
-				type => "KcatOpt",
-				variables => [$rxn_obj->{$full_id}->{variables}->{Flux},$rxn_obj->{$full_id}->{variables}->{KcatOpt}],
-				coefficients => [1,-1],
-				rhs => $protein_fraction->{$dataset}*$reaction_vopt_hash->{$rxnid}->{$dataset},
-				sign => "="
-			};
-			push(@{$problem->{constraints}},$rxn_obj->{$full_id}->{constraints}->{KcatOpt});
-			push(@{$problem->{objective}->{variables}},$rxn_obj->{$full_id}->{variables}->{KcatOpt});
-			push(@{$problem->{objective}->{coefficients}},$vopt_coef);
-			push(@{$problem->{objective}->{quadratic}},1);
+			if (defined($rxn_obj->{$full_id}->{variables}->{Flux})) {
+				#Adding fit variable
+				$rxn_obj->{$full_id}->{variables}->{KcatOpt} = {
+					type => "KcatOpt",
+					name => "K_".$full_id,
+					binary => 0,
+					upperbound => 1000,
+					lowerbound => -1000
+				};
+				push(@{$problem->{variables}},$rxn_obj->{$full_id}->{variables}->{KcatOpt});
+				$rxn_obj->{$full_id}->{constraints}->{KcatOpt} = {
+					name => "KC_".$full_id,
+					type => "KcatOpt",
+					variables => [$rxn_obj->{$full_id}->{variables}->{Flux},$rxn_obj->{$full_id}->{variables}->{KcatOpt}],
+					coefficients => [1,-1],
+					rhs => $protein_fraction->{$dataset}*$reaction_vopt_hash->{$rxnid}->{$dataset},
+					sign => "="
+				};
+				push(@{$problem->{constraints}},$rxn_obj->{$full_id}->{constraints}->{KcatOpt});
+				push(@{$problem->{objective}->{variables}},$rxn_obj->{$full_id}->{variables}->{KcatOpt});
+				push(@{$problem->{objective}->{coefficients}},$vopt_coef);
+				push(@{$problem->{objective}->{quadratic}},1);
+			}
 		}
 	}
 }
@@ -377,39 +381,41 @@ foreach my $rxnid (keys(%{$reaction_protein_hash})) {
 			my $full_id = $rxnid.$datasets->{$dataset};
 			$rxnhash->{$full_id} = 1;
 			#Adding kfit variable
-			if (!defined($reaction_protein_hash->{$rxnid}->{$dataset}) || $reaction_protein_hash->{$rxnid}->{$dataset} == 0 || $numdatasets == 1) {
-				push(@{$problem->{objective}->{variables}},$rxn_obj->{$full_id}->{variables}->{Flux});
-			} else {
-				$rxn_obj->{$full_id}->{variables}->{KValue} = {
-					type => "KValue",
-					name => "KV_".$full_id,
-					binary => 0,
-					upperbound => 1000000,
-					lowerbound => -1000000
-				};
-				push(@{$problem->{variables}},$rxn_obj->{$full_id}->{variables}->{KValue});
-				#Adding fit variable
-				$rxn_obj->{$full_id}->{variables}->{KfitOpt} = {
-					type => "KfitOpt",
-					name => "KF_".$full_id,
-					binary => 0,
-					upperbound => 1000,
-					lowerbound => -1000
-				};
-				push(@{$problem->{variables}},$rxn_obj->{$full_id}->{variables}->{KfitOpt});
-				$rxn_obj->{$full_id}->{constraints}->{KfitOpt} = {
-					name => "KF_".$full_id,
-					type => "KfitOpt",
-					variables => [$rxn_obj->{$full_id}->{variables}->{Flux},$rxn_obj->{$full_id}->{variables}->{KfitOpt},$rxn_obj->{$full_id}->{variables}->{KValue}],
-					coefficients => [1,-1,-1*$protein_fraction->{$dataset}*$reaction_protein_hash->{$rxnid}->{$dataset}],
-					rhs => 0,
-					sign => "="
-				};
-				push(@{$problem->{constraints}},$rxn_obj->{$full_id}->{constraints}->{KfitOpt});
-				push(@{$problem->{objective}->{variables}},$rxn_obj->{$full_id}->{variables}->{KfitOpt});
+			if (defined($rxn_obj->{$full_id}->{variables}->{Flux})) {
+				if (!defined($reaction_protein_hash->{$rxnid}->{$dataset}) || $reaction_protein_hash->{$rxnid}->{$dataset} == 0 || $numdatasets == 1) {
+					push(@{$problem->{objective}->{variables}},$rxn_obj->{$full_id}->{variables}->{Flux});
+				} else {
+					$rxn_obj->{$full_id}->{variables}->{KValue} = {
+						type => "KValue",
+						name => "KV_".$full_id,
+						binary => 0,
+						upperbound => 1000000,
+						lowerbound => -1000000
+					};
+					push(@{$problem->{variables}},$rxn_obj->{$full_id}->{variables}->{KValue});
+					#Adding fit variable
+					$rxn_obj->{$full_id}->{variables}->{KfitOpt} = {
+						type => "KfitOpt",
+						name => "KF_".$full_id,
+						binary => 0,
+						upperbound => 1000,
+						lowerbound => -1000
+					};
+					push(@{$problem->{variables}},$rxn_obj->{$full_id}->{variables}->{KfitOpt});
+					$rxn_obj->{$full_id}->{constraints}->{KfitOpt} = {
+						name => "KF_".$full_id,
+						type => "KfitOpt",
+						variables => [$rxn_obj->{$full_id}->{variables}->{Flux},$rxn_obj->{$full_id}->{variables}->{KfitOpt},$rxn_obj->{$full_id}->{variables}->{KValue}],
+						coefficients => [1,-1,-1*$protein_fraction->{$dataset}*$reaction_protein_hash->{$rxnid}->{$dataset}],
+						rhs => 0,
+						sign => "="
+					};
+					push(@{$problem->{constraints}},$rxn_obj->{$full_id}->{constraints}->{KfitOpt});
+					push(@{$problem->{objective}->{variables}},$rxn_obj->{$full_id}->{variables}->{KfitOpt});
+				}
+				push(@{$problem->{objective}->{coefficients}},$vopt_coef);
+				push(@{$problem->{objective}->{quadratic}},1);
 			}
-			push(@{$problem->{objective}->{coefficients}},$vopt_coef);
-			push(@{$problem->{objective}->{quadratic}},1);
 		}
 	}
 }

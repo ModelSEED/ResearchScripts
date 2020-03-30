@@ -5,10 +5,10 @@ use JSON;
 
 local $| = 1;
 
-my $modelfile = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ZMayz.json";
+my $modelfile = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ZMayz1.json";
 #my $modelfile = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ZMayz2.json";
 #my $modelfile = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ZMayz16.json";
-my $filename = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/MaizeFBA.lp";
+my $filename = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/MaizeFBA1.lp";
 my $kcat_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ReactionKCatFlux.txt";
 my $protein_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ReactionProtein.txt";
 my $measured_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/MeasuredReaction.txt";
@@ -312,7 +312,13 @@ foreach my $rxnid (keys(%{$reaction_measured_hash})) {
 	foreach my $dataset (keys(%{$datasets})) {
 		my $full_id = $rxnid.$datasets->{$dataset};
 		$rxnhash->{$full_id} = 1;
-		if (defined($rxn_obj->{$full_id}->{variables}->{Flux})) {
+		if (defined($rxn_obj->{$full_id}->{variables}->{Flux}) || $cpd_obj->{$full_id}->{variables}->{Flux}) {
+			my $fluxvar;
+			if (defined($rxn_obj->{$full_id}->{variables}->{Flux})) {
+				$fluxvar = $rxn_obj->{$full_id}->{variables}->{Flux};
+			} else {
+				$fluxvar = $cpd_obj->{$full_id}->{variables}->{Flux};
+			}
 			#Adding fit variable
 			$rxn_obj->{$full_id}->{variables}->{Measured} = {
 				type => "Measured",
@@ -325,7 +331,7 @@ foreach my $rxnid (keys(%{$reaction_measured_hash})) {
 			$rxn_obj->{$full_id}->{constraints}->{Measured} = {
 				name => "MC_".$full_id,
 				type => "Measured",
-				variables => [$rxn_obj->{$full_id}->{variables}->{Flux},$rxn_obj->{$full_id}->{variables}->{Measured}],
+				variables => [$fluxvar,$rxn_obj->{$full_id}->{variables}->{Measured}],
 				coefficients => [1,-1],
 				rhs => $reaction_measured_hash->{$rxnid}->{$dataset},
 				sign => "="
@@ -433,18 +439,44 @@ foreach my $rxn (@{$rxns}) {
 my $output = ['\* Problem: ProteomDrivenModelFBA *\\',"","Minimize","","","Subject To","","","Bounds","","","Binary","","","End"];
 #Printing objective
 $output->[3] .= "obj:";
+#Printing nonquadratic terms first
+my $count = 0;
 for (my $i=0; $i < @{$problem->{objective}->{variables}}; $i++) {
-	if ($i % 6 == 5) {
-		$output->[3] .= "\n";
+	if ($problem->{objective}->{quadratic}->[$i] == 0) {
+		$count++;
+		if ($count % 6 == 5) {
+			$output->[3] .= "\n";
+		}
+		if ($problem->{objective}->{coefficients}->[$i] > 0) {
+			$output->[3] .= " + ".$problem->{objective}->{coefficients}->[$i]." ".$problem->{objective}->{variables}->[$i]->{name};
+		} elsif ($problem->{objective}->{coefficients}->[$i] < 0) {
+			$output->[3] .= " - ".(-1*$problem->{objective}->{coefficients}->[$i])." ".$problem->{objective}->{variables}->[$i]->{name};
+		}
 	}
-	if ($problem->{objective}->{coefficients}->[$i] > 0) {
-		$output->[3] .= " + ".$problem->{objective}->{coefficients}->[$i]." ".$problem->{objective}->{variables}->[$i]->{name};
-	} elsif ($problem->{objective}->{coefficients}->[$i] < 0) {
-		$output->[3] .= " - ".(-1*$problem->{objective}->{coefficients}->[$i])." ".$problem->{objective}->{variables}->[$i]->{name};
-	}
+}
+#Now printing quadratic terms
+if ($count > 0) {
+	$output->[3] .= " +";
+}
+$count = 0;
+for (my $i=0; $i < @{$problem->{objective}->{variables}}; $i++) {
 	if ($problem->{objective}->{quadratic}->[$i] == 1) {
-		$output->[3] .= "**2";
+		if ($count == 0) {
+			$output->[3] .= " ["; 
+		}
+		$count++;
+		if ($count % 6 == 5) {
+			$output->[3] .= "\n";
+		}
+		if ($problem->{objective}->{coefficients}->[$i] > 0) {
+			$output->[3] .= " + ".$problem->{objective}->{coefficients}->[$i]." ".$problem->{objective}->{variables}->[$i]->{name}."^2";
+		} elsif ($problem->{objective}->{coefficients}->[$i] < 0) {
+			$output->[3] .= " - ".(-1*$problem->{objective}->{coefficients}->[$i])." ".$problem->{objective}->{variables}->[$i]->{name}."^2";
+		}
 	}
+}
+if ($count > 0) {
+	$output->[3] .= "]/2";
 }
 #Printing constraints
 for (my $j=0; $j < @{$problem->{constraints}}; $j++) {

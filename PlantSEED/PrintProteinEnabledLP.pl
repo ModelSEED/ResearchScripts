@@ -5,16 +5,35 @@ use JSON;
 
 local $| = 1;
 
-my $modelfile = $ARGV[0];
-my $filename = $ARGV[1];
-$modelfile = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ZMayz.json";
-$filename = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/MaizeFBA.lp";
+#my $modelfile = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ZMayz.json";
+#my $modelfile = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ZMayz2.json";
+#my $modelfile = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ZMayz16.json";
+#my $filename = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/MaizeFBA.lp";
 my $kcat_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ReactionKCatFlux.txt";
 my $protein_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ReactionProtein.txt";
 my $measured_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/MeasuredReaction.txt";
-my $datasets = {Mature_leaf => 1,root_MZ=>2};
+#Run just for leaf on it's own
+my $datasets = {Mature_leaf => 0};
+#Run for leaf and root
+#my $datasets = {Mature_leaf => 1,root_MZ=>2};
+#my $datasets = {Mature_leaf => 1,root_MZ=>2};
 my $protein_fraction = {
-	
+	root_MZ => ,
+	root_EZ => ,
+	root_Cortex => ,
+	root_Stele => ,
+	Embryo_20_DAP => ,
+	Embryo_38_DAP => ,
+	Endosperm_8_DAP => ,
+	Endosperm_10_DAP => ,
+	Endosperm_12_DAP => ,
+	Endosperm_Crown_27_DAP => ,
+	Pericarp_Aleurone_27_DAP => ,
+	GermEmbryo_2_DAI => ,
+	Zone_1 => ,
+	Zone_2 => ,
+	Zone_3 => ,
+	Mature_leaf => 0.0948
 };
 
 my $vopt_coef = 1;
@@ -71,10 +90,11 @@ while (my $Line = <$fh>) {
 }
 close($fh);
 
-#Loading reaction proteins
+#Loading reaction measured flux
 my $reaction_measured_hash = {};
 open ($fh, "<", $measured_file) || print "Couldn't open $measured_file: $!";
-while (my $Line = <$fh>) {
+my $Line = <$fh>;
+while ($Line = <$fh>) {
 	$Line =~ s/\r//;
 	chomp($Line);
 	my $array = [split(/\t/,$Line)];
@@ -88,8 +108,8 @@ my $problem = {
 	constraints => [],
 	objective => {
 		variables => [],
-		coefficients => [-1],
-		quadratic => [0]
+		coefficients => [],
+		quadratic => []
 	}
 };
 

@@ -12,6 +12,7 @@ my $filename = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/Maize
 my $kcat_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ReactionKCatFlux.txt";
 my $protein_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/ReactionProtein.txt";
 my $measured_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/MeasuredReaction.txt";
+my $compound_file = "/Users/chenry/Dropbox/workspace/PlantSEED/ProteomeModeling/Compounds.json";
 #Run just for leaf on it's own
 my $datasets = {Mature_leaf => 0};
 #Run for leaf and root
@@ -37,7 +38,7 @@ my $protein_fraction = {
 };
 
 my $vopt_coef = 1;
-my $measured_coef = 1;
+my $measured_coef = 100;
 my $kfit_coef = 1;
 my $excluded_coef = 1;
 
@@ -102,6 +103,20 @@ while ($Line = <$fh>) {
 }
 close($fh);
 
+#Loading compound hash with molecular weight information
+my $compound_hash = {};
+$data = "";
+open ($fh, "<", $compound_file) || print "Couldn't open $compound_file: $!";
+while ($Line = <$fh>) {
+	$Line =~ s/\r//;
+	chomp($Line);
+	$data .= $Line."\n";
+}
+my $cpddata = decode_json $data;
+for (my $i=0; $i < @{$cpddata}; $i++) {
+	$compound_hash->{$cpddata->[$i]->{id}} = $cpddata->[$i];
+}
+
 #Initializing an empty problem
 my $problem = {
 	varibles => [],
@@ -113,75 +128,26 @@ my $problem = {
 	}
 };
 
-my %metabolites=(
-"cpd00023_c"=> -0.13,
-"cpd00033_c"=> -0.15,
-"cpd00035_c"=> -0.161,
-"cpd00039_c"=> -0.096,
-"cpd00041_c"=> -0.098,
-"cpd00051_c"=> -0.11,
-"cpd00053_c"=> -0.071,
-"cpd00054_c"=> -0.1,
-"cpd00060_c"=> -0.049,
-"cpd00065_c"=> -0.024,
-"cpd00066_c"=> -0.074,
-"cpd00069_c"=> -0.049,
-"cpd00084_c"=> -0.029,
-"cpd00107_c"=> -0.172,
-"cpd00119_c"=> -0.038,
-"cpd00129_c"=> -0.096,
-"cpd00132_c"=> -0.056,
-"cpd00156_c"=> -0.127,
-"cpd00161_c"=> -0.096,
-"cpd00322_c"=> -0.083,
-"cpd00052_c"=> -0.026,
-"cpd00038_c"=> -0.026,
-"cpd00062_c"=> -0.027,
-"cpd00115_c"=> -0.03,
-"cpd00356_c"=> -0.026,
-"cpd00241_c"=> -0.026,
-"cpd00357_c"=> -0.03,
-"cpd19001_c"=> -1.59,
-"cpd30321_c"=> -0.2271,
-"cpd00163_c"=> -0.766,
-"cpd16443_c"=> -0.0377,
-"cpd00080_c"=> -0.13,
-"cpd01059_c"=> -0.076,
-"cpd00604_c"=> -0.55,
-"cpd00214_c"=> -0.329,
-"cpd00536_c"=> -0.015,
-"cpd01080_c"=> -0.011,
-"cpd00104_c"=> -0.0001,
-"cpd00056_c"=> -0.0001,
-"cpd00016_c"=> -0.0001,
-"cpd00003_c"=> -0.0003,
-"cpd00004_c"=> -0.00015,
-"cpd00006_c"=> -0.00013,
-"cpd00005_c"=> -0.0001,
-"cpd00015_c"=> -0.0001,
-"cpd00050_c"=> -0.0001,
-"cpd00010_c"=> -0.000136,
-"cpd00087_c"=> -0.0001,
-"cpd02197_c"=> -0.0001,
-"cpd00201_c"=> -0.0001,
-"cpd00347_c"=> -0.0001,
-"cpd00125_c"=> -0.0001,
-"cpd00345_c"=> -0.0001,
-"cpd25914_c"=> -0.0001,
-"cpd16503_c"=> -0.000155,
-"cpd00017_c"=> -0.000543,
-"cpd00834_c"=> -0.001,
-"cpd12844_d"=> -0.000975,
-"cpd00032_c"=> -0.0757,
-"cpd00130_c"=> -0.037,
-"cpd00137_c"=> -0.013,
-"cpd00331_c"=> -0.086,
-"cpd00159_c"=> -0.039,
-"cpd00205_c"=> -0.307,
-"cpd00099_c"=> -0.21,
-"cpd00012_c"=> 0.218,
-"cpd00014_c"=> 0.766
-);
+my $metabolites = {};
+my $bio_metabolites = {};
+my $bios = $model->{biomasses};
+my $biohash = {};
+foreach my $bio (@{$bios}) {
+	$biohash->{$bio->{id}} = $bio;
+}
+foreach my $dataset (keys(%{$datasets})) {
+	my $index = $datasets->{$dataset};
+	my $bio = $biohash->{"bio".$index};
+	my $rgts = $bio->{biomasscompounds};
+	foreach my $rgt (@{$rgts}) {
+		if ($rgt->{coefficient} < 0) {
+			my $cpdid = $rgt->{modelcompound_ref};
+			$cpdid =~ s/.+\///g;
+			$bio_metabolites->{$bio->{id}}->{$cpdid} = 1;
+			$metabolites->{$cpdid} = $rgt->{coefficient};
+		}
+	}
+}
 
 #Creating compound variables and constraints
 my $cpd_obj = {};
@@ -198,10 +164,8 @@ foreach my $cpd (@{$cpds}) {
 	};
 	push(@{$problem->{constraints}},$cpd_obj->{$cpd->{id}}->{constraints}->{MassBalance});
 	#Creating a drain flux for every extracellular compound - drain fluxes look like this: => cpdXXXXX 
-	my $baseid = $cpd->{id};
-	$baseid =~ s/\d+$//;
-	if ($cpd->{id} =~ m/_e\d+$/ || $cpd->{id} =~ m/cpd11416/ || $cpd->{id} =~ m/cpd02701/ ||  defined($metabolites{$baseid})) {
-		if (defined($metabolites{$baseid})) { #if biomass drain flux
+	if ($cpd->{id} =~ m/_e\d+$/ || $cpd->{id} =~ m/cpd11416/ || $cpd->{id} =~ m/cpd02701/ ||  defined($metabolites->{$cpd->{id}})) {
+		if (defined($metabolites->{$cpd->{id}})) { #if biomass drain flux
 			$cpd_obj->{$cpd->{id}}->{variables}->{Flux} = {
 				type => "Flux",
 				name => "F_drain_".$cpd->{id},
@@ -281,26 +245,41 @@ foreach my $bio (@{$bios}) {
 }
 
 #Adding flexible biomass drain constraints
-my $drain_constraints;
-foreach my $met (keys %metabolites){
-	foreach my $dataset (keys(%{$datasets})) {
-		my $index = $datasets->{$dataset};
-		push(@{$problem->{constraints}},{
-			name => "BCMax_".$met.$index,
-			type => "BiomassCompoundConstraint",
-			variables => [$rxn_obj->{"bio".$index}->{variables}->{Flux},$cpd_obj->{$met.$index}->{variables}->{Flux}],
-			coefficients => [0.75 * abs($metabolites{$met}),-1],
-			rhs => 0,
-			sign => "<="
-		});
-		push(@{$problem->{constraints}},{
-			name => "BCMin_".$met.$index,
-			type => "BiomassCompoundConstraint",
-			variables => [$rxn_obj->{"bio".$index}->{variables}->{Flux},$cpd_obj->{$met.$index}->{variables}->{Flux}],
-			coefficients => [-0.75 * abs($metabolites{$met}),-1],
-			rhs => 0,
-			sign => ">="
-		});
+foreach my $dataset (keys(%{$datasets})) {
+	my $index = $datasets->{$dataset};
+	$rxn_obj->{"bio".$index}->{constraints}->{FlexibleBiomass} = {
+		name => "Flex_bio".$index,
+		type => "FlexibleBiomassConstraint",
+		variables => [],
+		coefficients => [],
+		rhs => 0,
+		sign => "="
+	};
+	if (defined($bio_metabolites->{"bio".$index})) {
+		foreach my $met (keys(%{$bio_metabolites->{"bio".$index}})) {
+			my $mass = 1;
+			if ($met =~ m/(cpd\d+)/ && defined($compound_hash->{$1})) {
+				$mass = $compound_hash->{$1}->{mass};
+			}
+			push(@{$rxn_obj->{"bio".$index}->{constraints}->{FlexibleBiomass}->{variables}},$cpd_obj->{$met}->{variables}->{Flux});
+			push(@{$rxn_obj->{"bio".$index}->{constraints}->{FlexibleBiomass}->{coefficients}},$mass);
+			push(@{$problem->{constraints}},{
+				name => "BCMax_".$met,
+				type => "BiomassCompoundConstraint",
+				variables => [$rxn_obj->{"bio".$index}->{variables}->{Flux},$cpd_obj->{$met}->{variables}->{Flux}],
+				coefficients => [0.75 * abs($metabolites->{$met}),-1],
+				rhs => 0,
+				sign => ">="
+			});
+			push(@{$problem->{constraints}},{
+				name => "BCMin_".$met,
+				type => "BiomassCompoundConstraint",
+				variables => [$rxn_obj->{"bio".$index}->{variables}->{Flux},$cpd_obj->{$met}->{variables}->{Flux}],
+				coefficients => [-0.75 * abs($metabolites->{$met}),-1],
+				rhs => 0,
+				sign => "<="
+			});
+		}
 	}
 }
 
@@ -435,6 +414,11 @@ foreach my $rxn (@{$rxns}) {
 	}	
 }
 
+##Replacing objective with biomass
+#$problem->{objective}->{variables} = [$rxn_obj->{bio0}->{variables}->{Flux}];
+#$problem->{objective}->{coefficients} = [-1];
+#$problem->{objective}->{quadratic} = [0];
+
 #Printing LP file
 my $output = ['\* Problem: ProteomDrivenModelFBA *\\',"","Minimize","","","Subject To","","","Bounds","","","Binary","","","End"];
 #Printing objective
@@ -455,13 +439,13 @@ for (my $i=0; $i < @{$problem->{objective}->{variables}}; $i++) {
 	}
 }
 #Now printing quadratic terms
-if ($count > 0) {
-	$output->[3] .= " +";
-}
 $count = 0;
 for (my $i=0; $i < @{$problem->{objective}->{variables}}; $i++) {
 	if ($problem->{objective}->{quadratic}->[$i] == 1) {
 		if ($count == 0) {
+			if ($count > 0) {
+				$output->[3] .= " +";
+			}
 			$output->[3] .= " ["; 
 		}
 		$count++;
@@ -497,7 +481,6 @@ for (my $j=0; $j < @{$problem->{constraints}}; $j++) {
 	}
 	$output->[6] .= " ".$constraint->{sign}." ".$constraint->{rhs};	
 }
-$output->[6] .= "\n $drain_constraints";
 
 #Printing bounds
 for (my $i=0; $i < @{$problem->{variables}}; $i++) {

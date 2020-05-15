@@ -15,44 +15,68 @@ my $rep_model = $impl->util_get_object(Bio::KBase::utilities::buildref("MMSyn3_r
 my $old_dam_model = $impl->util_get_object(Bio::KBase::utilities::buildref("iMB155.damage-deleted-1572588332028",$workspace));
 my $old_rep_model = $impl->util_get_object(Bio::KBase::utilities::buildref("iMB155.repair-deleted-1572588335426",$workspace));
 
+#Loading metabolomic peak inchi into hash
+#my $lines = Bio::KBase::ObjectAPI::utilities::LOADFILE("/Users/chenry/Dropbox/workspace/Metabolite repair/Peaklist.txt");
+my $lines = Bio::KBase::ObjectAPI::utilities::LOADFILE("/Users/chenry/Dropbox/workspace/Metabolite repair/FinalModeling/peak_list.txt");
+my $peakstring = "";
+my $peak_hash = {};
+my $inchikey_hash = {};
+my $metabolomics_hash = {};
+for (my $i=0; $i < @{$lines}; $i++) {
+	my $array = [split(/\t/,$lines->[$i])];
+	$peak_hash->{$array->[0]} = {
+		id => $array->[0],
+		ave_rt => $array->[1],
+		ave_mz => $array->[2],
+		name => $array->[3],
+		msi_level => $array->[4],
+		sample_vs_media => $array->[5],
+		adduct => $array->[6],
+		formula => $array->[7],
+		inchikey => $array->[8],
+		pubchem => $array->[9],
+		kegg => $array->[10],
+		smiles => $array->[11],
+		mass_error => $array->[12],
+		platform => $array->[13]
+	};
+	my $keyarray = [split(/[_-]/,$peak_hash->{$array->[0]}->{inchikey})];
+	$basekey_hash->{$keyarray->[0]}->{$array->[0]} = $peak_hash->{$array->[0]};
+	$inchikey_hash->{$keyarray->[0]}->{$array->[0]} = $peak_hash->{$array->[0]};
+}
+
+#Building structure hashes
 my $peakhits = {};
 my $cpdhits = {};
 my $otherhits = {};
 my $totalcpds = {};
-
-my $model_cpd_ids = {};
-my $cpds = $model->modelcompounds();
-for (my $i=0; $i < @{$cpds}; $i++) {
-	$model_cpd_ids->{$cpds->[$i]->id()} = 1;
-}
-
-#Loading metabolomic peak inchi into hash
-my $lines = Bio::KBase::ObjectAPI::utilities::LOADFILE("/Users/chenry/Dropbox/workspace/Metabolite repair/Peaklist.txt");
-my $peakstring = "";
-my $peakids;
-my $metabolomics_hash = {};
-for (my $i=0; $i < @{$lines}; $i++) {
-	my $array = [split(/[\t\s]/,$lines->[$i])];
-	my $subarray = [split(/[_-]/,$array->[0])];
-	$metabolomics_hash->{$subarray->[0]}->{"peak.".($i+1)} = 1;
-}
-
-#Building structure hashes
 my $hash = {};
+my $model_cpd_ids = {};
+my $output_data = {};
+$output_data->{model_compounds} = 0;
+$output_data->{model_peaks} = 0;
+$output_data->{model_cpd_peaks} = 0;
+$output_data->{model_other_peaks} = 0;
 my $cpds = $model->modelcompounds();
 for (my $i=0; $i < @{$cpds}; $i++) {
+	$output_data->{model_compounds}++;
+	$model_cpd_ids->{$cpds->[$i]->id()} = 1;
 	$totalcpds->{$cpds->[$i]->id()} = 1;
 	my $array = [split(/[_-]/,$cpds->[$i]->inchikey())];
 	if (defined($metabolomics_hash->{$array->[0]})) {
 		foreach my $peakid (keys(%{$metabolomics_hash->{$array->[0]}})) {
+			$metabolomics_hash->{$array->[0]}->{$peakid}->{model}->{$cpds->[$i]->id()} = 1;
 			$peakhits->{all}->{$peakid}->{$cpds->[$i]->id()} = 1;
 			$peakhits->{model}->{$peakid}->{$cpds->[$i]->id()} = 1;
+			$output_data->{model_peaks}++;
 			if ($cpds->[$i]->id() =~ m/cpd\d+/) {
 				$cpdhits->{model}->{$cpds->[$i]->id()}->{$peakid} = 1;
 				$cpdhits->{all}->{$cpds->[$i]->id()}->{$peakid} = 1;
+				$output_data->{model_cpd_peaks}++;
 			} else {
 				$otherhits->{model}->{$cpds->[$i]->id()}->{$peakid} = 1;
 				$otherhits->{all}->{$cpds->[$i]->id()}->{$peakid} = 1;
+				$output_data->{model_other_peaks}++;
 			}
 		}
 	}
@@ -69,16 +93,17 @@ print "Model other compounds:".keys(%{$otherhits->{model}})."\n";
 
 my $cpd_hash = Bio::KBase::utilities::compound_hash();
 foreach my $cpd (keys(%{$cpd_hash})) {
-	$cpd_hash->{reaction_count} = 0;
+	$cpd_hash->{$cpd}->{reaction_count} = 0;
 	if (defined($cpd_hash->{$cpd}->{inchikey})) {
 		my $array = [split(/[_-]/,$cpd_hash->{$cpd}->{inchikey})];
 		if (defined($metabolomics_hash->{$array->[0]})) {
 			foreach my $peakid (keys(%{$metabolomics_hash->{$array->[0]}})) {
-				$cpdhits->{db}->{$cpd_hash->{$cpd}->{id}."_c0"}->{$peakid} = 1;
+				$metabolomics_hash->{$array->[0]}->{$peakid}->{db}->{$cpd."_c0"} = 1;
+				$cpdhits->{db}->{$cpd."_c0"}->{$peakid} = 1;
 			}
 		}
 		$hash->{db}->{inchikey}->{$cpd_hash->{$cpd}->{inchikey}} = $cpd_hash->{$cpd};
-		$hash->{db}->{base}->{$array->[0]}->{$cpd_hash->{$cpd}->{id}} = $cpd_hash->{$cpd};
+		$hash->{db}->{base}->{$array->[0]}->{$cpd} = $cpd_hash->{$cpd};
 	}
 }
 my $rxn_hash = Bio::KBase::utilities::reaction_hash();
@@ -126,11 +151,11 @@ for (my $i=0; $i < @{$rxns}; $i++) {
 my $rxns = $dam_model->modelreactions();
 for (my $i=0; $i < @{$rxns}; $i++) {
 	if (defined($original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{damage})) {
-		$rxns->[$i]->dblinks()->{olddmg} = $original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{damage};
+		$rxns->[$i]->dblinks()->{olddmg} = [$original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{damage}];
 		$original_rxn_id_hash->{damage}->{$rxns->[$i]->id()} = 1;
 	}
 	if (defined($original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{repair})) {
-		$rxns->[$i]->dblinks()->{oldrep} = $original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{repair};
+		$rxns->[$i]->dblinks()->{oldrep} = [$original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{repair}];
 		$original_rxn_id_hash->{repair}->{$rxns->[$i]->id()} = 1;
 	}
 }
@@ -208,11 +233,11 @@ for (my $i=0; $i < @{$cpds}; $i++) {
 	$model_cpd_hash->{$cpds->[$i]->id()} = $cpds->[$i];
 	$totalcpds->{$cpds->[$i]->id()} = 1;
 	if (defined($original_cpd_hash->{$cpds->[$i]->inchikey()}->{damage})) {
-		$cpds->[$i]->dblinks()->{olddmg} = $original_cpd_hash->{$cpds->[$i]->inchikey()}->{damage};
+		$cpds->[$i]->dblinks()->{olddmg} = [$original_cpd_hash->{$cpds->[$i]->inchikey()}->{damage}];
 		$original_cpd_id_hash->{damage}->{$rxns->[$i]->id()} = 1;
 	}
 	if (defined($original_cpd_hash->{$cpds->[$i]->inchikey()}->{repair})) {
-		$cpds->[$i]->dblinks()->{oldrep} = $original_cpd_hash->{$cpds->[$i]->inchikey()}->{repair};
+		$cpds->[$i]->dblinks()->{oldrep} = [$original_cpd_hash->{$cpds->[$i]->inchikey()}->{repair}];
 		$original_cpd_id_hash->{repair}->{$rxns->[$i]->id()} = 1;
 	}
 }
@@ -261,11 +286,11 @@ foreach my $rxn (@{$rxns}) {
 my $rxns = $rep_model->modelreactions();
 for (my $i=0; $i < @{$rxns}; $i++) {
 	if (defined($original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{damage})) {
-		$rxns->[$i]->dblinks()->{olddmg} = $original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{damage};
+		$rxns->[$i]->dblinks()->{olddmg} = [$original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{damage}];
 		$original_rxn_id_hash->{damage}->{$rxns->[$i]->id()} = 1;
 	}
 	if (defined($original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{repair})) {
-		$rxns->[$i]->dblinks()->{oldrep} = $original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{repair};
+		$rxns->[$i]->dblinks()->{oldrep} = [$original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{repair}];
 		$original_rxn_id_hash->{repair}->{$rxns->[$i]->id()} = 1;
 	}
 }
@@ -355,11 +380,11 @@ for (my $i=0; $i < @{$cpds}; $i++) {
 		} 
 	}
 	if (defined($original_cpd_hash->{$cpds->[$i]->inchikey()}->{damage})) {
-		$cpds->[$i]->dblinks()->{olddmg} = $original_cpd_hash->{$cpds->[$i]->inchikey()}->{damage};
+		$cpds->[$i]->dblinks()->{olddmg} = [$original_cpd_hash->{$cpds->[$i]->inchikey()}->{damage}];
 		$original_cpd_id_hash->{damage}->{$rxns->[$i]->id()} = 1;
 	}
 	if (defined($original_cpd_hash->{$cpds->[$i]->inchikey()}->{repair})) {
-		$cpds->[$i]->dblinks()->{oldrep} = $original_cpd_hash->{$cpds->[$i]->inchikey()}->{repair};
+		$cpds->[$i]->dblinks()->{oldrep} = [$original_cpd_hash->{$cpds->[$i]->inchikey()}->{repair}];
 		$original_cpd_id_hash->{repair}->{$rxns->[$i]->id()} = 1;
 	}
 }
@@ -399,11 +424,11 @@ for (my $i=0; $i < @{$rxns}; $i++) {
 		$rxns->[$i]->id($id);
 	}
 	if (defined($original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{damage})) {
-		$rxns->[$i]->dblinks()->{olddmg} = $original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{damage};
+		$rxns->[$i]->dblinks()->{olddmg} = [$original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{damage}];
 		$original_rxn_id_hash->{damage}->{$rxns->[$i]->id()} = 1;
 	}
 	if (defined($original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{repair})) {
-		$rxns->[$i]->dblinks()->{oldrep} = $original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{repair};
+		$rxns->[$i]->dblinks()->{oldrep} = [$original_rxn_hash->{$rxns->[$i]->createEquation({indecies => 0,format=>"inchikey",hashed=>1,protons=>0,direction=>0})}->{repair}];
 		$original_rxn_id_hash->{repair}->{$rxns->[$i]->id()} = 1;
 	}
 	my $rgts = $rxns->[$i]->modelReactionReagents();
@@ -485,6 +510,9 @@ for (my $i=0; $i < @{$rxns}; $i++) {
 #Saving fully combined model
 my $wsmeta = $impl->util_save_object($combined,"29280/FullCombined.fix");
 
+#Printing peak table
+my $peak_tbl = ["Peak ID\tModel\tModelSEED\tDamage\tRepair"];
+
 my $match_dmg_cpd = [0,0];
 my $match_rep_cpd = [0,0];
 my $match_dmg_rxn = [0,0];
@@ -522,3 +550,13 @@ print "Repair compounds:".$match_rep_cpd->[0]."/".$match_rep_cpd->[1]."\n";
 print "Damage compounds:".$match_dmg_cpd->[0]."/".$match_dmg_cpd->[1]."\n";
 print "Repair reactions:".$match_rep_rxn->[0]."/".$match_rep_rxn->[1]."\n";
 print "Damage reactions:".$match_dmg_rxn->[0]."/".$match_dmg_rxn->[1]."\n";
+
+print "\n";
+foreach my $peakid (keys(%{$peakhits->{all}})) {
+	print $peakid.":1";
+	foreach my $cpdid (keys(%{$peakhits->{all}->{$peakid}})) {
+		print ":".$cpdid;
+	}
+	print ";";
+}
+print "\n";

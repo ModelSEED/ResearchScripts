@@ -5,8 +5,8 @@ local $| = 1;
 my $impl = fba_tools::fba_toolsImpl->new();
 Bio::KBase::kbaseenv::create_context_from_client_config();
 
-my $directory "/disks/p3dev3/ReactionData/";
-my $workspace = "jplfaria:narrative_1493091104031";
+my $directory = "/Users/janakaanl/MSRepo/ResearchScripts/IGap/";
+my $workspace = "janakakbase:narrative_1499012973666";
 my $initial_models = Bio::KBase::kbaseenv::ws_client()->list_objects({
 	workspaces => [$workspace],
 	type => "KBaseFBA.FBAModel",
@@ -14,6 +14,20 @@ my $initial_models = Bio::KBase::kbaseenv::ws_client()->list_objects({
 my $models;
 for (my $i=0; $i < @{$initial_models}; $i++) {
 	push(@{$models},$initial_models->[$i]->[1]);
+}
+
+my $initial_genomes = Bio::KBase::kbaseenv::ws_client()->list_objects({
+       	workspaces => ["janakakbase:narrative_1499012973666"],
+        type => "KBaseGenomes.Genome",
+});
+
+my $genomelist;
+my $genome_hash = {};
+for (my $i=0; $i < @{$initial_genomes}; $i++) {
+        if ($initial_genomes->[$i]->[1] =~ m/(.+)\.RAST$/) {
+                $genome_hash->{$initial_genomes->[$i]->[1]} = $1;
+                push(@{$genomelist},$initial_genomes->[$i]->[1]);
+        }
 }
 
 my $rxnhash;
@@ -68,8 +82,9 @@ for (my $i=0; $i < @{$models}; $i++) {
 			gapfillString => $rxns->[$j]->gapfillString()
 		};
 	}
+	my $fbaworkspace = "janakakbase:narrative_1499012973666";
 	my $fba = $models->[$i].".sensfba";
-	my $fbaobj = $impl->util_store()->get_object($workspace."/".$fba);
+	my $fbaobj = $impl->util_store()->get_object($fbaworkspace."/".$fba);
 	$mdlhash->{$models->[$i]}->{ssobj} = $fbaobj->objectiveValue();
 	$mdlhash->{$models->[$i]}->{ssmedia} = $fbaobj->media()->_wsname();
 	$rxns = $fbaobj->FBAReactionVariables();
@@ -81,7 +96,7 @@ for (my $i=0; $i < @{$models}; $i++) {
 		$rxnhash->{$id}->{$models->[$i]}->{coupled_reactions} = $rxns->[$j]->coupled_reactions();
 	}
 	$fba = $models->[$i].".mmfva";
-	$fbaobj = $impl->util_store()->get_object($workspace."/".$fba);
+	$fbaobj = $impl->util_store()->get_object($fbaworkspace."/".$fba);
 	$mdlhash->{$models->[$i]}->{mmobj} = $fbaobj->objectiveValue();
 	$mdlhash->{$models->[$i]}->{mmmedia} = $fbaobj->media()->_wsname();
 	my $cpds = $fbaobj->FBACompoundVariables();
@@ -125,7 +140,7 @@ for (my $i=0; $i < @{$models}; $i++) {
 		}
 	}
 	$fba = $models->[$i].".comfva";
-	$fbaobj = $impl->util_store()->get_object($workspace."/".$fba);
+	$fbaobj = $impl->util_store()->get_object($fbaworkspace."/".$fba);
 	$mdlhash->{$models->[$i]}->{comobj} = $fbaobj->objectiveValue();
 	$mdlhash->{$models->[$i]}->{commedia} = $fbaobj->media()->_wsname();
 	$rxns = $fbaobj->FBAReactionVariables();
@@ -137,6 +152,7 @@ for (my $i=0; $i < @{$models}; $i++) {
 		$rxnhash->{$id}->{$models->[$i]}->{commin} = $rxns->[$j]->min();
 		if (abs($rxns->[$j]->value()) > 0.0000001) {
 			$mdlhash->{$genomelist->[$i]}->{comacitve}++;
+			#$mdlhash->{$models->[$i]}->{comacitve}++;
 		}
 		if ($rxns->[$j]->min() > 0.0000001) {
 			$mdlhash->{$models->[$i]}->{comessential}++;
